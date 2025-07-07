@@ -13,6 +13,7 @@ export default function Navigation() {
     { name: "Home", href: "/", icon: GraduationCap },
     { name: "Notes", href: "/notes", icon: BookOpen },
     { name: "Papers", href: "/papers", icon: FileText },
+    { name: "Contributors", href: "/contributors", icon: Users },
   ];
 
   return (

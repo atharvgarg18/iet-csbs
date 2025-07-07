@@ -326,7 +326,7 @@ export default function Index() {
         </section>
 
         {/* Campus Gallery Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-violet-100/50 to-pink-100/50">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-violet-500/10 to-pink-500/10 dark:from-violet-500/20 dark:to-pink-500/20">
           <div className="max-w-7xl mx-auto space-y-12">
             <div className="text-center space-y-4">
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
@@ -394,10 +394,10 @@ export default function Index() {
         </section>
 
         {/* Application Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-100/60 to-yellow-100/60">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 dark:from-orange-500/20 dark:to-yellow-500/20">
           <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-600 px-4 py-2 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center gap-2 bg-orange-500/20 text-orange-400 dark:text-orange-300 px-4 py-2 rounded-full text-sm font-medium border border-orange-500/30">
                 <Calendar className="w-4 h-4" />
                 Admissions Open
               </div>
@@ -551,10 +551,10 @@ export default function Index() {
         </section>
 
         {/* Enhanced CTA Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-100/60 to-blue-100/60">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 dark:from-cyan-500/20 dark:to-blue-500/20">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-600 px-4 py-2 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-400 dark:text-cyan-300 px-4 py-2 rounded-full text-sm font-medium border border-cyan-500/30">
                 <Zap className="w-4 h-4" />
                 Academic Resources
               </div>

@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import Index from "./pages/Index";
 import Notes from "./pages/Notes";
 import Papers from "./pages/Papers";
+import Contributors from "./pages/Contributors";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/papers" element={<Papers />} />
+            <Route path="/contributors" element={<Contributors />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
