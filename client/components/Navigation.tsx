@@ -1,6 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   GraduationCap,
   BookOpen,
   FileText,
@@ -33,18 +39,18 @@ export default function Navigation() {
   return (
     <nav className="bg-background/80 backdrop-blur-xl border-b border-border/50 sticky top-0 z-50 shadow-lg shadow-primary/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <Link to="/" className="flex items-center space-x-3 group">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center space-x-4 group">
               {/* Full IET Logo */}
               <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc0ffb4b53fb144a9853dc9a34c542d8a?format=webp&width=800"
+                src="https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc288a09ecf9f4912b157301cc10fa6a8?format=webp&width=800"
                 alt="IET DAVV Logo"
-                className="h-12 object-contain group-hover:scale-105 transition-transform duration-300"
+                className="h-14 object-contain group-hover:scale-105 transition-transform duration-300"
               />
               <div className="hidden sm:block">
-                <div className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <div className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   CSBS
                 </div>
               </div>
@@ -55,7 +61,7 @@ export default function Navigation() {
               href="https://ietdavv.edu.in/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors duration-300 ml-2 px-2 py-1 rounded hover:bg-primary/5"
+              className="hidden md:flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors duration-300 ml-6 px-3 py-2 rounded-md hover:bg-primary/5 border border-transparent hover:border-primary/20"
             >
               <span>Visit IET DAVV</span>
               <ExternalLink className="w-3 h-3" />
@@ -63,8 +69,8 @@ export default function Navigation() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
-            {navigation.map((item) => {
+          <div className="hidden lg:flex items-center space-x-2">
+            {navigation.slice(0, 4).map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.href;
               return (
@@ -73,14 +79,14 @@ export default function Navigation() {
                     variant={isActive ? "default" : "ghost"}
                     size="sm"
                     className={cn(
-                      "flex items-center gap-1 relative overflow-hidden group transition-all duration-300 text-xs",
+                      "flex items-center gap-2 relative overflow-hidden group transition-all duration-300 text-sm px-4 py-2",
                       isActive
                         ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25"
                         : "hover:bg-primary/10 hover:text-primary",
                     )}
                   >
-                    <Icon className="w-3 h-3 z-10" />
-                    <span className="z-10 hidden xl:inline">{item.name}</span>
+                    <Icon className="w-4 h-4 z-10" />
+                    <span className="z-10">{item.name}</span>
                     {!isActive && (
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     )}
@@ -89,8 +95,31 @@ export default function Navigation() {
               );
             })}
 
+            {/* More Dropdown for remaining items */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="px-3">
+                  <Menu className="w-4 h-4" />
+                  <span className="sr-only">More pages</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {navigation.slice(4).map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link key={item.name} to={item.href}>
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Icon className="w-4 h-4 mr-2" />
+                        {item.name}
+                      </DropdownMenuItem>
+                    </Link>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {/* Theme Toggle */}
-            <div className="ml-2">
+            <div className="ml-3 pl-3 border-l border-border/50">
               <ThemeToggle />
             </div>
           </div>
