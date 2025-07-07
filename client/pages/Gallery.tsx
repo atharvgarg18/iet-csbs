@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -20,6 +21,8 @@ import {
 } from "lucide-react";
 
 export default function Gallery() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
   // Gallery items organized by categories
   const galleryItems = [
     // E Cell Events
@@ -217,8 +220,11 @@ export default function Gallery() {
               {categories.map((category) => (
                 <Button
                   key={category}
-                  variant="outline"
+                  variant={
+                    selectedCategory === category ? "default" : "outline"
+                  }
                   size="sm"
+                  onClick={() => setSelectedCategory(category)}
                   className="hover:bg-primary/10 hover:text-primary transition-colors duration-300"
                 >
                   {category}
@@ -246,70 +252,76 @@ export default function Gallery() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {galleryItems.map((item) => (
-                <Card
-                  key={item.id}
-                  className="overflow-hidden hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm group"
-                >
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          className="flex-1"
-                        >
-                          <Eye className="w-4 h-4 mr-1" />
-                          View
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          className="flex-1"
-                        >
-                          <Download className="w-4 h-4 mr-1" />
-                          Download
-                        </Button>
+              {galleryItems
+                .filter(
+                  (item) =>
+                    selectedCategory === "All" ||
+                    item.category === selectedCategory,
+                )
+                .map((item) => (
+                  <Card
+                    key={item.id}
+                    className="overflow-hidden hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm group"
+                  >
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="flex-1"
+                          >
+                            <Eye className="w-4 h-4 mr-1" />
+                            View
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="flex-1"
+                          >
+                            <Download className="w-4 h-4 mr-1" />
+                            Download
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge className={getCategoryColor(item.category)}>
-                        {item.category}
-                      </Badge>
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Calendar className="w-3 h-3" />
-                        {new Date(item.date).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge className={getCategoryColor(item.category)}>
+                          {item.category}
+                        </Badge>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(item.date).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </div>
                       </div>
-                    </div>
-                    <CardTitle className="text-lg text-foreground group-hover:text-accent transition-colors duration-300">
-                      {item.title}
-                    </CardTitle>
-                    <CardDescription className="text-sm">
-                      {item.description}
-                    </CardDescription>
-                  </CardHeader>
+                      <CardTitle className="text-lg text-foreground group-hover:text-accent transition-colors duration-300">
+                        {item.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm">
+                        {item.description}
+                      </CardDescription>
+                    </CardHeader>
 
-                  <CardContent className="pt-0">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Camera className="w-3 h-3" />
-                      <span>Photo by: {item.photographer}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    <CardContent className="pt-0">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Camera className="w-3 h-3" />
+                        <span>Photo by: {item.photographer}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
 
             {/* Upload Section */}
