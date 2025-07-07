@@ -475,7 +475,7 @@ export default function Index() {
                 <div className="grid grid-cols-2 gap-4">
                   <Card className="text-center p-4 bg-blue-50/50">
                     <Users className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                    <div className="text-2xl font-bold text-blue-800">75</div>
+                    <div className="text-2xl font-bold text-blue-800">76</div>
                     <div className="text-sm text-blue-600">Total Seats</div>
                   </Card>
                   <Card className="text-center p-4 bg-purple-50/50">
