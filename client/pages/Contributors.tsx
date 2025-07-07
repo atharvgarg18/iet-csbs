@@ -50,8 +50,8 @@ export default function Contributors() {
         {
           name: "Advait Kshirsagar",
           image: null,
-          linkedin: null,
-          github: null,
+          linkedin: "https://www.linkedin.com/in/advait-kshirsagar-93b46032a",
+          github: "https://github.com/finoyes",
         },
         {
           name: "Gurpreet Singh Bhatia",
@@ -109,8 +109,9 @@ export default function Contributors() {
       members: [
         {
           name: "Suwaaq Kothari",
-          image: null,
-          linkedin: null,
+          image:
+            "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F4668b90fdde44090ba0ed6ce4b52e200?format=webp&width=800",
+          linkedin: "https://github.com/Skothari-11677",
           github: null,
         },
         {

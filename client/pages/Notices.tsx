@@ -19,47 +19,29 @@ import {
 } from "lucide-react";
 
 export default function Notices() {
-  // Sample notices - these will be updated with real notices
+  // Current notices
   const notices = [
     {
       id: 1,
-      title: "Mid-Semester Test Schedule - MST 2",
+      title: "Third Semester Time Table - July 2025",
       description:
-        "Schedule for the second Mid-Semester Test for all subjects has been released.",
-      date: "2025-01-15",
+        "Class schedule for III Semester B.Tech Computer Science & Business Systems (Session: July 2025 to Nov. 2025)",
+      date: "2025-07-01",
       type: "Academic",
       priority: "high",
-      downloadLink: "#",
+      downloadLink: "/assets/timetable-3rd-sem.pdf",
+      isPDF: true,
     },
     {
       id: 2,
-      title: "Industrial Visit to TCS Innovation Center",
+      title: "Application Deadline Extended",
       description:
-        "Optional industrial visit for CSBS students to understand industry practices.",
-      date: "2025-01-10",
-      type: "Event",
-      priority: "medium",
-      downloadLink: "#",
-    },
-    {
-      id: 3,
-      title: "Fee Payment Deadline Extension",
-      description:
-        "Last date for fee payment has been extended to January 31st, 2025.",
-      date: "2025-01-08",
+        "Last date for CSBS program applications has been extended to July 20th, 2025.",
+      date: "2025-07-15",
       type: "Administrative",
       priority: "high",
       downloadLink: "#",
-    },
-    {
-      id: 4,
-      title: "Guest Lecture on AI in Business",
-      description:
-        "Special guest lecture by industry expert on AI applications in business systems.",
-      date: "2025-01-05",
-      type: "Academic",
-      priority: "medium",
-      downloadLink: "#",
+      isPDF: false,
     },
   ];
 
