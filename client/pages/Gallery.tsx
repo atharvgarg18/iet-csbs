@@ -292,8 +292,8 @@ export default function Gallery() {
                       </div>
                     </div>
 
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2 mb-2">
+                    <CardContent className="p-2">
+                      <div className="flex items-center justify-between">
                         <Badge className={getCategoryColor(item.category)}>
                           {item.category}
                         </Badge>
@@ -305,19 +305,6 @@ export default function Gallery() {
                             year: "numeric",
                           })}
                         </div>
-                      </div>
-                      <CardTitle className="text-lg text-foreground group-hover:text-accent transition-colors duration-300">
-                        {item.title}
-                      </CardTitle>
-                      <CardDescription className="text-sm">
-                        {item.description}
-                      </CardDescription>
-                    </CardHeader>
-
-                    <CardContent className="pt-0">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Camera className="w-3 h-3" />
-                        <span>Photo by: {item.photographer}</span>
                       </div>
                     </CardContent>
                   </Card>

@@ -126,7 +126,7 @@ export default function Contributors() {
       iconColor: "text-orange-400",
     },
     {
-      name: "Development Unit",
+      name: "Development & maintenance Department",
       icon: Code,
       description: "Frontend and backend development of the platform",
       members: [

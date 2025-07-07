@@ -51,27 +51,27 @@ export default function Index() {
   const features = [
     {
       icon: Code,
-      title: "Computer Science Fundamentals",
+      title: "Core Computer Science",
       description:
-        "Core programming, algorithms, data structures, and software engineering principles",
+        "Covers fundamental computing subjects like Data Structures, Algorithms, OS, DBMS, and Networking to build strong technical foundations.",
     },
     {
       icon: TrendingUp,
-      title: "Business Systems",
+      title: "Business and Management Studies",
       description:
-        "Business management, systems analysis, and enterprise solution development",
+        "Introduces subjects like Economics, Management Principles, Financial Accounting, and Business Communication to develop business acumen.",
     },
     {
-      icon: Shield,
-      title: "Cyber Security",
+      icon: Target,
+      title: "Data Science and Analytics",
       description:
-        "Information security, network protection, and cybersecurity frameworks",
+        "Focuses on subjects like Machine Learning, Data Mining, and Statistics to prepare students for data-driven decision-making roles.",
     },
     {
-      icon: Cloud,
-      title: "Cloud & IoT",
+      icon: Zap,
+      title: "Emerging Technologies and Industry Relevance",
       description:
-        "Cloud computing, Internet of Things, and modern distributed systems",
+        "Includes AI, IoT, Cloud Computing, Cybersecurity, and Industry 4.0 topics to align students with current industry trends and future tech.",
     },
   ];
 
