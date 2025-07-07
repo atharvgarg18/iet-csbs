@@ -15,18 +15,19 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-blue-50/20 to-green-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 dark:from-background dark:via-primary/10 dark:to-accent/20 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-3xl animate-pulse transform -translate-x-1/2 -translate-y-1/2"></div>
+      </div>
+      <div className="relative z-10">
       <Navigation />
 
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-8 max-w-2xl">
           <div className="space-y-4">
-            <h1 className="text-8xl sm:text-9xl font-bold text-primary/20">
-              404
-            </h1>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-              Page Not Found
-            </h2>
+            <h1 className="text-8xl sm:text-9xl font-bold text-primary/20">404</h1>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Page Not Found</h2>
             <p className="text-xl text-muted-foreground">
               The page you're looking for doesn't exist or has been moved.
             </p>
@@ -55,10 +56,7 @@ const NotFound = () => {
 
           <div className="pt-8">
             <p className="text-sm text-muted-foreground">
-              Attempted to access:{" "}
-              <code className="bg-muted px-2 py-1 rounded text-foreground">
-                {location.pathname}
-              </code>
+              Attempted to access: <code className="bg-muted px-2 py-1 rounded text-foreground">{location.pathname}</code>
             </p>
           </div>
         </div>

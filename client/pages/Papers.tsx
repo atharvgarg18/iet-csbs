@@ -229,118 +229,127 @@ export default function Papers() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-blue-50/20 to-green-50/20">
-      <Navigation />
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-accent/10 dark:from-background dark:via-secondary/10 dark:to-accent/20 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
+      <div className="relative z-10">
+        <Navigation />
 
-      {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center space-y-6">
-          <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium">
-            <FileText className="w-4 h-4" />
-            Test Papers
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-            Examination{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
-              Papers
-            </span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Practice with previous year question papers, sample tests, and mock
-            examinations to excel in your CSBS program assessments.
-          </p>
-        </div>
-      </section>
-
-      {/* Papers Content */}
-      <section className="pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <Tabs defaultValue="2025-29" className="space-y-8">
-            <div className="flex justify-center">
-              <TabsList className="grid w-full max-w-md grid-cols-2">
-                {batches.map((batch) => (
-                  <TabsTrigger
-                    key={batch.id}
-                    value={batch.id}
-                    className="text-center"
-                  >
-                    <div>
-                      <div className="font-medium">{batch.label}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {batch.year}
-                      </div>
-                    </div>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+        {/* Hero Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto text-center space-y-6">
+            <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium">
+              <FileText className="w-4 h-4" />
+              Test Papers
             </div>
-
-            {batches.map((batch) => (
-              <TabsContent key={batch.id} value={batch.id} className="mt-8">
-                {renderPapersGrid(batch.id)}
-              </TabsContent>
-            ))}
-          </Tabs>
-        </div>
-      </section>
-
-      {/* Study Tips Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-secondary/5 to-accent/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center space-y-6 mb-12">
-            <h2 className="text-3xl font-bold text-foreground">
-              Exam Preparation Tips
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Make the most of these practice papers with our study
-              recommendations
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
+              Examination{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
+                Papers
+              </span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Practice with previous year question papers, sample tests, and
+              mock examinations to excel in your CSBS program assessments.
             </p>
           </div>
+        </section>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-              <CardContent className="pt-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Time Management</h3>
-                <p className="text-muted-foreground">
-                  Practice with time limits to improve your speed and accuracy
-                  during actual exams
-                </p>
-              </CardContent>
-            </Card>
+        {/* Papers Content */}
+        <section className="pb-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <Tabs defaultValue="2025-29" className="space-y-8">
+              <div className="flex justify-center">
+                <TabsList className="grid w-full max-w-md grid-cols-2">
+                  {batches.map((batch) => (
+                    <TabsTrigger
+                      key={batch.id}
+                      value={batch.id}
+                      className="text-center"
+                    >
+                      <div>
+                        <div className="font-medium">{batch.label}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {batch.year}
+                        </div>
+                      </div>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
 
-            <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-              <CardContent className="pt-4">
-                <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <BookOpen className="w-6 h-6 text-secondary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">
-                  Pattern Recognition
-                </h3>
-                <p className="text-muted-foreground">
-                  Analyze question patterns and marking schemes from previous
-                  papers
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-              <CardContent className="pt-4">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Group Study</h3>
-                <p className="text-muted-foreground">
-                  Discuss solutions with classmates to gain different
-                  perspectives
-                </p>
-              </CardContent>
-            </Card>
+              {batches.map((batch) => (
+                <TabsContent key={batch.id} value={batch.id} className="mt-8">
+                  {renderPapersGrid(batch.id)}
+                </TabsContent>
+              ))}
+            </Tabs>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Study Tips Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-secondary/5 to-accent/5">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center space-y-6 mb-12">
+              <h2 className="text-3xl font-bold text-foreground">
+                Exam Preparation Tips
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Make the most of these practice papers with our study
+                recommendations
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              <Card className="p-6 text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Clock className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Time Management
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Practice with time limits to improve your speed and accuracy
+                    during actual exams
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="p-6 text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-4">
+                  <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="w-6 h-6 text-secondary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Pattern Recognition
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Analyze question patterns and marking schemes from previous
+                    papers
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="p-6 text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-4">
+                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Users className="w-6 h-6 text-accent" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Group Study</h3>
+                  <p className="text-muted-foreground">
+                    Discuss solutions with classmates to gain different
+                    perspectives
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

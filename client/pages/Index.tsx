@@ -413,11 +413,11 @@ export default function Index() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 {isApplicationOpen ? (
-                  <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+                  <Card className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30 backdrop-blur-xl shadow-2xl shadow-green-500/20">
                     <CardHeader>
                       <div className="flex items-center gap-3">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <CardTitle className="text-green-800">
+                        <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
+                        <CardTitle className="text-green-400 dark:text-green-300 font-bold">
                           Applications Open!
                         </CardTitle>
                       </div>
@@ -425,15 +425,18 @@ export default function Index() {
                     <CardContent>
                       <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                          <Clock className="w-5 h-5 text-green-600" />
-                          <span className="text-green-700 font-medium">
+                          <Clock className="w-5 h-5 text-green-400" />
+                          <span className="text-green-300 font-medium">
                             {daysUntilDeadline > 0
                               ? `${daysUntilDeadline} days remaining to apply`
                               : "Last day to apply!"}
                           </span>
                         </div>
-                        <p className="text-green-700">
-                          Application deadline: <strong>July 15, 2025</strong>
+                        <p className="text-green-200 dark:text-green-100">
+                          Application deadline:{" "}
+                          <strong className="text-green-300">
+                            July 15, 2025
+                          </strong>
                         </p>
                         <a
                           href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
@@ -441,7 +444,7 @@ export default function Index() {
                           rel="noopener noreferrer"
                           className="inline-block"
                         >
-                          <Button className="bg-green-600 hover:bg-green-700 text-white">
+                          <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300">
                             <ExternalLink className="w-4 h-4 mr-2" />
                             Apply Now
                           </Button>
@@ -450,14 +453,14 @@ export default function Index() {
                     </CardContent>
                   </Card>
                 ) : (
-                  <Card className="bg-gradient-to-r from-red-50 to-pink-50 border-red-200">
+                  <Card className="bg-gradient-to-r from-red-500/10 to-pink-500/10 border-red-500/30 backdrop-blur-xl shadow-2xl shadow-red-500/20">
                     <CardHeader>
-                      <CardTitle className="text-red-800">
+                      <CardTitle className="text-red-400 dark:text-red-300 font-bold">
                         Applications Closed
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-red-700">
+                      <p className="text-red-200 dark:text-red-100">
                         The application period for the CSBS program 2025-29 has
                         ended on July 15, 2025. Please check back next year for
                         the 2026-30 batch.

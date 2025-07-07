@@ -194,81 +194,88 @@ export default function Notes() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-blue-50/20 to-green-50/20">
-      <Navigation />
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 dark:from-background dark:via-primary/10 dark:to-secondary/20 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-72 h-72 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+      <div className="relative z-10">
+        <Navigation />
 
-      {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center space-y-6">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
-            <BookOpen className="w-4 h-4" />
-            Study Resources
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-            Course{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-              Notes
-            </span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Access comprehensive study materials, lecture notes, and reference
-            documents for all CSBS courses, organized by batch and semester.
-          </p>
-        </div>
-      </section>
-
-      {/* Notes Content */}
-      <section className="pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <Tabs defaultValue="2025-29" className="space-y-8">
-            <div className="flex justify-center">
-              <TabsList className="grid w-full max-w-md grid-cols-2 lg:grid-cols-2">
-                {batches.map((batch) => (
-                  <TabsTrigger
-                    key={batch.id}
-                    value={batch.id}
-                    className="text-center"
-                  >
-                    <div>
-                      <div className="font-medium">{batch.label}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {batch.year}
-                      </div>
-                    </div>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+        {/* Hero Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto text-center space-y-6">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
+              <BookOpen className="w-4 h-4" />
+              Study Resources
             </div>
-
-            {batches.map((batch) => (
-              <TabsContent key={batch.id} value={batch.id} className="mt-8">
-                {renderNotesGrid(batch.id)}
-              </TabsContent>
-            ))}
-          </Tabs>
-        </div>
-      </section>
-
-      {/* Help Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 to-secondary/5">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <h2 className="text-3xl font-bold text-foreground">
-            Need Help Finding Resources?
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Can't find the notes you're looking for? Reach out to your
-            classmates or faculty members for additional resources.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="outline" size="lg">
-              Contact Faculty
-            </Button>
-            <Button variant="outline" size="lg">
-              Join Study Groups
-            </Button>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
+              Course{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+                Notes
+              </span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Access comprehensive study materials, lecture notes, and reference
+              documents for all CSBS courses, organized by batch and semester.
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Notes Content */}
+        <section className="pb-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <Tabs defaultValue="2025-29" className="space-y-8">
+              <div className="flex justify-center">
+                <TabsList className="grid w-full max-w-md grid-cols-2 lg:grid-cols-2">
+                  {batches.map((batch) => (
+                    <TabsTrigger
+                      key={batch.id}
+                      value={batch.id}
+                      className="text-center"
+                    >
+                      <div>
+                        <div className="font-medium">{batch.label}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {batch.year}
+                        </div>
+                      </div>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
+
+              {batches.map((batch) => (
+                <TabsContent key={batch.id} value={batch.id} className="mt-8">
+                  {renderNotesGrid(batch.id)}
+                </TabsContent>
+              ))}
+            </Tabs>
+          </div>
+        </section>
+
+        {/* Help Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 to-secondary/5">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <h2 className="text-3xl font-bold text-foreground">
+              Need Help Finding Resources?
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Can't find the notes you're looking for? Reach out to your
+              classmates or faculty members for additional resources.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button variant="outline" size="lg">
+                Contact Faculty
+              </Button>
+              <Button variant="outline" size="lg">
+                Join Study Groups
+              </Button>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
