@@ -79,9 +79,9 @@ export default function Index() {
     { label: "Program Duration", value: "4 Years", icon: GraduationCap },
     {
       label: "Total Seats",
-      value: "75",
+      value: "76",
       icon: Users,
-      subtitle: "60 Regular + 15 Supernumerary",
+      subtitle: "60 Regular + 16 Supernumerary",
     },
     { label: "Industry Partner", value: "TCS", icon: Building2 },
     { label: "Admission Based", value: "JEE", icon: Award },
