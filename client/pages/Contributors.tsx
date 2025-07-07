@@ -63,7 +63,7 @@ export default function Contributors() {
       name: "Designing Unit",
       icon: Palette,
       description: "UI/UX design and visual identity creation",
-      members: ["Suwaaq Kothari", "Naman Kasliwal"],
+      members: ["Suwaaq Kothari", "Naman Kasliwal (ETC)"],
       color: "from-orange-500/20 to-yellow-500/20",
       borderColor: "border-orange-500/30",
       iconColor: "text-orange-400",

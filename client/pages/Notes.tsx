@@ -9,22 +9,64 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Download, FileText, Star, ExternalLink } from "lucide-react";
+import {
+  BookOpen,
+  Download,
+  FileText,
+  Star,
+  ExternalLink,
+  Clock,
+} from "lucide-react";
 
 export default function Notes() {
   const driveLinks = {
     "2024-28":
       "https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK",
-    "2025-29":
-      "https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK", // Placeholder - will be updated when available
   };
 
   const batches = [
-    { id: "2024-28", label: "2024-28" },
-    { id: "2025-29", label: "2025-29" },
+    { id: "2024-28", label: "2024-28", hasContent: true },
+    { id: "2025-29", label: "2025-29", hasContent: false },
   ];
 
   const renderNotesContent = (batchId: string) => {
+    const batch = batches.find((b) => b.id === batchId);
+
+    if (!batch?.hasContent) {
+      return (
+        <div className="space-y-8">
+          <div className="text-center space-y-6">
+            <h3 className="text-3xl font-bold text-foreground">
+              Study Materials for Batch {batchId}
+            </h3>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Classes haven't started for this batch yet
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-12 text-center bg-gradient-to-br from-card to-muted/5 border border-border/50 backdrop-blur-sm">
+              <CardContent>
+                <div className="w-20 h-20 bg-gradient-to-br from-muted to-muted/50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Clock className="w-10 h-10 text-muted-foreground" />
+                </div>
+                <h4 className="text-2xl font-bold text-foreground mb-4">
+                  Coming Soon
+                </h4>
+                <p className="text-muted-foreground max-w-lg mx-auto mb-6">
+                  Study materials and notes for Batch {batchId} will be
+                  available once classes begin.
+                </p>
+                <Badge variant="secondary" className="px-4 py-2">
+                  Stay tuned for updates
+                </Badge>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      );
+    }
+
     const driveLink = driveLinks[batchId as keyof typeof driveLinks];
 
     return (
