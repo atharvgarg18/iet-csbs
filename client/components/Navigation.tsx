@@ -5,6 +5,10 @@ import {
   BookOpen,
   FileText,
   Users,
+  Bell,
+  TrendingUp,
+  Camera,
+  ExternalLink,
   Menu,
   X,
 } from "lucide-react";
