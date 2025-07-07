@@ -63,7 +63,7 @@ export default function Navigation() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1">
             {navigation.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.href;
@@ -71,15 +71,16 @@ export default function Navigation() {
                 <Link key={item.name} to={item.href}>
                   <Button
                     variant={isActive ? "default" : "ghost"}
+                    size="sm"
                     className={cn(
-                      "flex items-center gap-2 relative overflow-hidden group transition-all duration-300",
+                      "flex items-center gap-1 relative overflow-hidden group transition-all duration-300 text-xs",
                       isActive
                         ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25"
                         : "hover:bg-primary/10 hover:text-primary",
                     )}
                   >
-                    <Icon className="w-4 h-4 z-10" />
-                    <span className="z-10">{item.name}</span>
+                    <Icon className="w-3 h-3 z-10" />
+                    <span className="z-10 hidden xl:inline">{item.name}</span>
                     {!isActive && (
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     )}
@@ -95,7 +96,7 @@ export default function Navigation() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="lg:hidden flex items-center space-x-2">
             <ThemeToggle />
             <Button
               variant="ghost"
@@ -115,8 +116,8 @@ export default function Navigation() {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-border/50 bg-background/90 backdrop-blur-xl">
-          <div className="px-2 pt-2 pb-3 space-y-1">
+        <div className="lg:hidden border-t border-border/50 bg-background/90 backdrop-blur-xl">
+          <div className="px-2 pt-2 pb-3 space-y-1 max-h-96 overflow-y-auto">
             {navigation.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.href;
@@ -144,6 +145,23 @@ export default function Navigation() {
                 </Link>
               );
             })}
+
+            {/* IET Website Link in Mobile */}
+            <a
+              href="https://ietdavv.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-3 text-muted-foreground hover:text-primary"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>Visit IET DAVV</span>
+              </Button>
+            </a>
           </div>
         </div>
       )}
