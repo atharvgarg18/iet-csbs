@@ -39,7 +39,7 @@ export default function Index() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
-    const deadline = new Date("2025-07-15");
+    const deadline = new Date("2025-07-20");
     const today = new Date();
     const diffTime = deadline.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -438,7 +438,7 @@ export default function Index() {
                         <p className="text-green-200 dark:text-green-100">
                           Application deadline:{" "}
                           <strong className="text-green-300">
-                            July 15, 2025
+                            July 20, 2025
                           </strong>
                         </p>
                         <a
@@ -465,7 +465,7 @@ export default function Index() {
                     <CardContent>
                       <p className="text-red-200 dark:text-red-100">
                         The application period for the CSBS program 2025-29 has
-                        ended on July 15, 2025. Please check back next year for
+                        ended on July 20, 2025. Please check back next year for
                         the 2026-30 batch.
                       </p>
                     </CardContent>
@@ -602,8 +602,8 @@ export default function Index() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-primary/5 py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center space-y-4">
+        <footer className="bg-primary/5 py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto text-center space-y-6">
             <div className="flex items-center justify-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
                 <GraduationCap className="w-5 h-5 text-white" />
@@ -615,8 +615,11 @@ export default function Index() {
             <p className="text-muted-foreground">
               Computer Science and Business Systems • Powered by TCS Partnership
             </p>
+            <p className="text-lg text-foreground font-medium">
+              Made with ❤️ by the CSBS batch of '28
+            </p>
             <p className="text-sm text-muted-foreground">
-              © 2024 Institute of Engineering & Technology, DAVV Indore. All
+              © 2025 Institute of Engineering & Technology, DAVV Indore. All
               rights reserved.
             </p>
           </div>

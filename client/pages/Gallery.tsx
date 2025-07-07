@@ -20,57 +20,158 @@ import {
 } from "lucide-react";
 
 export default function Gallery() {
-  // Sample gallery items - these will be updated with real photos
+  // Gallery items organized by categories
   const galleryItems = [
+    // E Cell Events
     {
       id: 1,
-      title: "First Day of Classes - Sept 2024",
-      description:
-        "Historic moment as the inaugural CSBS batch begins their journey",
-      date: "2024-09-01",
-      category: "Academic",
+      title: "YEC StartUp Expo - Team Presentation",
+      description: "CSBS students presenting their startup ideas at YEC",
+      date: "2024-11-15",
+      category: "E Cell",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc79016cf4e3c4708a6b13e21831da2a8?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F0cf01d5ccc9446489220032a5035c7a2?format=webp&width=800",
       photographer: "Gallery Division",
     },
     {
       id: 2,
-      title: "Modern Computer Laboratory",
-      description: "State-of-the-art computing facilities for CSBS students",
-      date: "2024-10-15",
-      category: "Infrastructure",
+      title: "YEC Group Photo - Achievement Day",
+      description: "CSBS students with faculty at YEC achievement ceremony",
+      date: "2024-11-20",
+      category: "E Cell",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F62fe5cef9f1d491f8db2da6c0f4ac66e?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fb515c864faca43bbaa1ecac65dc50fa1?format=webp&width=800",
       photographer: "Gallery Division",
     },
     {
       id: 3,
-      title: "Academic Building - IET DAVV",
-      description: "The academic building where CSBS classes are conducted",
+      title: "YEC Startup Competition",
+      description: "Entrepreneurship competition participation by CSBS batch",
+      date: "2024-11-25",
+      category: "E Cell",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F5a246bfff5fa44d38d528bc0d05bba97?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    // NSS Events
+    {
+      id: 4,
+      title: "NSS Group Photo - Community Service",
+      description:
+        "CSBS students participating in NSS community service activities",
+      date: "2024-12-10",
+      category: "NSS",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Ffd9159a6f76f49108f52cc1b61fba365?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 5,
+      title: "NSS Awareness Rally",
+      description: "CSBS students at Rajwada during awareness campaign",
+      date: "2024-12-15",
+      category: "NSS",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F9d3026b056fb4b9980bfbc02b2041084?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    // Rudra Events
+    {
+      id: 6,
+      title: "Rudra Cultural Performance",
+      description: "Traditional dance performance during Rudra cultural fest",
+      date: "2025-01-20",
+      category: "Rudra",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F6953770cff18439d958ceb56461f50c9?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    // Freshers Events
+    {
+      id: 7,
+      title: "Freshers Welcome - Group Photo",
+      description: "Complete CSBS batch during freshers welcome ceremony",
+      date: "2024-09-15",
+      category: "Freshers",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F9d980b00d32f4aa09c920e0c63b588ff?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 8,
+      title: "Freshers Day Celebration",
+      description: "Evening freshers party - CSBS batch '28 memories",
+      date: "2024-09-20",
+      category: "Freshers",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F56ca39159d7c491e8aa54d911b63415e?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    // End Sem Events
+    {
+      id: 9,
+      title: "End Semester Convocation",
+      description: "CSBS students at end semester graduation ceremony",
+      date: "2025-01-30",
+      category: "End Sem",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc4f2e241069c4752b6a19548e86f1ab6?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    // Raas Events
+    {
+      id: 10,
+      title: "Raas Festival - Group Celebration",
+      description: "CSBS students celebrating Raas festival together",
+      date: "2024-10-25",
+      category: "Raas",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F6baa40eb14654c5ab8ea877950832a3d?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 11,
+      title: "Raas Night Celebration",
+      description: "Traditional Raas celebration with the entire CSBS batch",
+      date: "2024-10-30",
+      category: "Raas",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F70cb6b75ed6b41d6bdf6c2a906651e11?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    // Academic/Campus
+    {
+      id: 12,
+      title: "Campus Life - Group Study",
+      description: "CSBS students during group study session at campus",
       date: "2024-11-01",
       category: "Campus",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F3f6c4bd2576e4a2a9456401e4c9c8782?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F14e9dc25433649c9aaf4951896be9f55?format=webp&width=800",
       photographer: "Gallery Division",
     },
   ];
 
   const categories = [
     "All",
-    "Academic",
-    "Infrastructure",
+    "E Cell",
+    "NSS",
+    "Rudra",
+    "Freshers",
+    "End Sem",
+    "Raas",
     "Campus",
-    "Events",
-    "Student Life",
   ];
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      Academic: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-      Infrastructure: "bg-green-500/10 text-green-400 border-green-500/30",
-      Campus: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-      Events: "bg-orange-500/10 text-orange-400 border-orange-500/30",
-      "Student Life": "bg-pink-500/10 text-pink-400 border-pink-500/30",
+      "E Cell": "bg-orange-500/10 text-orange-400 border-orange-500/30",
+      NSS: "bg-green-500/10 text-green-400 border-green-500/30",
+      Rudra: "bg-purple-500/10 text-purple-400 border-purple-500/30",
+      Freshers: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      "End Sem": "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      Raas: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+      Campus: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
     };
     return (
       colors[category as keyof typeof colors] ||
