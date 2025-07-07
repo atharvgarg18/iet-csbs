@@ -1,17 +1,10 @@
 import Navigation from "@/components/Navigation";
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Camera,
-  Image as ImageIcon,
   Calendar,
   Users,
   Clock,
@@ -25,144 +18,149 @@ export default function Gallery() {
 
   // Gallery items organized by categories
   const galleryItems = [
-    // E Cell Events
+    // Freshers Events
     {
       id: 1,
-      title: "YEC StartUp Expo - Team Presentation",
-      description: "CSBS students presenting their startup ideas at YEC",
-      date: "2024-11-15",
-      category: "E Cell",
+      title: "Freshers Welcome Group Photo",
+      date: "2024-09-15",
+      category: "Freshers",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F0cf01d5ccc9446489220032a5035c7a2?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F552108fe4a764684a8b4501fd0d58d87?format=webp&width=800",
       photographer: "Gallery Division",
     },
     {
       id: 2,
-      title: "YEC Group Photo - Achievement Day",
-      description: "CSBS students with faculty at YEC achievement ceremony",
-      date: "2024-11-20",
-      category: "E Cell",
+      title: "Freshers Campus Group",
+      date: "2024-09-20",
+      category: "Freshers",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fb515c864faca43bbaa1ecac65dc50fa1?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F74f844d18c8d47c0aa93787efffe6666?format=webp&width=800",
       photographer: "Gallery Division",
     },
+    // Raas Events
     {
       id: 3,
-      title: "YEC Startup Competition",
-      description: "Entrepreneurship competition participation by CSBS batch",
-      date: "2024-11-25",
-      category: "E Cell",
+      title: "Raas Festival Celebration",
+      date: "2024-10-25",
+      category: "Raas",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F5a246bfff5fa44d38d528bc0d05bba97?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F6b53f08755414fee80f9f44c051bc86b?format=webp&width=800",
       photographer: "Gallery Division",
     },
-    // NSS Events
     {
       id: 4,
-      title: "NSS Group Photo - Community Service",
-      description:
-        "CSBS students participating in NSS community service activities",
-      date: "2024-12-10",
-      category: "NSS",
+      title: "Raas Night Celebration",
+      date: "2024-10-30",
+      category: "Raas",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Ffd9159a6f76f49108f52cc1b61fba365?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F2c6c8ea4b45b47a58b226bee17456622?format=webp&width=800",
       photographer: "Gallery Division",
     },
+    // End Sem Events
     {
       id: 5,
-      title: "NSS Awareness Rally",
-      description: "CSBS students at Rajwada during awareness campaign",
-      date: "2024-12-15",
-      category: "NSS",
+      title: "End Semester Convocation",
+      date: "2025-01-30",
+      category: "End Sem",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F9d3026b056fb4b9980bfbc02b2041084?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fdc8c54d75c84425ea80a841e7f8b7ef1?format=webp&width=800",
       photographer: "Gallery Division",
     },
     // Rudra Events
     {
       id: 6,
       title: "Rudra Cultural Performance",
-      description: "Traditional dance performance during Rudra cultural fest",
       date: "2025-01-20",
       category: "Rudra",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F6953770cff18439d958ceb56461f50c9?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F7390cf5fc8b841e5926ae081a529f1e7?format=webp&width=800",
       photographer: "Gallery Division",
     },
-    // Freshers Events
+    // NSS Events
     {
       id: 7,
-      title: "Freshers Welcome - Group Photo",
-      description: "Complete CSBS batch during freshers welcome ceremony",
-      date: "2024-09-15",
-      category: "Freshers",
+      title: "NSS Community Service",
+      date: "2024-12-10",
+      category: "NSS",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F9d980b00d32f4aa09c920e0c63b588ff?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Feeddd3d8c55f4d6e899061b37adaa8ab?format=webp&width=800",
       photographer: "Gallery Division",
     },
     {
       id: 8,
-      title: "Freshers Day Celebration",
-      description: "Evening freshers party - CSBS batch '28 memories",
-      date: "2024-09-20",
-      category: "Freshers",
+      title: "NSS Awareness Program",
+      date: "2024-12-15",
+      category: "NSS",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F56ca39159d7c491e8aa54d911b63415e?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F40b65184c93b416fa56ae2a7ca03ca79?format=webp&width=800",
       photographer: "Gallery Division",
     },
-    // End Sem Events
+    // E Cell Events
     {
       id: 9,
-      title: "End Semester Convocation",
-      description: "CSBS students at end semester graduation ceremony",
-      date: "2025-01-30",
-      category: "End Sem",
+      title: "E Cell Startup Event",
+      date: "2024-11-15",
+      category: "E Cell",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc4f2e241069c4752b6a19548e86f1ab6?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F0b04e28878444bdead55ccea19f67efd?format=webp&width=800",
       photographer: "Gallery Division",
     },
-    // Raas Events
     {
       id: 10,
-      title: "Raas Festival - Group Celebration",
-      description: "CSBS students celebrating Raas festival together",
-      date: "2024-10-25",
-      category: "Raas",
+      title: "E Cell Workshop",
+      date: "2024-11-20",
+      category: "E Cell",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F6baa40eb14654c5ab8ea877950832a3d?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F3a9499d8ff3e4e07ade04d048bb4b8ed?format=webp&width=800",
       photographer: "Gallery Division",
     },
     {
       id: 11,
-      title: "Raas Night Celebration",
-      description: "Traditional Raas celebration with the entire CSBS batch",
-      date: "2024-10-30",
-      category: "Raas",
+      title: "E Cell Competition",
+      date: "2024-11-25",
+      category: "E Cell",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F70cb6b75ed6b41d6bdf6c2a906651e11?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F353921fd1b9b4e29bd249b2aaf691512?format=webp&width=800",
       photographer: "Gallery Division",
     },
-    // Academic/Campus
+    // Campus Life
     {
       id: 12,
-      title: "Campus Life - Group Study",
-      description: "CSBS students during group study session at campus",
+      title: "Campus Aerial View",
       date: "2024-11-01",
       category: "Campus",
       imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F14e9dc25433649c9aaf4951896be9f55?format=webp&width=800",
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F13d68a2642f1447aa1a2a4e4289b1e9b?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 13,
+      title: "Computer Lab Session",
+      date: "2024-11-05",
+      category: "Campus",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F8f14f85792ae43e1a354bcbcbe097567?format=webp&width=800",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 14,
+      title: "Campus Building",
+      date: "2024-11-10",
+      category: "Campus",
+      imageUrl:
+        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F039a28beb3594629842418585bf62d31?format=webp&width=800",
       photographer: "Gallery Division",
     },
   ];
 
   const categories = [
     "All",
-    "E Cell",
-    "NSS",
-    "Rudra",
     "Freshers",
-    "End Sem",
     "Raas",
+    "End Sem",
+    "Rudra",
+    "NSS",
+    "E Cell",
     "Campus",
   ];
 
