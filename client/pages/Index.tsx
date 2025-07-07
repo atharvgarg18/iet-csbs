@@ -124,7 +124,10 @@ export default function Index() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent font-semibold">
                     TCS
                   </span>{" "}
-                  at Institute of Engineering & Technology, DAVV Indore
+                  at{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent font-semibold">
+                    Institute of Engineering & Technology, DAVV Indore
+                  </span>
                 </p>
               </div>
 
