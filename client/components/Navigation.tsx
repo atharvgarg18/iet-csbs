@@ -37,20 +37,17 @@ export default function Navigation() {
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <Link to="/" className="flex items-center space-x-3 group">
-              {/* IET Logo */}
-              <div className="w-10 h-10 rounded-xl overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary/25 bg-white/10 backdrop-blur-sm">
+              {/* Full IET Logo */}
+              <div className="h-10 rounded-xl overflow-hidden group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-primary/25 bg-white/10 backdrop-blur-sm px-3 py-1">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc0ffb4b53fb144a9853dc9a34c542d8a?format=webp&width=800"
                   alt="IET DAVV Logo"
-                  className="w-full h-full object-contain p-1"
+                  className="h-full object-contain"
                 />
               </div>
               <div className="hidden sm:block">
                 <div className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   CSBS
-                </div>
-                <div className="text-xs text-muted-foreground -mt-1">
-                  IET DAVV
                 </div>
               </div>
             </Link>

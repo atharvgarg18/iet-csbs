@@ -19,6 +19,9 @@ import {
   Star,
   Zap,
   Heart,
+  Linkedin,
+  Github,
+  ExternalLink,
 } from "lucide-react";
 
 export default function Contributors() {
@@ -27,7 +30,14 @@ export default function Contributors() {
       name: "Notes Department",
       icon: BookOpen,
       description: "Curating and organizing comprehensive study materials",
-      members: ["Bharat Jain Sanghvi"],
+      members: [
+        {
+          name: "Bharat Jain Sanghvi",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+      ],
       color: "from-green-500/20 to-emerald-500/20",
       borderColor: "border-green-500/30",
       iconColor: "text-green-400",
@@ -36,7 +46,20 @@ export default function Contributors() {
       name: "MST's & End Sem Papers",
       icon: FileText,
       description: "Managing examination papers and assessment materials",
-      members: ["Advait Kshirsagar", "Gurpreet Singh Bhatia"],
+      members: [
+        {
+          name: "Advait Kshirsagar",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+        {
+          name: "Gurpreet Singh Bhatia",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+      ],
       color: "from-blue-500/20 to-cyan-500/20",
       borderColor: "border-blue-500/30",
       iconColor: "text-blue-400",
@@ -45,7 +68,20 @@ export default function Contributors() {
       name: "Gallery Division",
       icon: Camera,
       description: "Capturing and showcasing campus life and events",
-      members: ["Bhumi Jain", "Pranamya Sharma"],
+      members: [
+        {
+          name: "Bhumi Jain",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+        {
+          name: "Pranamya Sharma",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+      ],
       color: "from-pink-500/20 to-rose-500/20",
       borderColor: "border-pink-500/30",
       iconColor: "text-pink-400",
@@ -54,7 +90,14 @@ export default function Contributors() {
       name: "Overview Unit",
       icon: Eye,
       description: "Program overview and strategic content management",
-      members: ["Kanha Agrawal"],
+      members: [
+        {
+          name: "Kanha Agrawal",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+      ],
       color: "from-purple-500/20 to-violet-500/20",
       borderColor: "border-purple-500/30",
       iconColor: "text-purple-400",
@@ -63,7 +106,20 @@ export default function Contributors() {
       name: "Designing Unit",
       icon: Palette,
       description: "UI/UX design and visual identity creation",
-      members: ["Suwaaq Kothari", "Naman Kasliwal (ETC)"],
+      members: [
+        {
+          name: "Suwaaq Kothari",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+        {
+          name: "Naman Kasliwal (ETC)",
+          image: null,
+          linkedin: null,
+          github: null,
+        },
+      ],
       color: "from-orange-500/20 to-yellow-500/20",
       borderColor: "border-orange-500/30",
       iconColor: "text-orange-400",
@@ -72,7 +128,15 @@ export default function Contributors() {
       name: "Development Unit",
       icon: Code,
       description: "Frontend and backend development of the platform",
-      members: ["Atharv Garg"],
+      members: [
+        {
+          name: "Atharv Garg",
+          image:
+            "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fd5d9f9b07b0c475da38e6614c0a6e000?format=webp&width=800",
+          linkedin: "https://www.linkedin.com/in/atharvgrg/",
+          github: "https://github.com/atharvgrg",
+        },
+      ],
       color: "from-cyan-500/20 to-teal-500/20",
       borderColor: "border-cyan-500/30",
       iconColor: "text-cyan-400",
@@ -199,21 +263,67 @@ export default function Contributors() {
                         <h4 className="text-sm font-semibold text-foreground mb-2">
                           Team Members:
                         </h4>
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           {dept.members.map((member, index) => (
                             <div
                               key={index}
-                              className="flex items-center gap-3 p-3 rounded-lg bg-background/50 backdrop-blur-sm border border-border/50"
+                              className="p-4 rounded-lg bg-background/50 backdrop-blur-sm border border-border/50 hover:bg-background/80 transition-colors duration-300"
                             >
-                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-sm font-semibold">
-                                {member
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
+                              <div className="flex items-start gap-3">
+                                {/* Profile Image */}
+                                <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                                  {member.image ? (
+                                    <img
+                                      src={member.image}
+                                      alt={member.name}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : (
+                                    <span className="text-white text-sm font-semibold">
+                                      {member.name
+                                        .split(" ")
+                                        .map((n) => n[0])
+                                        .join("")}
+                                    </span>
+                                  )}
+                                </div>
+
+                                <div className="flex-1 min-w-0">
+                                  <h5 className="text-foreground font-medium text-sm mb-1">
+                                    {member.name}
+                                  </h5>
+
+                                  {/* Social Links */}
+                                  {(member.linkedin || member.github) && (
+                                    <div className="flex gap-2">
+                                      {member.linkedin && (
+                                        <a
+                                          href={member.linkedin}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                                        >
+                                          <Linkedin className="w-3 h-3" />
+                                          <span>LinkedIn</span>
+                                          <ExternalLink className="w-2 h-2" />
+                                        </a>
+                                      )}
+                                      {member.github && (
+                                        <a
+                                          href={member.github}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-300 transition-colors duration-200"
+                                        >
+                                          <Github className="w-3 h-3" />
+                                          <span>GitHub</span>
+                                          <ExternalLink className="w-2 h-2" />
+                                        </a>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                              <span className="text-foreground font-medium">
-                                {member}
-                              </span>
                             </div>
                           ))}
                         </div>
