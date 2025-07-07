@@ -64,22 +64,29 @@ export default function AtAGlance() {
       date: "Feb 2025",
       title: "Second Semester Start",
       description: "Beginning of the second semester curriculum",
-      status: "current",
+      status: "completed",
       icon: TrendingUp,
     },
     {
       date: "June 2025",
       title: "Second Semester End",
       description: "Completion of the first academic year",
-      status: "upcoming",
+      status: "completed",
       icon: Target,
+    },
+    {
+      date: "July 2025",
+      title: "Third Semester Begins",
+      description: "Start of the second academic year with advanced coursework",
+      status: "current",
+      icon: BookOpen,
     },
   ];
 
   const stats = [
     { label: "Inaugral Batch", value: "2024-28", icon: Users },
     { label: "Students Enrolled", value: "60", icon: Trophy },
-    { label: "Semesters Completed", value: "1", icon: CheckCircle },
+    { label: "Semesters Completed", value: "2", icon: CheckCircle },
     { label: "Industry Partner", value: "TCS", icon: Zap },
   ];
 
