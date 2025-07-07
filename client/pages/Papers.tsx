@@ -31,129 +31,170 @@ export default function Papers() {
     { id: "2025-29", label: "2025-29" },
   ];
 
-  const getExamTypeColor = (examType: string) => {
-    const colors = {
-      "Mid-Term": "bg-blue-100 text-blue-800",
-      Final: "bg-red-100 text-red-800",
-      "End-Semester": "bg-red-100 text-red-800",
-      Quiz: "bg-green-100 text-green-800",
-      "Case Study": "bg-purple-100 text-purple-800",
-      Assignment: "bg-yellow-100 text-yellow-800",
-    };
-    return (
-      colors[examType as keyof typeof colors] || "bg-gray-100 text-gray-800"
-    );
-  };
-
-  const getDifficultyColor = (difficulty: string) => {
-    const colors = {
-      Easy: "bg-green-100 text-green-800",
-      Medium: "bg-yellow-100 text-yellow-800",
-      Hard: "bg-red-100 text-red-800",
-    };
-    return (
-      colors[difficulty as keyof typeof colors] || "bg-gray-100 text-gray-800"
-    );
-  };
-
-  const renderPapersGrid = (batchId: string) => {
-    const filteredPapers = samplePapers.filter(() => true); // For demo, showing all papers for both batches
+  const renderPapersContent = (batchId: string) => {
+    const driveLink = driveLinks[batchId as keyof typeof driveLinks];
 
     return (
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h3 className="text-2xl font-bold text-foreground">
-              Test Papers & Examinations
-            </h3>
-            <p className="text-muted-foreground">
-              Practice with previous year papers and sample tests
-            </p>
-          </div>
-          <Badge variant="secondary" className="text-sm">
-            {filteredPapers.length} Papers Available
-          </Badge>
+      <div className="space-y-8">
+        <div className="text-center space-y-6">
+          <h3 className="text-3xl font-bold text-foreground">
+            Test Papers for Batch {batchId}
+          </h3>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Access MST papers and End Semester examinations curated by our
+            Papers Department
+          </p>
         </div>
 
-        <div className="grid gap-6">
-          {filteredPapers.map((paper) => (
-            <Card
-              key={paper.id}
-              className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-secondary/30"
-            >
-              <CardHeader className="pb-4">
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                  <div className="space-y-3 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge className={getExamTypeColor(paper.examType)}>
-                        {paper.examType}
-                      </Badge>
-                      <Badge variant="outline">{paper.semester}</Badge>
-                      <Badge className={getDifficultyColor(paper.difficulty)}>
-                        {paper.difficulty}
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-xl text-foreground">
-                      {paper.title}
-                    </CardTitle>
-                    <CardDescription className="text-base font-medium text-primary">
-                      {paper.subject}
-                    </CardDescription>
-                  </div>
+        {/* MST Structure Explanation */}
+        <div className="max-w-5xl mx-auto mb-8">
+          <Card className="p-6 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
+            <CardContent className="space-y-6">
+              <div className="text-center">
+                <h4 className="text-2xl font-bold text-foreground mb-2">
+                  Assessment Structure
+                </h4>
+                <p className="text-muted-foreground">
+                  Understanding the CSBS examination pattern
+                </p>
+              </div>
 
-                  <div className="flex flex-col items-end gap-2 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <Award className="w-4 h-4" />
-                      <span>{paper.maxMarks} marks</span>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg flex items-center justify-center">
+                      <Target className="w-5 h-5 text-blue-400" />
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{paper.duration}</span>
+                    <div>
+                      <h5 className="font-semibold text-foreground">
+                        MST (Mid Semester Test)
+                      </h5>
+                      <p className="text-sm text-muted-foreground">
+                        3 tests, best 2 count
+                      </p>
+                    </div>
+                  </div>
+                  <div className="bg-background/50 rounded-lg p-4 border border-border/50">
+                    <div className="grid grid-cols-2 gap-4 text-center">
+                      <div>
+                        <div className="text-2xl font-bold text-blue-400">
+                          20
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Marks each
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-blue-400">
+                          40
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Total weightage
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </CardHeader>
 
-              <CardContent className="pt-0">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {new Date(paper.date).toLocaleDateString()}
-                    </span>
-                    <span>{paper.academic_year}</span>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg flex items-center justify-center">
+                      <Award className="w-5 h-5 text-green-400" />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-foreground">
+                        End Semester
+                      </h5>
+                      <p className="text-sm text-muted-foreground">
+                        Final examination
+                      </p>
+                    </div>
                   </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Button size="sm">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Eye className="w-4 h-4 mr-2" />
-                      Preview
-                    </Button>
+                  <div className="bg-background/50 rounded-lg p-4 border border-border/50">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-400 mb-1">
+                        60
+                      </div>
+                      <div className="text-xs text-muted-foreground">Marks</div>
+                    </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {filteredPapers.length === 0 && (
-          <Card className="p-12 text-center">
-            <CardContent>
-              <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                No Papers Available
-              </h3>
-              <p className="text-muted-foreground">
-                Test papers for this batch will be uploaded soon. Check back
-                later!
-              </p>
+              </div>
             </CardContent>
           </Card>
-        )}
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="p-8 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500">
+            <CardContent className="text-center space-y-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-secondary to-accent rounded-2xl flex items-center justify-center mx-auto">
+                <FileText className="w-10 h-10 text-white" />
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="text-2xl font-bold text-foreground">
+                  Test Papers Repository
+                </h4>
+                <p className="text-muted-foreground max-w-lg mx-auto">
+                  All MST papers and End Semester examinations for Batch{" "}
+                  {batchId} are organized in our Google Drive folder.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <Badge variant="secondary" className="px-4 py-2">
+                  Curated by: Advait Kshirsagar & Gurpreet Singh Bhatia
+                </Badge>
+
+                <div className="pt-4">
+                  <a
+                    href={driveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <Button
+                      size="lg"
+                      className="text-lg px-8 py-6 bg-gradient-to-r from-secondary to-accent hover:from-secondary/90 hover:to-accent/90 shadow-lg shadow-secondary/25"
+                    >
+                      <Download className="w-5 h-5 mr-2" />
+                      Access Papers Folder
+                      <ExternalLink className="w-5 h-5 ml-2" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+                <div className="p-4 bg-background/50 rounded-lg border border-border/50">
+                  <Target className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+                  <div className="text-sm font-medium text-foreground">
+                    MST Papers
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    All 3 Tests
+                  </div>
+                </div>
+                <div className="p-4 bg-background/50 rounded-lg border border-border/50">
+                  <Award className="w-6 h-6 text-green-400 mx-auto mb-2" />
+                  <div className="text-sm font-medium text-foreground">
+                    End Sem
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Final Exams
+                  </div>
+                </div>
+                <div className="p-4 bg-background/50 rounded-lg border border-border/50">
+                  <Clock className="w-6 h-6 text-accent mx-auto mb-2" />
+                  <div className="text-sm font-medium text-foreground">
+                    Previous Years
+                  </div>
+                  <div className="text-xs text-muted-foreground">Archive</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   };
@@ -198,14 +239,9 @@ export default function Papers() {
                     <TabsTrigger
                       key={batch.id}
                       value={batch.id}
-                      className="text-center"
+                      className="text-center font-medium"
                     >
-                      <div>
-                        <div className="font-medium">{batch.label}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {batch.year}
-                        </div>
-                      </div>
+                      {batch.label}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -213,7 +249,7 @@ export default function Papers() {
 
               {batches.map((batch) => (
                 <TabsContent key={batch.id} value={batch.id} className="mt-8">
-                  {renderPapersGrid(batch.id)}
+                  {renderPapersContent(batch.id)}
                 </TabsContent>
               ))}
             </Tabs>
