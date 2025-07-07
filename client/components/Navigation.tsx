@@ -1,6 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, BookOpen, FileText, Menu, X } from "lucide-react";
+import {
+  GraduationCap,
+  BookOpen,
+  FileText,
+  Users,
+  Menu,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";

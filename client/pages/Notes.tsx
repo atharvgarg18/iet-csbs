@@ -20,72 +20,16 @@ import {
 } from "lucide-react";
 
 export default function Notes() {
-  const sampleNotes = [
-    {
-      id: 1,
-      title: "Data Structures and Algorithms",
-      subject: "Computer Science",
-      semester: "Semester 1",
-      type: "Lecture Notes",
-      author: "Dr. Sharma",
-      date: "2024-01-15",
-      pages: 45,
-      rating: 4.8,
-      downloads: 234,
-    },
-    {
-      id: 2,
-      title: "Business Communication Fundamentals",
-      subject: "Business Systems",
-      semester: "Semester 1",
-      type: "Study Material",
-      author: "Prof. Verma",
-      date: "2024-01-20",
-      pages: 32,
-      rating: 4.6,
-      downloads: 198,
-    },
-    {
-      id: 3,
-      title: "Programming in C++ - Complete Guide",
-      subject: "Computer Science",
-      semester: "Semester 2",
-      type: "Comprehensive Notes",
-      author: "Dr. Singh",
-      date: "2024-02-10",
-      pages: 78,
-      rating: 4.9,
-      downloads: 456,
-    },
-    {
-      id: 4,
-      title: "Database Management Systems",
-      subject: "Computer Science",
-      semester: "Semester 3",
-      type: "Lecture Notes",
-      author: "Prof. Gupta",
-      date: "2024-03-05",
-      pages: 56,
-      rating: 4.7,
-      downloads: 312,
-    },
-    {
-      id: 5,
-      title: "Business Analytics Introduction",
-      subject: "Business Systems",
-      semester: "Semester 2",
-      type: "Case Studies",
-      author: "Dr. Patel",
-      date: "2024-02-25",
-      pages: 28,
-      rating: 4.5,
-      downloads: 167,
-    },
-  ];
+  const driveLinks = {
+    "2024-28":
+      "https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK",
+    "2025-29":
+      "https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK", // Placeholder - will be updated when available
+  };
 
   const batches = [
-    { id: "2024-28", label: "Batch 2024-28", year: "First Year" },
-    { id: "2025-29", label: "Batch 2025-29", year: "Current Batch" },
+    { id: "2024-28", label: "2024-28" },
+    { id: "2025-29", label: "2025-29" },
   ];
 
   const getSubjectColor = (subject: string) => {
@@ -94,101 +38,94 @@ export default function Notes() {
       : "bg-secondary/10 text-secondary";
   };
 
-  const renderNotesGrid = (batchId: string) => {
-    const filteredNotes = sampleNotes.filter(() => true); // For demo, showing all notes for both batches
+  const renderNotesContent = (batchId: string) => {
+    const driveLink = driveLinks[batchId as keyof typeof driveLinks];
 
     return (
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h3 className="text-2xl font-bold text-foreground">
-              Study Materials
-            </h3>
-            <p className="text-muted-foreground">
-              Access comprehensive notes and study materials for your courses
-            </p>
-          </div>
-          <Badge variant="secondary" className="text-sm">
-            {filteredNotes.length} Resources Available
-          </Badge>
+      <div className="space-y-8">
+        <div className="text-center space-y-6">
+          <h3 className="text-3xl font-bold text-foreground">
+            Study Materials for Batch {batchId}
+          </h3>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Access comprehensive notes and study materials organized by the
+            Notes Department
+          </p>
         </div>
 
-        <div className="grid gap-6">
-          {filteredNotes.map((note) => (
-            <Card
-              key={note.id}
-              className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-primary/30"
-            >
-              <CardHeader className="pb-4">
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                  <div className="space-y-2 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge className={getSubjectColor(note.subject)}>
-                        {note.subject}
-                      </Badge>
-                      <Badge variant="outline">{note.semester}</Badge>
-                      <Badge variant="secondary">{note.type}</Badge>
-                    </div>
-                    <CardTitle className="text-xl text-foreground">
-                      {note.title}
-                    </CardTitle>
-                    <CardDescription className="flex items-center gap-4 text-sm">
-                      <span className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        {note.author}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {new Date(note.date).toLocaleDateString()}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <FileText className="w-4 h-4" />
-                        {note.pages} pages
-                      </span>
-                    </CardDescription>
-                  </div>
+        <div className="max-w-4xl mx-auto">
+          <Card className="p-8 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500">
+            <CardContent className="text-center space-y-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto">
+                <BookOpen className="w-10 h-10 text-white" />
+              </div>
 
-                  <div className="flex flex-col items-end gap-2">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{note.rating}</span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {note.downloads} downloads
-                    </span>
+              <div className="space-y-4">
+                <h4 className="text-2xl font-bold text-foreground">
+                  Google Drive Repository
+                </h4>
+                <p className="text-muted-foreground max-w-lg mx-auto">
+                  All study materials, lecture notes, and reference documents
+                  for Batch {batchId} are organized in our Google Drive folder.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <Badge variant="secondary" className="px-4 py-2">
+                  Curated by: Bharat Jain Sanghvi
+                </Badge>
+
+                <div className="pt-4">
+                  <a
+                    href={driveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <Button
+                      size="lg"
+                      className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg shadow-primary/25"
+                    >
+                      <Download className="w-5 h-5 mr-2" />
+                      Access Drive Folder
+                      <ExternalLink className="w-5 h-5 ml-2" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+                <div className="p-4 bg-background/50 rounded-lg border border-border/50">
+                  <FileText className="w-6 h-6 text-primary mx-auto mb-2" />
+                  <div className="text-sm font-medium text-foreground">
+                    Lecture Notes
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Comprehensive
                   </div>
                 </div>
-              </CardHeader>
-
-              <CardContent className="pt-0">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button className="flex-1 sm:flex-none">
-                    <Download className="w-4 h-4 mr-2" />
-                    Download PDF
-                  </Button>
-                  <Button variant="outline" className="flex-1 sm:flex-none">
-                    <Eye className="w-4 h-4 mr-2" />
-                    Preview
-                  </Button>
+                <div className="p-4 bg-background/50 rounded-lg border border-border/50">
+                  <BookOpen className="w-6 h-6 text-secondary mx-auto mb-2" />
+                  <div className="text-sm font-medium text-foreground">
+                    Study Materials
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Well Organized
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {filteredNotes.length === 0 && (
-          <Card className="p-12 text-center">
-            <CardContent>
-              <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                No Notes Available
-              </h3>
-              <p className="text-muted-foreground">
-                Notes for this batch will be uploaded soon. Check back later!
-              </p>
+                <div className="p-4 bg-background/50 rounded-lg border border-border/50">
+                  <Star className="w-6 h-6 text-accent mx-auto mb-2" />
+                  <div className="text-sm font-medium text-foreground">
+                    Reference Docs
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    High Quality
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
-        )}
+        </div>
       </div>
     );
   };
