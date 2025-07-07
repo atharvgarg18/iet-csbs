@@ -9,15 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import {
-  BookOpen,
-  Download,
-  Eye,
-  FileText,
-  Calendar,
-  Users,
-  Star,
-} from "lucide-react";
+import { BookOpen, Download, FileText, Star, ExternalLink } from "lucide-react";
 
 export default function Notes() {
   const driveLinks = {
@@ -31,12 +23,6 @@ export default function Notes() {
     { id: "2024-28", label: "2024-28" },
     { id: "2025-29", label: "2025-29" },
   ];
-
-  const getSubjectColor = (subject: string) => {
-    return subject === "Computer Science"
-      ? "bg-primary/10 text-primary"
-      : "bg-secondary/10 text-secondary";
-  };
 
   const renderNotesContent = (batchId: string) => {
     const driveLink = driveLinks[batchId as keyof typeof driveLinks];
@@ -165,19 +151,14 @@ export default function Notes() {
           <div className="max-w-7xl mx-auto">
             <Tabs defaultValue="2025-29" className="space-y-8">
               <div className="flex justify-center">
-                <TabsList className="grid w-full max-w-md grid-cols-2 lg:grid-cols-2">
+                <TabsList className="grid w-full max-w-md grid-cols-2">
                   {batches.map((batch) => (
                     <TabsTrigger
                       key={batch.id}
                       value={batch.id}
-                      className="text-center"
+                      className="text-center font-medium"
                     >
-                      <div>
-                        <div className="font-medium">{batch.label}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {batch.year}
-                        </div>
-                      </div>
+                      {batch.label}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -185,7 +166,7 @@ export default function Notes() {
 
               {batches.map((batch) => (
                 <TabsContent key={batch.id} value={batch.id} className="mt-8">
-                  {renderNotesGrid(batch.id)}
+                  {renderNotesContent(batch.id)}
                 </TabsContent>
               ))}
             </Tabs>

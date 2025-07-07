@@ -12,93 +12,23 @@ import { Badge } from "@/components/ui/badge";
 import {
   FileText,
   Download,
-  Eye,
   Clock,
-  Calendar,
   Award,
-  Users,
-  BookOpen,
+  ExternalLink,
+  Target,
 } from "lucide-react";
 
 export default function Papers() {
-  const samplePapers = [
-    {
-      id: 1,
-      title: "Data Structures Mid-Term Examination",
-      subject: "Data Structures & Algorithms",
-      examType: "Mid-Term",
-      semester: "Semester 1",
-      duration: "3 hours",
-      maxMarks: 100,
-      date: "2024-03-15",
-      academic_year: "2024-25",
-      difficulty: "Medium",
-    },
-    {
-      id: 2,
-      title: "Business Communication Final Paper",
-      subject: "Business Communication",
-      examType: "Final",
-      semester: "Semester 1",
-      duration: "3 hours",
-      maxMarks: 100,
-      date: "2024-05-20",
-      academic_year: "2024-25",
-      difficulty: "Easy",
-    },
-    {
-      id: 3,
-      title: "Object-Oriented Programming Quiz",
-      subject: "Programming in C++",
-      examType: "Quiz",
-      semester: "Semester 2",
-      duration: "1 hour",
-      maxMarks: 50,
-      date: "2024-04-10",
-      academic_year: "2024-25",
-      difficulty: "Hard",
-    },
-    {
-      id: 4,
-      title: "Database Management Systems End-Sem",
-      subject: "Database Management",
-      examType: "End-Semester",
-      semester: "Semester 3",
-      duration: "3 hours",
-      maxMarks: 100,
-      date: "2024-06-12",
-      academic_year: "2024-25",
-      difficulty: "Medium",
-    },
-    {
-      id: 5,
-      title: "Business Analytics Case Study Exam",
-      subject: "Business Analytics",
-      examType: "Case Study",
-      semester: "Semester 2",
-      duration: "2 hours",
-      maxMarks: 75,
-      date: "2024-04-25",
-      academic_year: "2024-25",
-      difficulty: "Medium",
-    },
-    {
-      id: 6,
-      title: "Cyber Security Assessment",
-      subject: "Cyber Security",
-      examType: "Assignment",
-      semester: "Semester 4",
-      duration: "2 hours",
-      maxMarks: 50,
-      date: "2024-07-08",
-      academic_year: "2024-25",
-      difficulty: "Hard",
-    },
-  ];
+  const driveLinks = {
+    "2024-28":
+      "https://drive.google.com/drive/folders/1dltzniRbeR2vK4iOlXeIPGMU8cq1ioko",
+    "2025-29":
+      "https://drive.google.com/drive/folders/1dltzniRbeR2vK4iOlXeIPGMU8cq1ioko", // Placeholder - will be updated when available
+  };
 
   const batches = [
-    { id: "2024-28", label: "Batch 2024-28", year: "First Year" },
-    { id: "2025-29", label: "Batch 2025-29", year: "Current Batch" },
+    { id: "2024-28", label: "2024-28" },
+    { id: "2025-29", label: "2025-29" },
   ];
 
   const getExamTypeColor = (examType: string) => {
