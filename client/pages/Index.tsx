@@ -20,10 +20,34 @@ import {
   TrendingUp,
   Shield,
   Cloud,
+  Calendar,
+  Clock,
+  ExternalLink,
+  MapPin,
+  Mail,
+  Phone,
+  Star,
+  Zap,
+  Globe,
+  Target,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function Index() {
+  const [daysUntilDeadline, setDaysUntilDeadline] = useState(0);
+  const [isApplicationOpen, setIsApplicationOpen] = useState(true);
+
+  useEffect(() => {
+    const deadline = new Date("2025-07-15");
+    const today = new Date();
+    const diffTime = deadline.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    setDaysUntilDeadline(diffDays);
+    setIsApplicationOpen(diffDays > 0);
+  }, []);
+
   const features = [
     {
       icon: Code,
@@ -53,13 +77,18 @@ export default function Index() {
 
   const stats = [
     { label: "Program Duration", value: "4 Years", icon: GraduationCap },
-    { label: "Seats Available", value: "60", icon: Users },
+    {
+      label: "Total Seats",
+      value: "75",
+      icon: Users,
+      subtitle: "60 Regular + 15 Supernumerary",
+    },
     { label: "Industry Partner", value: "TCS", icon: Building2 },
     { label: "Admission Based", value: "JEE", icon: Award },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-blue-50/30 to-green-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50/80 to-green-50">
       <Navigation />
 
       {/* Hero Section */}
@@ -115,7 +144,7 @@ export default function Index() {
               return (
                 <Card
                   key={stat.label}
-                  className="text-center p-6 hover:shadow-lg transition-shadow"
+                  className="text-center p-6 hover:shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-br from-white to-blue-50/50"
                 >
                   <CardContent className="pt-4">
                     <Icon className="w-8 h-8 mx-auto mb-3 text-primary" />
@@ -125,6 +154,11 @@ export default function Index() {
                     <div className="text-sm text-muted-foreground">
                       {stat.label}
                     </div>
+                    {stat.subtitle && (
+                      <div className="text-xs text-primary mt-1 font-medium">
+                        {stat.subtitle}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               );
@@ -270,10 +304,232 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      {/* Campus Gallery Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-violet-100/50 to-pink-100/50">
+        <div className="max-w-7xl mx-auto space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+              Our Beautiful Campus
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Explore the state-of-the-art facilities and green campus of IET
+              DAVV Indore
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 group">
+              <div className="relative overflow-hidden">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc79016cf4e3c4708a6b13e21831da2a8?format=webp&width=800"
+                  alt="IET DAVV Campus Aerial View"
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <h3 className="text-lg font-semibold">Campus Overview</h3>
+                  <p className="text-sm opacity-90">
+                    Aerial view of our green campus
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 group">
+              <div className="relative overflow-hidden">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F62fe5cef9f1d491f8db2da6c0f4ac66e?format=webp&width=800"
+                  alt="Modern Computer Laboratory"
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <h3 className="text-lg font-semibold">Computer Labs</h3>
+                  <p className="text-sm opacity-90">
+                    State-of-the-art computing facilities
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 group">
+              <div className="relative overflow-hidden">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F3f6c4bd2576e4a2a9456401e4c9c8782?format=webp&width=800"
+                  alt="Academic Building"
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <h3 className="text-lg font-semibold">Academic Block</h3>
+                  <p className="text-sm opacity-90">
+                    Modern classrooms and labs
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Application Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-100/60 to-yellow-100/60">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center space-y-6 mb-12">
+            <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-600 px-4 py-2 rounded-full text-sm font-medium">
+              <Calendar className="w-4 h-4" />
+              Admissions Open
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+              Apply for CSBS Program 2025-29
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Join the pioneering batch of Computer Science and Business Systems
+              program
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              {isApplicationOpen ? (
+                <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                      <CardTitle className="text-green-800">
+                        Applications Open!
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-5 h-5 text-green-600" />
+                        <span className="text-green-700 font-medium">
+                          {daysUntilDeadline > 0
+                            ? `${daysUntilDeadline} days remaining to apply`
+                            : "Last day to apply!"}
+                        </span>
+                      </div>
+                      <p className="text-green-700">
+                        Application deadline: <strong>July 15, 2025</strong>
+                      </p>
+                      <a
+                        href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                      >
+                        <Button className="bg-green-600 hover:bg-green-700 text-white">
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Apply Now
+                        </Button>
+                      </a>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="bg-gradient-to-r from-red-50 to-pink-50 border-red-200">
+                  <CardHeader>
+                    <CardTitle className="text-red-800">
+                      Applications Closed
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-red-700">
+                      The application period for the CSBS program 2025-29 has
+                      ended on July 15, 2025. Please check back next year for
+                      the 2026-30 batch.
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <Card className="text-center p-4 bg-blue-50/50">
+                  <Users className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                  <div className="text-2xl font-bold text-blue-800">75</div>
+                  <div className="text-sm text-blue-600">Total Seats</div>
+                </Card>
+                <Card className="text-center p-4 bg-purple-50/50">
+                  <Award className="w-8 h-8 mx-auto mb-2 text-purple-600" />
+                  <div className="text-2xl font-bold text-purple-800">JEE</div>
+                  <div className="text-sm text-purple-600">Based Admission</div>
+                </Card>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <Card className="p-6 bg-white/80 backdrop-blur">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="w-5 h-5 text-primary" />
+                    Admission Requirements
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                    <span className="text-sm">
+                      Valid JEE Main/Advanced scores
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                    <span className="text-sm">
+                      12th grade with Mathematics and Physics
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                    <span className="text-sm">
+                      Domicile certificate for state quota
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                    <span className="text-sm">Age limit: 17-23 years</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="p-6 bg-gradient-to-br from-indigo-50 to-blue-50">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2">
+                    <Phone className="w-5 h-5 text-indigo-600" />
+                    Need Help?
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-indigo-600" />
+                    <span className="text-sm">admissions@ietdavv.edu.in</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-indigo-600" />
+                    <span className="text-sm">+91-731-2570179</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-indigo-600" />
+                    <span className="text-sm">
+                      IET DAVV, Khandwa Road, Indore
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-100/60 to-blue-100/60">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-600 px-4 py-2 rounded-full text-sm font-medium">
+              <Zap className="w-4 h-4" />
+              Academic Resources
+            </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
               Ready to Explore?
             </h2>
@@ -285,16 +541,20 @@ export default function Index() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/notes">
-              <Button size="lg" className="text-lg px-8 py-6 w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="text-lg px-8 py-6 w-full sm:w-auto bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+              >
                 <BookOpen className="w-5 h-5 mr-2" />
                 Browse Notes
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/papers">
               <Button
                 variant="outline"
                 size="lg"
-                className="text-lg px-8 py-6 w-full sm:w-auto"
+                className="text-lg px-8 py-6 w-full sm:w-auto border-2 border-primary hover:bg-primary hover:text-white"
               >
                 <FileText className="w-5 h-5 mr-2" />
                 View Test Papers
