@@ -488,9 +488,9 @@ export default function Index() {
               </div>
 
               <div className="space-y-6">
-                <Card className="p-6 bg-white/80 backdrop-blur">
+                <Card className="p-6 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm">
                   <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-foreground">
                       <Target className="w-5 h-5 text-primary" />
                       Admission Requirements
                     </CardTitle>
@@ -498,48 +498,54 @@ export default function Index() {
                   <CardContent className="space-y-3">
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
-                      <span className="text-sm">
+                      <span className="text-sm text-foreground">
                         Valid JEE Main/Advanced scores
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
-                      <span className="text-sm">
+                      <span className="text-sm text-foreground">
                         12th grade with Mathematics and Physics
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
-                      <span className="text-sm">
+                      <span className="text-sm text-foreground">
                         Domicile certificate for state quota
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
-                      <span className="text-sm">Age limit: 17-23 years</span>
+                      <span className="text-sm text-foreground">
+                        Age limit: 17-23 years
+                      </span>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-indigo-50 to-blue-50">
+                <Card className="p-6 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
                   <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-2">
-                      <Phone className="w-5 h-5 text-indigo-600" />
+                    <CardTitle className="flex items-center gap-2 text-foreground">
+                      <Phone className="w-5 h-5 text-secondary" />
                       Need Help?
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-indigo-600" />
-                      <span className="text-sm">admissions@ietdavv.edu.in</span>
+                      <Mail className="w-4 h-4 text-secondary" />
+                      <span className="text-sm text-foreground">
+                        admissions@ietdavv.edu.in
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-indigo-600" />
-                      <span className="text-sm">+91-731-2570179</span>
+                      <Phone className="w-4 h-4 text-secondary" />
+                      <span className="text-sm text-foreground">
+                        +91-731-2570179
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-indigo-600" />
-                      <span className="text-sm">
+                      <MapPin className="w-4 h-4 text-secondary" />
+                      <span className="text-sm text-foreground">
                         IET DAVV, Khandwa Road, Indore
                       </span>
                     </div>
