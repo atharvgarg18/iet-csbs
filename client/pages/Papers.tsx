@@ -16,6 +16,7 @@ import {
   Award,
   ExternalLink,
   Target,
+  BookOpen,
 } from "lucide-react";
 
 export default function Papers() {
