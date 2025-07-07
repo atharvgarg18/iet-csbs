@@ -20,6 +20,9 @@ export default function Navigation() {
     { name: "Home", href: "/", icon: GraduationCap },
     { name: "Notes", href: "/notes", icon: BookOpen },
     { name: "Papers", href: "/papers", icon: FileText },
+    { name: "Notices", href: "/notices", icon: Bell },
+    { name: "At a Glance", href: "/at-a-glance", icon: TrendingUp },
+    { name: "Gallery", href: "/gallery", icon: Camera },
     { name: "Contributors", href: "/contributors", icon: Users },
   ];
 
@@ -28,19 +31,32 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary via-secondary to-accent rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary/25">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
-            <div className="hidden sm:block">
-              <div className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                CSBS
+          <div className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary via-secondary to-accent rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary/25">
+                <GraduationCap className="w-6 h-6 text-white" />
               </div>
-              <div className="text-xs text-muted-foreground -mt-1">
-                IET DAVV
+              <div className="hidden sm:block">
+                <div className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  CSBS
+                </div>
+                <div className="text-xs text-muted-foreground -mt-1">
+                  IET DAVV
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+
+            {/* IET Website Link */}
+            <a
+              href="https://ietdavv.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors duration-300 ml-2 px-2 py-1 rounded hover:bg-primary/5"
+            >
+              <span>Visit IET DAVV</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">

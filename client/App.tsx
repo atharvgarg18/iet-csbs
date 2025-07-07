@@ -11,6 +11,9 @@ import Index from "./pages/Index";
 import Notes from "./pages/Notes";
 import Papers from "./pages/Papers";
 import Contributors from "./pages/Contributors";
+import Notices from "./pages/Notices";
+import AtAGlance from "./pages/AtAGlance";
+import Gallery from "./pages/Gallery";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +30,9 @@ const App = () => (
             <Route path="/notes" element={<Notes />} />
             <Route path="/papers" element={<Papers />} />
             <Route path="/contributors" element={<Contributors />} />
+            <Route path="/notices" element={<Notices />} />
+            <Route path="/at-a-glance" element={<AtAGlance />} />
+            <Route path="/gallery" element={<Gallery />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
