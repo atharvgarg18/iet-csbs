@@ -40,14 +40,6 @@ export default function Footer() {
               by the CSBS batch of '28
             </p>
           </div>
-
-          {/* Copyright */}
-          <div className="pt-8 border-t border-border/10">
-            <p className="text-sm text-muted-foreground/70">
-              © 2025 Institute of Engineering & Technology, DAVV Indore. All
-              rights reserved.
-            </p>
-          </div>
         </div>
       </div>
     </footer>
