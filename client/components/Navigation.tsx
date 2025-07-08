@@ -44,7 +44,7 @@ export default function Navigation() {
             <Link to="/" className="flex items-center space-x-4 group">
               {/* Full IET Logo */}
               <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fc288a09ecf9f4912b157301cc10fa6a8?format=webp&width=800"
+                src="https://html-starter-beige-beta.vercel.app/ietlogom.png"
                 alt="IET DAVV Logo"
                 className="h-14 object-contain group-hover:scale-105 transition-transform duration-300"
               />
@@ -54,17 +54,6 @@ export default function Navigation() {
                 </div>
               </div>
             </Link>
-
-            {/* IET Website Link */}
-            <a
-              href="https://ietdavv.edu.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors duration-300 ml-6 px-3 py-2 rounded-md hover:bg-primary/5 border border-transparent hover:border-primary/20"
-            >
-              <span>Visit IET DAVV</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
           </div>
 
           {/* Desktop Navigation */}
@@ -146,23 +135,6 @@ export default function Navigation() {
                 </Link>
               );
             })}
-
-            {/* IET Website Link in Mobile */}
-            <a
-              href="https://ietdavv.edu.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <Button
-                variant="ghost"
-                className="w-full justify-start gap-3 text-muted-foreground hover:text-primary"
-              >
-                <ExternalLink className="w-4 h-4" />
-                <span>Visit IET DAVV</span>
-              </Button>
-            </a>
           </div>
         </div>
       )}

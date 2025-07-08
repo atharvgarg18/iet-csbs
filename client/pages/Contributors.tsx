@@ -116,7 +116,7 @@ export default function Contributors() {
         {
           name: "Naman Kasliwal (ETC)",
           image: null,
-          linkedin: null,
+          linkedin: "http://www.linkedin.com/in/naman-kasliwal-082a4b33a",
           github: null,
         },
       ],
