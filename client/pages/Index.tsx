@@ -371,10 +371,10 @@ export default function Index() {
                     </div>
                     <div className="bg-gradient-to-br from-card to-secondary/5 p-4 rounded-xl border border-secondary/10 backdrop-blur-sm">
                       <div className="text-2xl font-bold text-secondary">
-                        98%
+                        15+
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        Placement Rate
+                        Years Legacy
                       </div>
                     </div>
                   </div>
@@ -459,9 +459,7 @@ export default function Index() {
                       </div>
                     </div>
                     <div className="bg-gradient-to-br from-card to-accent/5 p-4 rounded-xl border border-accent/10 backdrop-blur-sm">
-                      <div className="text-2xl font-bold text-accent">
-                        ₹12L+
-                      </div>
+                      <div className="text-2xl font-bold text-accent">₹7L+</div>
                       <div className="text-sm text-muted-foreground">
                         Avg. Package
                       </div>
