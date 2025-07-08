@@ -109,10 +109,9 @@ export default function Contributors() {
       members: [
         {
           name: "Suwaaq Kothari",
-          image:
-            "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F4668b90fdde44090ba0ed6ce4b52e200?format=webp&width=800",
+          image: "https://html-starter-beige-beta.vercel.app/suwaaq.jpg",
           linkedin: "https://github.com/Skothari-11677",
-          github: null,
+          github: "https://github.com/Skothari-11677/builder-quantum-den",
         },
         {
           name: "Naman Kasliwal (ETC)",
@@ -132,8 +131,7 @@ export default function Contributors() {
       members: [
         {
           name: "Atharv Garg",
-          image:
-            "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fd5d9f9b07b0c475da38e6614c0a6e000?format=webp&width=800",
+          image: "https://html-starter-beige-beta.vercel.app/1749249981340.jpg",
           linkedin: "https://www.linkedin.com/in/atharvgrg/",
           github: "https://github.com/atharvgrg",
         },

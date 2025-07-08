@@ -267,6 +267,7 @@ export default function Gallery() {
                           size="sm"
                           variant="secondary"
                           className="flex-1 text-xs"
+                          onClick={() => window.open(item.imageUrl, "_blank")}
                         >
                           <Eye className="w-3 h-3 mr-1" />
                           View
@@ -275,6 +276,14 @@ export default function Gallery() {
                           size="sm"
                           variant="secondary"
                           className="flex-1 text-xs"
+                          onClick={() => {
+                            const link = document.createElement("a");
+                            link.href = item.imageUrl;
+                            link.download = `${item.category}_${item.id}.jpg`;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
                         >
                           <Download className="w-3 h-3 mr-1" />
                           Save
