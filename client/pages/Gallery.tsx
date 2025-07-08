@@ -21,134 +21,128 @@ export default function Gallery() {
     // Freshers Events
     {
       id: 1,
-      title: "Freshers Welcome Group Photo",
+      title: "Freshers Welcome",
       date: "2024-09-15",
       category: "Freshers",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F552108fe4a764684a8b4501fd0d58d87?format=webp&width=800",
-      photographer: "Gallery Division",
-    },
-    {
-      id: 2,
-      title: "Freshers Campus Group",
-      date: "2024-09-20",
-      category: "Freshers",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F74f844d18c8d47c0aa93787efffe6666?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/freshers_1.jpg",
       photographer: "Gallery Division",
     },
     // Raas Events
     {
-      id: 3,
-      title: "Raas Festival Celebration",
+      id: 2,
+      title: "Raas Festival 1",
       date: "2024-10-25",
       category: "Raas",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F6b53f08755414fee80f9f44c051bc86b?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/raas_1.jpg",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 3,
+      title: "Raas Festival 2",
+      date: "2024-10-26",
+      category: "Raas",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/raas_2.jpg",
       photographer: "Gallery Division",
     },
     {
       id: 4,
-      title: "Raas Night Celebration",
-      date: "2024-10-30",
+      title: "Raas Festival 3",
+      date: "2024-10-27",
       category: "Raas",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F2c6c8ea4b45b47a58b226bee17456622?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/raas_3.jpg",
       photographer: "Gallery Division",
     },
     // End Sem Events
     {
       id: 5,
-      title: "End Semester Convocation",
+      title: "End Semester",
       date: "2025-01-30",
       category: "End Sem",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Fdc8c54d75c84425ea80a841e7f8b7ef1?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/end_sem_1.jpg",
       photographer: "Gallery Division",
     },
     // Rudra Events
     {
       id: 6,
-      title: "Rudra Cultural Performance",
+      title: "Rudra Cultural Event 1",
       date: "2025-01-20",
       category: "Rudra",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F7390cf5fc8b841e5926ae081a529f1e7?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/rudra_1.jpg",
       photographer: "Gallery Division",
     },
-    // NSS Events
     {
       id: 7,
-      title: "NSS Community Service",
-      date: "2024-12-10",
-      category: "NSS",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2Feeddd3d8c55f4d6e899061b37adaa8ab?format=webp&width=800",
+      title: "Rudra Cultural Event 2",
+      date: "2025-01-21",
+      category: "Rudra",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/rudra_2.jpg",
       photographer: "Gallery Division",
     },
     {
       id: 8,
-      title: "NSS Awareness Program",
-      date: "2024-12-15",
+      title: "Rudra Cultural Event 3",
+      date: "2025-01-22",
+      category: "Rudra",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/rudra_3.jpg",
+      photographer: "Gallery Division",
+    },
+    // NSS Events
+    {
+      id: 9,
+      title: "NSS Community Service",
+      date: "2024-12-10",
       category: "NSS",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F40b65184c93b416fa56ae2a7ca03ca79?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/nss_1.jpg",
       photographer: "Gallery Division",
     },
     // E Cell Events
     {
-      id: 9,
-      title: "E Cell Startup Event",
+      id: 10,
+      title: "E Cell Event 1",
       date: "2024-11-15",
       category: "E Cell",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F0b04e28878444bdead55ccea19f67efd?format=webp&width=800",
-      photographer: "Gallery Division",
-    },
-    {
-      id: 10,
-      title: "E Cell Workshop",
-      date: "2024-11-20",
-      category: "E Cell",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F3a9499d8ff3e4e07ade04d048bb4b8ed?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/e_cell_1.jpg",
       photographer: "Gallery Division",
     },
     {
       id: 11,
-      title: "E Cell Competition",
+      title: "E Cell Event 2",
+      date: "2024-11-20",
+      category: "E Cell",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/e_cell_2.jpg",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 12,
+      title: "E Cell Event 3",
       date: "2024-11-25",
       category: "E Cell",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F353921fd1b9b4e29bd249b2aaf691512?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/e_cell_3.jpg",
       photographer: "Gallery Division",
     },
     // Campus Life
     {
-      id: 12,
-      title: "Campus Aerial View",
+      id: 13,
+      title: "Campus Life 1",
       date: "2024-11-01",
       category: "Campus",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F13d68a2642f1447aa1a2a4e4289b1e9b?format=webp&width=800",
-      photographer: "Gallery Division",
-    },
-    {
-      id: 13,
-      title: "Computer Lab Session",
-      date: "2024-11-05",
-      category: "Campus",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F8f14f85792ae43e1a354bcbcbe097567?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/campus_1.jpg",
       photographer: "Gallery Division",
     },
     {
       id: 14,
-      title: "Campus Building",
+      title: "Campus Life 2",
+      date: "2024-11-05",
+      category: "Campus",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/campus_2.jpg",
+      photographer: "Gallery Division",
+    },
+    {
+      id: 15,
+      title: "Campus Life 3",
       date: "2024-11-10",
       category: "Campus",
-      imageUrl:
-        "https://cdn.builder.io/api/v1/image/assets%2F8d13cf5ef2034d99b5c4b2c6e107967e%2F039a28beb3594629842418585bf62d31?format=webp&width=800",
+      imageUrl: "https://html-starter-beige-beta.vercel.app/campus_3.jpg",
       photographer: "Gallery Division",
     },
   ];
@@ -179,6 +173,10 @@ export default function Gallery() {
       "bg-gray-500/10 text-gray-400 border-gray-500/30"
     );
   };
+
+  const filteredItems = galleryItems.filter(
+    (item) => selectedCategory === "All" || item.category === selectedCategory,
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent/5 to-primary/10 dark:from-background dark:via-accent/10 dark:to-primary/20 relative overflow-hidden">
@@ -245,69 +243,83 @@ export default function Gallery() {
                 </p>
               </div>
               <Badge variant="secondary" className="px-4 py-2">
-                {galleryItems.length} Photos Available
+                {filteredItems.length} Photos
+                {selectedCategory !== "All" && ` in ${selectedCategory}`}
               </Badge>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {galleryItems
-                .filter(
-                  (item) =>
-                    selectedCategory === "All" ||
-                    item.category === selectedCategory,
-                )
-                .map((item) => (
-                  <Card
-                    key={item.id}
-                    className="overflow-hidden hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm group"
-                  >
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={item.imageUrl}
-                        alt={item.title}
-                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="flex-1"
-                          >
-                            <Eye className="w-4 h-4 mr-1" />
-                            View
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="flex-1"
-                          >
-                            <Download className="w-4 h-4 mr-1" />
-                            Download
-                          </Button>
-                        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredItems.map((item) => (
+                <Card
+                  key={item.id}
+                  className="overflow-hidden hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm group"
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          className="flex-1 text-xs"
+                        >
+                          <Eye className="w-3 h-3 mr-1" />
+                          View
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          className="flex-1 text-xs"
+                        >
+                          <Download className="w-3 h-3 mr-1" />
+                          Save
+                        </Button>
                       </div>
                     </div>
+                  </div>
 
-                    <CardContent className="p-2">
-                      <div className="flex items-center justify-between">
-                        <Badge className={getCategoryColor(item.category)}>
-                          {item.category}
-                        </Badge>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(item.date).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                        </div>
+                  <CardContent className="p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge
+                        className={getCategoryColor(item.category)}
+                        size="sm"
+                      >
+                        {item.category}
+                      </Badge>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Calendar className="w-3 h-3" />
+                        {new Date(item.date).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                    </div>
+                    <h3 className="text-sm font-medium text-foreground truncate">
+                      {item.title}
+                    </h3>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
+
+            {filteredItems.length === 0 && (
+              <div className="text-center py-12">
+                <Camera className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  No photos in this category yet
+                </h3>
+                <p className="text-muted-foreground">
+                  Check back soon for more photos from {selectedCategory}{" "}
+                  events!
+                </p>
+              </div>
+            )}
 
             {/* Upload Section */}
             <Card className="p-8 text-center bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm">

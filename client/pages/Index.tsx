@@ -109,7 +109,7 @@ export default function Index() {
                   className="text-sm px-6 py-3 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 backdrop-blur-sm"
                 >
                   <span className="text-2xl mr-2">🎓</span>
-                  New Program • Academic Year 2024-25
+                  Industry-Aligned Program • TCS Partnership
                 </Badge>
                 <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground tracking-tight">
                   Computer Science &
@@ -196,13 +196,39 @@ export default function Index() {
                   <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
                     About the CSBS Program
                   </h2>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    The Computer Science and Business Systems program is a
-                    unique interdisciplinary course that bridges the gap between
-                    technology and business. Developed in partnership with Tata
-                    Consultancy Services (TCS), this program prepares students
-                    for the evolving demands of the digital economy.
-                  </p>
+                  <div className="space-y-4">
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                      <span className="text-accent font-semibold">
+                        Still studying Civil or Mechanical Engineering in your
+                        CS degree in 2025?
+                      </span>{" "}
+                      While other programs load you with irrelevant subjects
+                      from the stone age, CSBS is laser-focused on what actually
+                      matters in today's tech industry.
+                    </p>
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                      Developed in partnership with{" "}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent font-semibold">
+                        Tata Consultancy Services (TCS)
+                      </span>
+                      , every subject in our curriculum is handpicked to make
+                      you{" "}
+                      <span className="text-primary font-semibold">
+                        job-ready from day one
+                      </span>
+                      . No fluff, no outdated theory – just the skills that land
+                      you your dream package and set you up for real-world
+                      success.
+                    </p>
+                    <p className="text-lg text-foreground font-medium">
+                      This isn't just another engineering degree. It's your
+                      direct pathway to becoming a{" "}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">
+                        tech leader who understands business
+                      </span>{" "}
+                      – exactly what the industry is desperately looking for.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="space-y-3">
