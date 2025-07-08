@@ -33,9 +33,9 @@ export default function Contributors() {
       members: [
         {
           name: "Bharat Jain Sanghvi",
-          image: null,
-          linkedin: null,
-          github: null,
+          image: "https://html-starter-beige-beta.vercel.app/bharat.jpg",
+          linkedin: "http://www.linkedin.com/in/bharat-jain-76046832a",
+          github: "https://github.com/jainsanghvi-bharat15",
         },
       ],
       color: "from-green-500/20 to-emerald-500/20",
@@ -56,7 +56,7 @@ export default function Contributors() {
         {
           name: "Gurpreet Singh Bhatia",
           image: null,
-          linkedin: null,
+          linkedin: "https://linkedin.com/in/gurpreet-singh-bhatia-73713a231",
           github: null,
         },
       ],
@@ -72,14 +72,14 @@ export default function Contributors() {
         {
           name: "Bhumi Jain",
           image: null,
-          linkedin: null,
+          linkedin: "http://linkedin.com/in/bhumi-jain-9a919932b",
           github: null,
         },
         {
           name: "Pranamya Sharma",
           image: null,
-          linkedin: null,
-          github: null,
+          linkedin: "https://www.linkedin.com/in/pranamya-sharma-425149321",
+          github: "https://github.com/PranamyaSharma05",
         },
       ],
       color: "from-pink-500/20 to-rose-500/20",
@@ -94,7 +94,7 @@ export default function Contributors() {
         {
           name: "Kanha Agrawal",
           image: null,
-          linkedin: null,
+          linkedin: "https://linkedin.com/in/kanha-agrawal-3b2403331",
           github: null,
         },
       ],

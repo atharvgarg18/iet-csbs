@@ -29,6 +29,7 @@ export default function Navigation() {
   const navigation = [
     { name: "Notes", href: "/notes", icon: BookOpen },
     { name: "Papers", href: "/papers", icon: FileText },
+    { name: "Syllabus", href: "/syllabus", icon: GraduationCap },
     { name: "Notices", href: "/notices", icon: Bell },
     { name: "At a Glance", href: "/at-a-glance", icon: TrendingUp },
     { name: "Gallery", href: "/gallery", icon: Camera },
