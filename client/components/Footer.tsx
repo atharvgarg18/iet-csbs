@@ -2,12 +2,12 @@ import { GraduationCap } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="relative mt-20 border-t border-border/20">
+    <footer className="relative mt-12 border-t border-border/20">
       {/* Subtle gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/5 to-background"></div>
 
-      <div className="relative py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center space-y-8">
+      <div className="relative py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center space-y-6">
           {/* Logo and Title */}
           <div className="flex items-center justify-center space-x-4">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg shadow-primary/25">
