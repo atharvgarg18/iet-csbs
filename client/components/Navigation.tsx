@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Navigation() {
   const location = useLocation();
@@ -96,16 +95,10 @@ export default function Navigation() {
                 </Link>
               );
             })}
-
-            {/* Theme Toggle */}
-            <div className="ml-2 pl-2 border-l border-border/50">
-              <ThemeToggle />
-            </div>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            <ThemeToggle />
             <Button
               variant="ghost"
               size="icon"
