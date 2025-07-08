@@ -291,145 +291,282 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Institute & Campus Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 to-secondary/5">
-          <div className="max-w-7xl mx-auto space-y-16">
-            {/* Institute Info */}
-            <div className="text-center space-y-12">
-              <div className="space-y-4">
-                <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                  Institute of Engineering & Technology, DAVV Indore
+        {/* Institute & Campus Section - Completely Redesigned */}
+        <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+          {/* Dynamic Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl animate-pulse delay-300"></div>
+            <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-br from-secondary/15 to-transparent rounded-full blur-3xl animate-pulse delay-700"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto">
+            {/* Hero Header */}
+            <div className="text-center space-y-8 mb-20">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-medium border border-primary/20 backdrop-blur-sm">
+                <Building2 className="w-4 h-4" />
+                Premier Institution
+              </div>
+
+              <div className="space-y-6">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
+                  Institute of Engineering &{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
+                    Technology
+                  </span>
                 </h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                  A premier institution committed to excellence in technical
-                  education and research, preparing students for global
-                  challenges and opportunities.
+                <p className="text-2xl sm:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
+                  DAVV Indore
                 </p>
-                <div className="flex justify-center">
+                <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+                  Where innovation meets tradition. A premier institution
+                  committed to excellence in technical education and research,
+                  preparing students for global challenges and opportunities.
+                </p>
+
+                <div className="flex justify-center pt-4">
                   <a
                     href="https://ietdavv.edu.in/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-primary hover:text-secondary transition-colors duration-300 font-medium"
+                    className="group inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-8 py-4 rounded-2xl font-medium shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
                   >
-                    <span>Visit Official IET DAVV Website</span>
-                    <ExternalLink className="w-4 h-4" />
+                    <span>Visit Official Website</span>
+                    <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                   </a>
                 </div>
               </div>
+            </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
-                <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <GraduationCap className="w-6 h-6 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">
+            {/* Campus Showcase with Integrated Content */}
+            <div className="space-y-20">
+              {/* First Row - Academic Excellence with Campus Image */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
+                      <GraduationCap className="w-4 h-4" />
                       Academic Excellence
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold text-foreground">
+                      Rigorous Academic Programs
                     </h3>
-                    <p className="text-muted-foreground">
-                      Rigorous academic programs with industry-relevant
-                      curriculum and experienced faculty
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                      Our industry-aligned curriculum is designed by experts and
+                      experienced faculty to ensure students are equipped with
+                      cutting-edge knowledge and practical skills that meet
+                      global standards.
                     </p>
-                  </CardContent>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gradient-to-br from-card to-primary/5 p-4 rounded-xl border border-primary/10 backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-primary">
+                        150+
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Expert Faculty
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-card to-secondary/5 p-4 rounded-xl border border-secondary/10 backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-secondary">
+                        98%
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Placement Rate
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Card className="overflow-hidden group hover:shadow-2xl hover:shadow-primary/20 transition-all duration-700 border-primary/20">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src="https://html-starter-beige-beta.vercel.app/campus_2.jpg"
+                      alt="State-of-the-art Computer Laboratory"
+                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <h4 className="text-xl font-bold text-white mb-2">
+                        Advanced Computing Labs
+                      </h4>
+                      <p className="text-white/90 text-sm">
+                        State-of-the-art facilities equipped with latest
+                        technology for hands-on learning
+                      </p>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full p-2">
+                        <GraduationCap className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Second Row - Industry Partnership with Campus Image (Reversed) */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <Card className="lg:order-1 order-2 overflow-hidden group hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-700 border-secondary/20">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src="https://html-starter-beige-beta.vercel.app/campus_1.jpg"
+                      alt="Beautiful IET DAVV Campus"
+                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <h4 className="text-xl font-bold text-white mb-2">
+                        Sprawling Green Campus
+                      </h4>
+                      <p className="text-white/90 text-sm">
+                        Eco-friendly campus spread across acres providing serene
+                        learning environment
+                      </p>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-secondary/20 backdrop-blur-sm border border-secondary/30 rounded-full p-2">
+                        <Building2 className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  </div>
                 </Card>
 
-                <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-4">
-                    <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <Building2 className="w-6 h-6 text-secondary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">
+                <div className="lg:order-2 order-1 space-y-8">
+                  <div className="space-y-6">
+                    <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium border border-secondary/20">
+                      <Building2 className="w-4 h-4" />
                       Industry Partnership
-                    </h3>
-                    <p className="text-muted-foreground">
-                      Strong collaboration with leading companies like TCS for
-                      practical exposure
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-4">
-                    <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <Award className="w-6 h-6 text-accent" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">
-                      Research & Innovation
+                    <h3 className="text-3xl sm:text-4xl font-bold text-foreground">
+                      Strong Industry Connections
                     </h3>
-                    <p className="text-muted-foreground">
-                      Cutting-edge research facilities and innovation labs for
-                      hands-on learning
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                      Strategic partnerships with leading companies like TCS,
+                      providing students with real-world exposure, internships,
+                      and direct pathways to exciting career opportunities.
                     </p>
-                  </CardContent>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gradient-to-br from-card to-secondary/5 p-4 rounded-xl border border-secondary/10 backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-secondary">
+                        50+
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Industry Partners
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-card to-accent/5 p-4 rounded-xl border border-accent/10 backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-accent">
+                        ₹12L+
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Avg. Package
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Third Row - Research & Innovation with Campus Image */}
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium border border-accent/20">
+                      <Award className="w-4 h-4" />
+                      Research & Innovation
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold text-foreground">
+                      Cutting-edge Research Facilities
+                    </h3>
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                      Advanced research laboratories and innovation hubs foster
+                      creativity and breakthrough discoveries, encouraging
+                      students to push the boundaries of technology and
+                      knowledge.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gradient-to-br from-card to-accent/5 p-4 rounded-xl border border-accent/10 backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-accent">25+</div>
+                      <div className="text-sm text-muted-foreground">
+                        Research Labs
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-card to-primary/5 p-4 rounded-xl border border-primary/10 backdrop-blur-sm">
+                      <div className="text-2xl font-bold text-primary">
+                        100+
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Projects/Year
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Card className="overflow-hidden group hover:shadow-2xl hover:shadow-accent/20 transition-all duration-700 border-accent/20">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src="https://html-starter-beige-beta.vercel.app/campus_3.jpg"
+                      alt="Modern Academic Building"
+                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <h4 className="text-xl font-bold text-white mb-2">
+                        Modern Infrastructure
+                      </h4>
+                      <p className="text-white/90 text-sm">
+                        Contemporary buildings designed for collaborative
+                        learning and innovation
+                      </p>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-accent/20 backdrop-blur-sm border border-accent/30 rounded-full p-2">
+                        <Award className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  </div>
                 </Card>
               </div>
             </div>
 
-            {/* Campus Gallery */}
-            <div className="space-y-8">
-              <div className="text-center space-y-4">
-                <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
-                  Our Beautiful Campus
-                </h3>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Explore the state-of-the-art facilities and green campus where
-                  innovation meets tradition
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-8">
-                <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 group">
-                  <div className="relative overflow-hidden">
-                    <img
-                      src="https://html-starter-beige-beta.vercel.app/campus_1.jpg"
-                      alt="IET DAVV Campus Aerial View"
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <h3 className="text-lg font-semibold">Campus Overview</h3>
-                      <p className="text-sm opacity-90">
-                        Aerial view of our green campus
-                      </p>
+            {/* Bottom CTA Section */}
+            <div className="text-center pt-20">
+              <Card className="p-8 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-xl shadow-2xl shadow-primary/10">
+                <CardContent>
+                  <div className="space-y-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto">
+                      <Star className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-foreground">
+                      Join the Legacy of Excellence
+                    </h3>
+                    <p className="text-muted-foreground max-w-2xl mx-auto">
+                      Be part of a tradition that shapes future leaders,
+                      innovators, and problem-solvers who make a difference in
+                      the world.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Globe className="w-4 h-4 text-primary" />
+                        <span>Globally Recognized</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Target className="w-4 h-4 text-secondary" />
+                        <span>Industry Focused</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Zap className="w-4 h-4 text-accent" />
+                        <span>Innovation Driven</span>
+                      </div>
                     </div>
                   </div>
-                </Card>
-
-                <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 group">
-                  <div className="relative overflow-hidden">
-                    <img
-                      src="https://html-starter-beige-beta.vercel.app/campus_2.jpg"
-                      alt="Modern Computer Laboratory"
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <h3 className="text-lg font-semibold">Computer Labs</h3>
-                      <p className="text-sm opacity-90">
-                        State-of-the-art computing facilities
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 group">
-                  <div className="relative overflow-hidden">
-                    <img
-                      src="https://html-starter-beige-beta.vercel.app/campus_3.jpg"
-                      alt="Academic Building"
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <h3 className="text-lg font-semibold">Academic Block</h3>
-                      <p className="text-sm opacity-90">
-                        Modern classrooms and labs
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
