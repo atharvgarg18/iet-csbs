@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -357,6 +358,8 @@ export default function Gallery() {
             </Card>
           </div>
         </section>
+
+        <Footer />
       </div>
     </div>
   );

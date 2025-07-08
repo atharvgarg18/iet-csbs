@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -235,6 +236,8 @@ export default function Notes() {
             </div>
           </div>
         </section>
+
+        <Footer />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import {
   Card,
   CardContent,
@@ -198,6 +199,8 @@ export default function Notices() {
             </Card>
           </div>
         </section>
+
+        <Footer />
       </div>
     </div>
   );
