@@ -29,7 +29,8 @@ export default function Notices() {
       date: "2025-07-01",
       type: "Academic",
       priority: "high",
-      downloadLink: "/assets/timetable-3rd-sem.pdf",
+      downloadLink:
+        "https://html-starter-beige-beta.vercel.app/BTech_CSBS_Sem_III_Time%20Table_July_25.pdf",
       isPDF: true,
     },
     {
@@ -40,8 +41,9 @@ export default function Notices() {
       date: "2025-07-15",
       type: "Administrative",
       priority: "high",
-      downloadLink: "#",
-      isPDF: false,
+      downloadLink:
+        "https://ietdavv.edu.in/images/downloads/Admission/Adv_CSBS_BDes_Web_2025.pdf",
+      isPDF: true,
     },
   ];
 
