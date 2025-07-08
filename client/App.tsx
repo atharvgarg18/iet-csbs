@@ -14,6 +14,7 @@ import Contributors from "./pages/Contributors";
 import Notices from "./pages/Notices";
 import AtAGlance from "./pages/AtAGlance";
 import Gallery from "./pages/Gallery";
+import Syllabus from "./pages/Syllabus";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
