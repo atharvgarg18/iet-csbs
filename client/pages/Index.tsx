@@ -397,102 +397,110 @@ export default function Index() {
         </section>
 
         {/* AICTE Approval Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-red-500/5 to-orange-500/5 dark:from-red-500/10 dark:to-orange-500/10">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10">
           <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-600 dark:bg-red-500/20 dark:text-red-300 px-4 py-2 rounded-full text-sm font-medium border border-red-500/20 dark:border-red-500/30">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20 backdrop-blur-sm">
                 <Shield className="w-4 h-4" />
-                Myth Buster
+                Official Verification
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                <span className="text-red-500">
-                  Worried about the AICTE approval for the course?
+                AICTE Approval{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
+                  Verification
                 </span>
-                <br />
-                <span className="text-green-500">Let's burst the myth</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                There's been misinformation spreading about AICTE approval.
-                Here's the official truth with documented proof.
+                Concerned about program authenticity? Here's the official
+                documentation that confirms our AICTE approval status.
               </p>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
-                <Card className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30 backdrop-blur-xl shadow-2xl shadow-green-500/20">
+                <Card className="bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-xl shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-500">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-                      <CardTitle className="text-green-400 dark:text-green-300 font-bold">
-                        ✅ MYTH BUSTED!
-                      </CardTitle>
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center">
+                        <Award className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-foreground font-bold text-xl">
+                          Officially Approved
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                          AICTE Recognition Confirmed
+                        </p>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <p className="text-green-200 dark:text-green-100 text-lg font-medium">
-                        The CSBS program{" "}
-                        <strong className="text-green-300">DOES HAVE</strong>{" "}
-                        official AICTE approval.
+                      <p className="text-foreground text-lg leading-relaxed">
+                        The Computer Science and Business Systems program holds{" "}
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary font-semibold">
+                          official AICTE approval
+                        </span>{" "}
+                        and is documented in the Expert Committee minutes.
                       </p>
-                      <p className="text-green-200 dark:text-green-100">
-                        The approval is clearly documented in the official AICTE
-                        minutes and can be verified through official sources.
+                      <p className="text-muted-foreground">
+                        All documentation is publicly available through official
+                        AICTE channels for complete transparency.
                       </p>
-                      <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="flex flex-col sm:flex-row gap-3 pt-2">
                         <a
                           href="https://www.aicte.gov.in/sites/default/files/118%20EC%20minutes.pdf"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-block"
                         >
-                          <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300">
+                          <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 w-full sm:w-auto">
                             <ExternalLink className="w-4 h-4 mr-2" />
                             View Official Document
                           </Button>
                         </a>
                         <Button
                           variant="outline"
-                          className="border-green-500 text-green-400 hover:bg-green-500/10"
+                          className="border-primary/30 text-primary hover:bg-primary/5 w-full sm:w-auto"
                         >
                           <FileText className="w-4 h-4 mr-2" />
-                          Download Proof
+                          Verification Guide
                         </Button>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm">
+                <Card className="p-6 bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm hover:shadow-lg hover:shadow-accent/10 transition-all duration-300">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Award className="w-5 h-5 text-primary" />
-                      Official Verification
+                      <Star className="w-5 h-5 text-accent" />
+                      Verification Points
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-sm text-foreground">
                         Approved by AICTE Expert Committee
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-sm text-foreground">
-                        Listed in official EC minutes
+                        Listed in official EC minutes document
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-sm text-foreground">
-                        Partnership with TCS validated
+                        TCS partnership formally validated
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-sm text-foreground">
-                        Regular admissions proceeding
+                        Active admission process ongoing
                       </span>
                     </div>
                   </CardContent>
@@ -500,26 +508,29 @@ export default function Index() {
               </div>
 
               <div className="space-y-6">
-                <Card className="overflow-hidden bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm">
+                <Card className="overflow-hidden bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm hover:shadow-xl hover:shadow-secondary/10 transition-all duration-500 group">
                   <CardHeader>
                     <CardTitle className="text-foreground text-center">
                       Official AICTE Approval Document
                     </CardTitle>
+                    <p className="text-center text-sm text-muted-foreground">
+                      Click to view the complete documentation
+                    </p>
                   </CardHeader>
                   <CardContent className="p-0">
-                    <div className="relative group cursor-pointer">
+                    <div className="relative cursor-pointer">
                       <img
                         src="https://html-starter-beige-beta.vercel.app/aicte-approval.jpg"
                         alt="AICTE Approval Document for CSBS Program"
-                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 border border-primary/20"
+                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 border border-primary/10"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
                         <a
                           href="https://www.aicte.gov.in/sites/default/files/118%20EC%20minutes.pdf"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <Button className="bg-white text-black hover:bg-white/90">
+                          <Button className="bg-gradient-to-r from-primary to-secondary text-white shadow-lg hover:shadow-xl transition-all duration-300">
                             <ExternalLink className="w-4 h-4 mr-2" />
                             View Full Document
                           </Button>
@@ -529,28 +540,34 @@ export default function Index() {
                   </CardContent>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-card to-blue-500/5 border border-blue-500/10 backdrop-blur-sm">
+                <Card className="p-6 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Globe className="w-5 h-5 text-blue-500" />
-                      Verify Yourself
+                      <Globe className="w-5 h-5 text-primary" />
+                      Independent Verification
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <p className="text-sm text-muted-foreground">
-                      Don't take our word for it. You can verify the approval
-                      directly from AICTE's official website.
+                      Verify our approval status independently through official
+                      AICTE resources.
                     </p>
                     <div className="flex items-center gap-2">
-                      <ExternalLink className="w-4 h-4 text-blue-500" />
+                      <ExternalLink className="w-4 h-4 text-primary" />
                       <span className="text-sm text-foreground">
-                        aicte.gov.in - Official Source
+                        aicte.gov.in - Official Portal
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-blue-500" />
+                      <FileText className="w-4 h-4 text-secondary" />
                       <span className="text-sm text-foreground">
-                        EC Minutes Document 118
+                        EC Minutes Document #118
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Award className="w-4 h-4 text-accent" />
+                      <span className="text-sm text-foreground">
+                        Publicly accessible records
                       </span>
                     </div>
                   </CardContent>
