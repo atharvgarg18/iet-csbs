@@ -760,11 +760,11 @@ export default function Index() {
                 Admissions Open
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Apply for CSBS Program 2025-29
+                Ready to Start Your CSBS Journey?
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Join the pioneering batch of Computer Science and Business
-                Systems program
+                Transform your future with our industry-aligned Computer Science
+                and Business Systems program
               </p>
             </div>
 
@@ -796,17 +796,28 @@ export default function Index() {
                             July 20, 2025
                           </strong>
                         </p>
-                        <a
-                          href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block"
-                        >
-                          <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300">
-                            <ExternalLink className="w-4 h-4 mr-2" />
-                            Apply Now
-                          </Button>
-                        </a>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                          <a
+                            href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block"
+                          >
+                            <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300 w-full sm:w-auto">
+                              <ExternalLink className="w-4 h-4 mr-2" />
+                              Apply Now
+                            </Button>
+                          </a>
+                          <Link to="/admissions">
+                            <Button
+                              variant="outline"
+                              className="border-green-500 text-green-400 hover:bg-green-500/10 w-full sm:w-auto"
+                            >
+                              <FileText className="w-4 h-4 mr-2" />
+                              Learn Process
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
