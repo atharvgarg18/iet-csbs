@@ -40,10 +40,16 @@ export default function Index() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
-    // Set deadline to July 20, 2025 23:59:59 IST
-    const deadline = new Date("2025-07-20T23:59:59+05:30");
-    const today = new Date();
-    const diffTime = deadline.getTime() - today.getTime();
+    // Create deadline: July 20, 2025 23:59:59 in Indian Standard Time (GMT +5:30)
+    const deadlineUTC = new Date("2025-07-20T18:29:59.000Z"); // 23:59:59 IST = 18:29:59 UTC
+
+    // Get current time in IST
+    const now = new Date();
+    const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+    const istTime = new Date(utcTime + istOffset);
+
+    const diffTime = deadlineUTC.getTime() - istTime.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     setDaysUntilDeadline(diffDays);
