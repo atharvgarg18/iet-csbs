@@ -33,7 +33,8 @@ export default function Admissions() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
-    const deadline = new Date("2025-07-20");
+    // Set deadline to July 20, 2025 23:59:59 IST
+    const deadline = new Date("2025-07-20T23:59:59+05:30");
     const today = new Date();
     const diffTime = deadline.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

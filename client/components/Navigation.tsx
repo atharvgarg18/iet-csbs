@@ -30,9 +30,9 @@ export default function Navigation() {
     { name: "Papers", href: "/papers", icon: FileText },
     { name: "Syllabus", href: "/syllabus", icon: GraduationCap },
     { name: "Notices", href: "/notices", icon: Bell },
-    { name: "Admissions", href: "/admissions", icon: TrendingUp, isCTA: true },
     { name: "Gallery", href: "/gallery", icon: Camera },
     { name: "Contributors", href: "/contributors", icon: Users },
+    { name: "Admissions", href: "/admissions", icon: TrendingUp, isCTA: true },
   ];
 
   return (
@@ -72,7 +72,7 @@ export default function Navigation() {
                       isActive
                         ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25"
                         : isCTA
-                          ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 animate-pulse"
+                          ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 border border-primary/20"
                           : "hover:bg-primary/10 hover:text-primary",
                     )}
                   >
@@ -128,7 +128,7 @@ export default function Navigation() {
                       isActive
                         ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg"
                         : isCTA
-                          ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg animate-pulse"
+                          ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg border border-primary/20"
                           : "hover:bg-primary/10 hover:text-primary",
                     )}
                   >
