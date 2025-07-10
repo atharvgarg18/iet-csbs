@@ -22,6 +22,7 @@ import {
   Zap,
   Target,
   ArrowRight,
+  TrendingUp,
 } from "lucide-react";
 import { useState } from "react";
 
