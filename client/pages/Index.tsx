@@ -326,7 +326,7 @@ export default function Index() {
                   preparing students for global challenges and opportunities.
                 </p>
 
-                <div className="flex justify-center pt-4">
+                <div className="flex flex-col items-center gap-4 pt-4">
                   <a
                     href="https://ietdavv.edu.in/"
                     target="_blank"
@@ -336,6 +336,13 @@ export default function Index() {
                     <span>Visit Official Website</span>
                     <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                   </a>
+                  <Link
+                    to="/at-a-glance"
+                    className="inline-flex items-center gap-2 text-accent hover:text-primary transition-colors duration-300 font-medium"
+                  >
+                    <span>View Program Timeline At a Glance</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
             </div>
