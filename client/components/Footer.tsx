@@ -28,16 +28,13 @@ export default function Footer() {
             <p className="text-muted-foreground">
               Computer Science and Business Systems
             </p>
-            <p className="text-sm text-muted-foreground/80">
-              Powered by TCS Partnership
-            </p>
           </div>
 
           {/* Made with love */}
           <div className="bg-gradient-to-r from-card to-muted/10 border border-border/20 rounded-2xl p-6 backdrop-blur-sm">
             <p className="text-lg text-foreground font-medium">
               Made with <span className="text-red-400 animate-pulse">❤️</span>{" "}
-              by the CSBS batch of '28
+              by the CSBS class of '28
             </p>
           </div>
         </div>
