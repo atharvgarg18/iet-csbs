@@ -1,14 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://your-domain.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Specific directives for search engines
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: Twitterbot
-Allow: /
+# Block access to admin areas (if any)
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_redirects
+Disallow: /vercel.json
 
-User-agent: facebookexternalhit
+# Allow important pages
 Allow: /
-
-User-agent: *
-Allow: /
+Allow: /notes
+Allow: /papers
+Allow: /syllabus
+Allow: /notices
+Allow: /admissions
+Allow: /gallery
+Allow: /contributors
+Allow: /at-a-glance
