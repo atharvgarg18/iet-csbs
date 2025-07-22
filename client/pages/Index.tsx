@@ -40,8 +40,8 @@ export default function Index() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
-    // Deadline: July 20, 2025 at end of day IST
-    const deadline = new Date("2025-07-20T23:59:59");
+    // Deadline: July 25, 2025 at end of day IST
+    const deadline = new Date("2025-07-25T23:59:59");
     const today = new Date();
 
     // Calculate difference in days
