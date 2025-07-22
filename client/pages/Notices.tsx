@@ -46,6 +46,17 @@ export default function Notices() {
         "https://ietdavv.edu.in/images/downloads/Admission/Adv_CSBS_BDes_Web_2025.pdf",
       isPDF: true,
     },
+    {
+      id: 3,
+      title: "Merit List Release Schedule",
+      description:
+        "Merit list for CSBS admissions is expected to be released around the end of July 2025. Stay tuned for updates.",
+      date: "2025-07-22",
+      type: "Administrative",
+      priority: "medium",
+      downloadLink: "#",
+      isPDF: false,
+    },
   ];
 
   const getNoticeTypeColor = (type: string) => {
