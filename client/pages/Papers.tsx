@@ -1,11 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   FileText,
@@ -37,7 +32,7 @@ export default function Papers() {
               <FileText className="w-4 h-4" />
               Exam Resources
             </div>
-            
+
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
                 CSBS{" "}
@@ -55,7 +50,6 @@ export default function Papers() {
         {/* Main Papers Section */}
         <section className="pb-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8">
-            
             {/* MST Grading System Explanation */}
             <Card className="bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm">
               <CardHeader className="text-center">
@@ -71,17 +65,29 @@ export default function Papers() {
                   <div className="space-y-2">
                     <div className="text-3xl font-bold text-accent">3</div>
                     <div className="text-foreground font-medium">MST Tests</div>
-                    <div className="text-sm text-muted-foreground">Per semester</div>
+                    <div className="text-sm text-muted-foreground">
+                      Per semester
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <div className="text-3xl font-bold text-secondary">Best 2</div>
+                    <div className="text-3xl font-bold text-secondary">
+                      Best 2
+                    </div>
                     <div className="text-foreground font-medium">Count</div>
-                    <div className="text-sm text-muted-foreground">@ 20 marks each</div>
+                    <div className="text-sm text-muted-foreground">
+                      @ 20 marks each
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <div className="text-3xl font-bold text-primary">40 + 60</div>
-                    <div className="text-foreground font-medium">Total Marks</div>
-                    <div className="text-sm text-muted-foreground">MST + End Sem</div>
+                    <div className="text-3xl font-bold text-primary">
+                      40 + 60
+                    </div>
+                    <div className="text-foreground font-medium">
+                      Total Marks
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      MST + End Sem
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -119,10 +125,11 @@ export default function Papers() {
                     Complete Papers Archive
                   </h3>
                   <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                    Access all MST and End Semester question papers from previous attempts. 
-                    Perfect for exam preparation and understanding question patterns.
+                    Access all MST and End Semester question papers from
+                    previous attempts. Perfect for exam preparation and
+                    understanding question patterns.
                   </p>
-                  
+
                   <a
                     href="https://drive.google.com/drive/folders/1dltzniRbeR2vK4iOlXeIPGMU8cq1ioko"
                     target="_blank"
@@ -139,27 +146,42 @@ export default function Papers() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="text-center p-6 bg-gradient-to-br from-card to-secondary/5 rounded-xl border border-secondary/10">
                     <Award className="w-8 h-8 text-secondary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">MST Papers</h4>
-                    <p className="text-sm text-muted-foreground">Previous test papers for practice</p>
+                    <h4 className="font-semibold text-foreground mb-2">
+                      MST Papers
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Previous test papers for practice
+                    </p>
                   </div>
-                  
+
                   <div className="text-center p-6 bg-gradient-to-br from-card to-accent/5 rounded-xl border border-accent/10">
                     <TrendingUp className="w-8 h-8 text-accent mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">End Sem</h4>
-                    <p className="text-sm text-muted-foreground">End semester question papers</p>
+                    <h4 className="font-semibold text-foreground mb-2">
+                      End Sem
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      End semester question papers
+                    </p>
                   </div>
-                  
+
                   <div className="text-center p-6 bg-gradient-to-br from-card to-primary/5 rounded-xl border border-primary/10">
                     <FileText className="w-8 h-8 text-primary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">Solutions</h4>
-                    <p className="text-sm text-muted-foreground">Sample solutions when available</p>
+                    <h4 className="font-semibold text-foreground mb-2">
+                      Solutions
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Sample solutions when available
+                    </p>
                   </div>
                 </div>
 
                 {/* Contributors Credit */}
                 <div className="text-center pt-8 border-t border-border/20">
                   <p className="text-muted-foreground">
-                    Curated with ❤️ by the <span className="text-secondary font-medium">MST's & End Sem Papers Department</span>
+                    Curated with ❤️ by the{" "}
+                    <span className="text-secondary font-medium">
+                      MST's & End Sem Papers Department
+                    </span>
                   </p>
                   <p className="text-sm text-muted-foreground/70 mt-1">
                     Managed by Advait Kshirsagar & Gurpreet Singh Bhatia

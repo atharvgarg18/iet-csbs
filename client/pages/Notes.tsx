@@ -1,11 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   BookOpen,
@@ -35,7 +30,7 @@ export default function Notes() {
               <BookOpen className="w-4 h-4" />
               Study Resources
             </div>
-            
+
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
                 CSBS{" "}
@@ -84,10 +79,11 @@ export default function Notes() {
                     Complete Notes Archive
                   </h3>
                   <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                    Access the comprehensive collection of notes, study materials, and resources 
-                    curated by your fellow classmates and maintained by the Notes Department.
+                    Access the comprehensive collection of notes, study
+                    materials, and resources curated by your fellow classmates
+                    and maintained by the Notes Department.
                   </p>
-                  
+
                   <a
                     href="https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK"
                     target="_blank"
@@ -104,27 +100,42 @@ export default function Notes() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="text-center p-6 bg-gradient-to-br from-card to-accent/5 rounded-xl border border-accent/10">
                     <Download className="w-8 h-8 text-accent mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">Easy Download</h4>
-                    <p className="text-sm text-muted-foreground">Download individual files or entire folders</p>
+                    <h4 className="font-semibold text-foreground mb-2">
+                      Easy Download
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Download individual files or entire folders
+                    </p>
                   </div>
-                  
+
                   <div className="text-center p-6 bg-gradient-to-br from-card to-primary/5 rounded-xl border border-primary/10">
                     <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">Collaborative</h4>
-                    <p className="text-sm text-muted-foreground">Notes shared by students, for students</p>
+                    <h4 className="font-semibold text-foreground mb-2">
+                      Collaborative
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Notes shared by students, for students
+                    </p>
                   </div>
-                  
+
                   <div className="text-center p-6 bg-gradient-to-br from-card to-secondary/5 rounded-xl border border-secondary/10">
                     <Calendar className="w-8 h-8 text-secondary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">Updated</h4>
-                    <p className="text-sm text-muted-foreground">Fresh content added regularly</p>
+                    <h4 className="font-semibold text-foreground mb-2">
+                      Updated
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Fresh content added regularly
+                    </p>
                   </div>
                 </div>
 
                 {/* Contributors Credit */}
                 <div className="text-center pt-8 border-t border-border/20">
                   <p className="text-muted-foreground">
-                    Curated with ❤️ by the <span className="text-primary font-medium">Notes Department</span>
+                    Curated with ❤️ by the{" "}
+                    <span className="text-primary font-medium">
+                      Notes Department
+                    </span>
                   </p>
                   <p className="text-sm text-muted-foreground/70 mt-1">
                     Managed by Bharat Jain Sanghvi
