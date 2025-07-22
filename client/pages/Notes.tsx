@@ -3,91 +3,20 @@ import Footer from "@/components/Footer";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   BookOpen,
-  Download,
   ExternalLink,
-  FolderOpen,
-  Calendar,
-  Clock,
-  Star,
   Users,
-  GraduationCap,
-  Zap,
-  Target,
-  ArrowRight,
-  TrendingUp,
+  Calendar,
+  Download,
+  Star,
 } from "lucide-react";
-import { useState } from "react";
 
 export default function Notes() {
-  const [selectedBatch, setSelectedBatch] = useState("2024-28");
-
-  const batches = [
-    {
-      id: "2024-28",
-      name: "2024-28 Batch",
-      status: "Active",
-      students: 76,
-      driveLink:
-        "https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK",
-      description: "Complete notes collection for the pioneering CSBS batch",
-      color: "from-primary/20 to-secondary/20",
-      borderColor: "border-primary/30",
-      year: "2nd Year",
-    },
-    {
-      id: "2025-29",
-      name: "2025-29 Batch",
-      status: "Coming Soon",
-      students: "TBA",
-      driveLink: null,
-      description: "Notes will be available as the batch progresses",
-      color: "from-muted/20 to-muted/30",
-      borderColor: "border-muted/30",
-      year: "1st Year",
-    },
-  ];
-
-  const subjects = [
-    {
-      name: "Data Structures & Algorithms",
-      icon: Target,
-      semester: "3rd Sem",
-      topics: 12,
-      color: "from-blue-500/20 to-cyan-500/20",
-    },
-    {
-      name: "Object Oriented Programming",
-      icon: Zap,
-      semester: "3rd Sem",
-      topics: 8,
-      color: "from-purple-500/20 to-pink-500/20",
-    },
-    {
-      name: "Database Management Systems",
-      icon: BookOpen,
-      semester: "3rd Sem",
-      topics: 10,
-      color: "from-green-500/20 to-emerald-500/20",
-    },
-    {
-      name: "Business Economics",
-      icon: TrendingUp,
-      semester: "3rd Sem",
-      topics: 6,
-      color: "from-orange-500/20 to-yellow-500/20",
-    },
-  ];
-
-  const selectedBatchData = batches.find((batch) => batch.id === selectedBatch);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 relative overflow-hidden">
       {/* Animated background elements */}
@@ -101,248 +30,105 @@ export default function Notes() {
 
         {/* Hero Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-medium border border-primary/20 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
               <BookOpen className="w-4 h-4" />
               Study Resources
             </div>
-
-            <div className="space-y-6">
+            
+            <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
                 CSBS{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
                   Notes
                 </span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Comprehensive study materials and notes curated by students, for
-                students. Your gateway to academic excellence in the CSBS
-                program.
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Comprehensive study materials for the Class of 2028
               </p>
             </div>
           </div>
         </section>
 
-        {/* Batch Selection */}
-        <section className="py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center space-y-6 mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Select Your Batch
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Choose your academic year to access relevant study materials
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              {batches.map((batch) => {
-                const isSelected = selectedBatch === batch.id;
-                const isActive = batch.status === "Active";
-
-                return (
-                  <Card
-                    key={batch.id}
-                    className={`cursor-pointer transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-accent/5 border backdrop-blur-sm ${
-                      isSelected
-                        ? "border-primary shadow-2xl shadow-primary/20 ring-2 ring-primary/30"
-                        : batch.borderColor
-                    }`}
-                    onClick={() => setSelectedBatch(batch.id)}
-                  >
-                    <CardHeader>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`w-12 h-12 bg-gradient-to-br ${batch.color} rounded-xl flex items-center justify-center`}
-                          >
-                            <GraduationCap className="w-6 h-6 text-primary" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-xl text-foreground">
-                              {batch.name}
-                            </CardTitle>
-                            <div className="flex items-center gap-2 mt-1">
-                              <Badge
-                                variant={isActive ? "default" : "secondary"}
-                                className={
-                                  isActive
-                                    ? "bg-green-500/10 text-green-400 border-green-500/30"
-                                    : ""
-                                }
-                              >
-                                {batch.status}
-                              </Badge>
-                              <Badge variant="outline" size="sm">
-                                {batch.year}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                        {isSelected && (
-                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                            <Star className="w-4 h-4 text-white fill-current" />
-                          </div>
-                        )}
-                      </div>
-                      <CardDescription className="text-base">
-                        {batch.description}
-                      </CardDescription>
-                    </CardHeader>
-
-                    <CardContent>
-                      <div className="grid grid-cols-2 gap-4 mb-6">
-                        <div className="text-center p-3 bg-background/50 rounded-lg">
-                          <div className="text-lg font-bold text-primary">
-                            {batch.students}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            Students
-                          </div>
-                        </div>
-                        <div className="text-center p-3 bg-background/50 rounded-lg">
-                          <div className="text-lg font-bold text-secondary">
-                            {isActive ? "Available" : "Soon"}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            Status
-                          </div>
-                        </div>
-                      </div>
-
-                      {isActive && batch.driveLink ? (
-                        <a
-                          href={batch.driveLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Button className="w-full bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25">
-                            <ExternalLink className="w-4 h-4 mr-2" />
-                            Access Drive Folder
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
-                        </a>
-                      ) : (
-                        <Button disabled className="w-full">
-                          <Clock className="w-4 h-4 mr-2" />
-                          Coming Soon
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Subject Preview (for active batch) */}
-        {selectedBatchData?.status === "Active" && (
-          <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 to-secondary/5">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center space-y-6 mb-16">
-                <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium border border-accent/20">
-                  <Target className="w-4 h-4" />
-                  Current Semester
+        {/* Main Notes Section */}
+        <section className="pb-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <Card className="overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm">
+              <CardHeader className="text-center pb-8">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <BookOpen className="w-8 h-8 text-primary" />
                 </div>
-                <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                  Subject-wise Notes Preview
-                </h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                  Get organized notes for each subject in your current semester
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {subjects.map((subject, index) => {
-                  const Icon = subject.icon;
-                  return (
-                    <Card
-                      key={index}
-                      className="group hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm"
-                    >
-                      <CardContent className="p-6 text-center">
-                        <div
-                          className={`w-16 h-16 bg-gradient-to-br ${subject.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                        >
-                          <Icon className="w-8 h-8 text-primary" />
-                        </div>
-                        <h3 className="text-lg font-semibold text-foreground mb-2">
-                          {subject.name}
-                        </h3>
-                        <div className="space-y-2">
-                          <Badge variant="secondary" size="sm">
-                            {subject.semester}
-                          </Badge>
-                          <p className="text-sm text-muted-foreground">
-                            {subject.topics} Topics Available
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-
-              <div className="text-center mt-12">
-                <a
-                  href={selectedBatchData.driveLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button className="bg-gradient-to-r from-accent to-primary text-white shadow-lg shadow-accent/25 hover:shadow-accent/40 transition-all duration-300 text-lg px-8 py-6">
-                    <FolderOpen className="w-5 h-5 mr-2" />
-                    Explore All Notes
-                    <ExternalLink className="w-5 h-5 ml-2" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Info Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Card className="p-12 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-xl shadow-2xl shadow-secondary/10">
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-3xl flex items-center justify-center mx-auto">
-                    <Users className="w-10 h-10 text-secondary" />
+                <CardTitle className="text-3xl font-bold text-foreground mb-4">
+                  Class of 2028 Notes Collection
+                </CardTitle>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4" />
+                    <span>76 Students</span>
                   </div>
-                  <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                    Collaborative Learning
-                  </h2>
-                  <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Our notes are continuously updated and improved by the
-                    entire CSBS community. Join us in building the most
-                    comprehensive study resource.
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    <span>Currently in 2nd Year</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4 text-yellow-500" />
+                    <span>Regularly Updated</span>
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="space-y-8">
+                {/* Drive Access Card */}
+                <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 text-center">
+                  <h3 className="text-2xl font-bold text-foreground mb-4">
+                    Complete Notes Archive
+                  </h3>
+                  <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                    Access the comprehensive collection of notes, study materials, and resources 
+                    curated by your fellow classmates and maintained by the Notes Department.
                   </p>
-                  <div className="grid grid-cols-3 gap-6 mt-8">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">
-                        500+
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Documents
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-secondary">
-                        76
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Contributors
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-accent">24/7</div>
-                      <div className="text-sm text-muted-foreground">
-                        Access
-                      </div>
-                    </div>
+                  
+                  <a
+                    href="https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 text-lg px-8 py-6">
+                      <ExternalLink className="w-5 h-5 mr-2" />
+                      Open Notes Drive
+                    </Button>
+                  </a>
+                </div>
+
+                {/* Quick Info */}
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center p-6 bg-gradient-to-br from-card to-accent/5 rounded-xl border border-accent/10">
+                    <Download className="w-8 h-8 text-accent mx-auto mb-3" />
+                    <h4 className="font-semibold text-foreground mb-2">Easy Download</h4>
+                    <p className="text-sm text-muted-foreground">Download individual files or entire folders</p>
                   </div>
+                  
+                  <div className="text-center p-6 bg-gradient-to-br from-card to-primary/5 rounded-xl border border-primary/10">
+                    <Users className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h4 className="font-semibold text-foreground mb-2">Collaborative</h4>
+                    <p className="text-sm text-muted-foreground">Notes shared by students, for students</p>
+                  </div>
+                  
+                  <div className="text-center p-6 bg-gradient-to-br from-card to-secondary/5 rounded-xl border border-secondary/10">
+                    <Calendar className="w-8 h-8 text-secondary mx-auto mb-3" />
+                    <h4 className="font-semibold text-foreground mb-2">Updated</h4>
+                    <p className="text-sm text-muted-foreground">Fresh content added regularly</p>
+                  </div>
+                </div>
+
+                {/* Contributors Credit */}
+                <div className="text-center pt-8 border-t border-border/20">
+                  <p className="text-muted-foreground">
+                    Curated with ❤️ by the <span className="text-primary font-medium">Notes Department</span>
+                  </p>
+                  <p className="text-sm text-muted-foreground/70 mt-1">
+                    Managed by Bharat Jain Sanghvi
+                  </p>
                 </div>
               </CardContent>
             </Card>
