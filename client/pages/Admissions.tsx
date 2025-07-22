@@ -168,7 +168,7 @@ export default function Admissions() {
                     </div>
                     <p className="text-green-200 text-lg">
                       Application deadline:{" "}
-                      <strong className="text-green-300">July 20, 2025</strong>
+                      <strong className="text-green-300">July 25, 2025</strong>
                     </p>
                     <a
                       href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"

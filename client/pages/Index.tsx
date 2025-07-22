@@ -803,7 +803,7 @@ export default function Index() {
                         <p className="text-green-200 dark:text-green-100">
                           Application deadline:{" "}
                           <strong className="text-green-300">
-                            July 20, 2025
+                            July 25, 2025
                           </strong>
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
@@ -841,7 +841,7 @@ export default function Index() {
                     <CardContent>
                       <p className="text-red-200 dark:text-red-100">
                         The application period for the CSBS program 2025-29 has
-                        ended on July 20, 2025. Please check back next year for
+                        ended on July 25, 2025. Please check back next year for
                         the 2026-30 batch.
                       </p>
                     </CardContent>
