@@ -39,7 +39,7 @@ export default function Notices() {
       title: "B.Tech CSBS Counselling Schedule Released",
       description:
         "Official counselling schedule for B.Tech Computer Science & Business Systems admissions has been published. Check the document for detailed timings and procedures.",
-      date: "2025-07-23",
+      date: "2025-07-26",
       type: "Administrative",
       priority: "high",
       downloadLink:
