@@ -174,24 +174,16 @@ export default function Notices() {
 
                   <CardContent className="pt-0">
                     <div className="flex flex-col sm:flex-row gap-3">
-                      {notice.isPDF ? (
-                        <a
-                          href={notice.downloadLink}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Button size="sm" className="flex-1 sm:flex-none">
-                            <Download className="w-4 h-4 mr-2" />
-                            Download PDF
-                          </Button>
-                        </a>
-                      ) : (
+                      <a
+                        href={notice.downloadLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <Button size="sm" className="flex-1 sm:flex-none">
                           <Download className="w-4 h-4 mr-2" />
-                          Download
+                          {notice.isPDF ? "Download PDF" : "View Document"}
                         </Button>
-                      )}
+                      </a>
                       <Button
                         variant="outline"
                         size="sm"
