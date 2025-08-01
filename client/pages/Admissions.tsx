@@ -257,8 +257,8 @@ export default function Admissions() {
                 Admission Process
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Your journey to joining CSBS is straightforward with direct counselling.
-                Here's exactly what you need to know.
+                Your journey to joining CSBS is straightforward with direct
+                counselling. Here's exactly what you need to know.
               </p>
             </div>
 
@@ -333,11 +333,11 @@ export default function Admissions() {
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">
                       <strong>Important:</strong> After registration closes,
-                      students will be directly called for counselling based on their JEE scores.
-                      Counselling will be conducted at the college level where
-                      students with better ranks will be given preference for
-                      admission. The process continues until all 75 seats are
-                      filled.
+                      students will be directly called for counselling based on
+                      their JEE scores. Counselling will be conducted at the
+                      college level where students with better ranks will be
+                      given preference for admission. The process continues
+                      until all 75 seats are filled.
                       <span className="text-primary font-medium">
                         {" "}
                         Your JEE rank determines your admission priority.
