@@ -977,6 +977,189 @@ export default function Index() {
           </div>
         </section>
 
+        {/* Should You Join Section */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-500/5 to-red-500/5">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center space-y-6 mb-12">
+              <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-600 px-4 py-2 rounded-full text-sm font-medium border border-orange-500/20">
+                <Heart className="w-4 h-4" />
+                Our Honest Take
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+                Should You Join CSBS?
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Here's our unfiltered perspective to help you decide
+              </p>
+            </div>
+
+            <Card className="p-8 bg-gradient-to-br from-card to-orange-500/5 border border-orange-500/10 backdrop-blur-sm">
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <ExternalLink className="w-4 h-4 text-orange-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-foreground mb-3">
+                        The Reality Check
+                      </h3>
+                      <div className="space-y-4 text-muted-foreground">
+                        <p>
+                          <strong className="text-foreground">Let's be honest:</strong> This program is new and will have hurdles.
+                          We're competing with legacy branches like CSE and IT that have been running for decades and have
+                          established reputations, alumni networks, and proven track records.
+                        </p>
+                        <p>
+                          The program is still settling into its rhythm, though the initial inertia has been broken by
+                          the inaugural Class of 2028. We're the pioneers, which means we're building the foundation
+                          for future batches.
+                        </p>
+                        <p className="text-primary font-medium">
+                          If you're getting a better option in an already established branch with proven placement
+                          records and industry connections, weigh the pros and cons carefully. This decision is yours to make.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-border/20 pt-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <Star className="w-4 h-4 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-foreground mb-3">
+                          Why We Still Believe In It
+                        </h3>
+                        <div className="space-y-4 text-muted-foreground">
+                          <p>
+                            Despite the challenges, we believe CSBS offers something unique: a curriculum designed
+                            specifically for today's industry needs, direct TCS partnership, and the opportunity
+                            to be part of something groundbreaking.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">You're not just getting a degree</strong> –
+                            you're getting a focused, relevant education that bridges the gap between technology
+                            and business, which is increasingly valuable in today's market.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-primary/5 rounded-lg p-6 border border-primary/10">
+                    <p className="text-foreground font-medium text-center">
+                      💡 <strong>Our advice:</strong> Choose based on your goals, risk tolerance, and career aspirations.
+                      There's no wrong choice – just different paths.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center space-y-6 mb-12">
+              <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium border border-secondary/20">
+                <Target className="w-4 h-4" />
+                Common Questions
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Get answers to the most common queries about CSBS
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <details className="group">
+                  <summary className="flex items-center justify-between p-6 cursor-pointer list-none bg-gradient-to-r from-card to-secondary/5 hover:bg-secondary/10 transition-colors duration-300">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Will there be limitations in placement opportunities since TCS designed the curriculum?
+                      Can we sit with CSE/IT branches?
+                    </h3>
+                    <div className="group-open:rotate-180 transition-transform duration-300">
+                      <ArrowRight className="w-5 h-5 text-secondary" />
+                    </div>
+                  </summary>
+                  <CardContent className="px-6 pb-6">
+                    <div className="pt-4 border-t border-border/20">
+                      <p className="text-muted-foreground leading-relaxed">
+                        <strong className="text-foreground">Great question!</strong> Yes, the curriculum is designed by TCS,
+                        and this actually works in our favor. TCS will prioritize hiring from this branch over others during
+                        their recruitment drives. However, this doesn't limit you – <span className="text-primary font-medium">
+                        students can apply to any company and sit for placements with any branch whatsoever</span>.
+                      </p>
+                      <p className="text-muted-foreground mt-3">
+                        You get the best of both worlds: priority consideration from TCS plus the freedom to explore
+                        opportunities across the entire tech industry.
+                      </p>
+                    </div>
+                  </CardContent>
+                </details>
+              </Card>
+
+              <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <details className="group">
+                  <summary className="flex items-center justify-between p-6 cursor-pointer list-none bg-gradient-to-r from-card to-primary/5 hover:bg-primary/10 transition-colors duration-300">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Are the classes held at the main IET DAVV campus?
+                    </h3>
+                    <div className="group-open:rotate-180 transition-transform duration-300">
+                      <ArrowRight className="w-5 h-5 text-primary" />
+                    </div>
+                  </summary>
+                  <CardContent className="px-6 pb-6">
+                    <div className="pt-4 border-t border-border/20">
+                      <p className="text-muted-foreground leading-relaxed">
+                        <strong className="text-foreground">Yes, absolutely!</strong> All CSBS classes are conducted at the
+                        main IET DAVV campus on Khandwa Road, Indore. You'll have access to all the campus facilities,
+                        laboratories, library, and infrastructure that the institute offers.
+                      </p>
+                      <p className="text-muted-foreground mt-3">
+                        You're not in a separate facility or branch campus – you're part of the main IET DAVV community
+                        with full access to all campus resources and activities.
+                      </p>
+                    </div>
+                  </CardContent>
+                </details>
+              </Card>
+
+              <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <details className="group">
+                  <summary className="flex items-center justify-between p-6 cursor-pointer list-none bg-gradient-to-r from-card to-accent/5 hover:bg-accent/10 transition-colors duration-300">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      How is CSBS different from regular Computer Science Engineering?
+                    </h3>
+                    <div className="group-open:rotate-180 transition-transform duration-300">
+                      <ArrowRight className="w-5 h-5 text-accent" />
+                    </div>
+                  </summary>
+                  <CardContent className="px-6 pb-6">
+                    <div className="pt-4 border-t border-border/20">
+                      <p className="text-muted-foreground leading-relaxed">
+                        <strong className="text-foreground">CSBS is more focused and industry-aligned.</strong> While traditional
+                        CSE includes subjects like Civil Engineering, Mechanical Engineering, and other core engineering topics,
+                        CSBS eliminates these and focuses entirely on computer science fundamentals plus business systems.
+                      </p>
+                      <p className="text-muted-foreground mt-3">
+                        Every subject in CSBS is handpicked to be relevant to today's tech industry, making you job-ready
+                        from day one without wasting time on outdated or irrelevant coursework.
+                      </p>
+                    </div>
+                  </CardContent>
+                </details>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         <Footer />
       </div>
     </div>
