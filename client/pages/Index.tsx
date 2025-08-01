@@ -850,17 +850,17 @@ export default function Index() {
                 )}
 
                 <div className="grid grid-cols-2 gap-4">
-                  <Card className="text-center p-4 bg-blue-50/50">
-                    <Users className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                    <div className="text-2xl font-bold text-blue-800">76</div>
-                    <div className="text-sm text-blue-600">Total Seats</div>
+                  <Card className="text-center p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
+                    <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
+                    <div className="text-2xl font-bold text-foreground">76</div>
+                    <div className="text-sm text-muted-foreground">Total Seats</div>
                   </Card>
-                  <Card className="text-center p-4 bg-purple-50/50">
-                    <Award className="w-8 h-8 mx-auto mb-2 text-purple-600" />
-                    <div className="text-2xl font-bold text-purple-800">
+                  <Card className="text-center p-4 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10">
+                    <Award className="w-8 h-8 mx-auto mb-2 text-secondary" />
+                    <div className="text-2xl font-bold text-foreground">
                       JEE
                     </div>
-                    <div className="text-sm text-purple-600">
+                    <div className="text-sm text-muted-foreground">
                       Based Admission
                     </div>
                   </Card>
