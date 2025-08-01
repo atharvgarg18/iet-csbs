@@ -994,12 +994,12 @@ export default function Index() {
               </p>
             </div>
 
-            <Card className="p-8 bg-gradient-to-br from-card to-orange-500/5 border border-orange-500/10 backdrop-blur-sm">
+            <Card className="p-8 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
               <CardContent>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <ExternalLink className="w-4 h-4 text-orange-600" />
+                    <div className="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <ExternalLink className="w-4 h-4 text-secondary" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-foreground mb-3">
