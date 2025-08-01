@@ -877,25 +877,25 @@ export default function Index() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
                         Register online with valid JEE scores
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
                         Direct counselling based on JEE rank
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
                         Attend counselling at IET DAVV campus
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
+                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
                         Seat allocation based on merit and preference
                       </span>
