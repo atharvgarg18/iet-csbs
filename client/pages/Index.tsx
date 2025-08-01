@@ -998,7 +998,7 @@ export default function Index() {
         </section>
 
         {/* Should You Join Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-muted/35 to-muted/25">
+        <section id="should-you-join" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-muted/35 to-muted/25">
           <div className="max-w-4xl mx-auto">
             <div className="text-center space-y-6 mb-12">
               <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium border border-secondary/20">
