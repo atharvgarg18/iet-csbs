@@ -684,7 +684,7 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-sm text-foreground">
-                        Active admission process ongoing
+                      Direct counselling process
                       </span>
                     </div>
                   </CardContent>
@@ -871,32 +871,32 @@ export default function Index() {
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <Target className="w-5 h-5 text-primary" />
-                      Admission Requirements
+                      Admission Process
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Valid JEE Main/Advanced scores
+                        Register online with valid JEE scores
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        12th grade with Mathematics and Physics
+                        Direct counselling based on JEE rank
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Domicile certificate for state quota
+                        Attend counselling at IET DAVV campus
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-yellow-500 mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Age limit: 17-23 years
+                        Seat allocation based on merit and preference
                       </span>
                     </div>
                   </CardContent>
