@@ -48,14 +48,15 @@ export default function Notices() {
     },
     {
       id: 3,
-      title: "Merit List Release Schedule",
+      title: "B.Tech CSBS Counselling Schedule Released",
       description:
-        "Merit list for CSBS admissions is expected to be released around the end of July 2025. Stay tuned for updates.",
-      date: "2025-07-22",
+        "Official counselling schedule for B.Tech Computer Science & Business Systems admissions has been published. Check the document for detailed timings and procedures.",
+      date: "2025-07-23",
       type: "Administrative",
-      priority: "medium",
-      downloadLink: "#",
-      isPDF: false,
+      priority: "high",
+      downloadLink:
+        "https://ietdavv.edu.in/images/downloads/Admission/BTech_CSBS_Counselling_schedule.pdf",
+      isPDF: true,
     },
   ];
 

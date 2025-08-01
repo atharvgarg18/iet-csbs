@@ -55,9 +55,9 @@ export default function Admissions() {
     },
     {
       step: 2,
-      title: "Merit List Release",
+      title: "Direct Counselling",
       description:
-        "Merit list will be published based on JEE scores and eligibility",
+        "Students will be directly called for counselling based on JEE scores",
       icon: Award,
       color: "secondary",
       status: "upcoming",
@@ -332,15 +332,15 @@ export default function Admissions() {
                       Merit-Based Selection
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      <strong>Important:</strong> After registration closes, the
-                      merit list will be released based on your JEE scores.
+                      <strong>Important:</strong> After registration closes,
+                      students will be directly called for counselling based on their JEE scores.
                       Counselling will be conducted at the college level where
                       students with better ranks will be given preference for
                       admission. The process continues until all 75 seats are
                       filled.
                       <span className="text-primary font-medium">
                         {" "}
-                        Your rank determines your admission priority.
+                        Your JEE rank determines your admission priority.
                       </span>
                     </p>
                   </div>
