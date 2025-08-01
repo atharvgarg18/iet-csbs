@@ -136,24 +136,43 @@ export default function Index() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link to="/notes">
-                  <Button size="lg" className="text-lg px-8 py-6">
-                    <BookOpen className="w-5 h-5 mr-2" />
-                    Access Notes
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-                <Link to="/papers">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="text-lg px-8 py-6"
-                  >
-                    <FileText className="w-5 h-5 mr-2" />
-                    View Papers
-                  </Button>
-                </Link>
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Link to="/notes">
+                    <Button size="lg" className="text-lg px-8 py-6">
+                      <BookOpen className="w-5 h-5 mr-2" />
+                      Access Notes
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/papers">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="text-lg px-8 py-6"
+                    >
+                      <FileText className="w-5 h-5 mr-2" />
+                      View Papers
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Our Two Cents CTA - Important for counselling period */}
+                <div className="pt-4">
+                  <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-medium border border-secondary/20 mb-3">
+                    <Heart className="w-3 h-3" />
+                    Counselling Around the Corner
+                  </div>
+                  <div className="max-w-2xl mx-auto">
+                    <p className="text-base text-muted-foreground mb-4">
+                      Confused about joining CSBS? Get our honest perspective before making your decision.
+                    </p>
+                    <a href="#should-you-join" className="inline-flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-300 font-medium text-sm">
+                      <span>Read Our Two Cents on Joining CSBS</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
