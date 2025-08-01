@@ -987,7 +987,7 @@ export default function Index() {
                 Our Honest Take
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Should You Join CSBS?
+                Our Two Cents on Should You Join CSBS?
               </h2>
               <p className="text-xl text-muted-foreground">
                 Here's our unfiltered perspective to help you decide
