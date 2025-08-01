@@ -257,7 +257,7 @@ export default function Admissions() {
                 Admission Process
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Your journey to joining CSBS is straightforward and merit-based.
+                Your journey to joining CSBS is straightforward with direct counselling.
                 Here's exactly what you need to know.
               </p>
             </div>
