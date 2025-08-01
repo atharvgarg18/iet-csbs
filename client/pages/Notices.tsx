@@ -20,18 +20,30 @@ import {
 } from "lucide-react";
 
 export default function Notices() {
-  // Current notices
+  // Current notices (ordered by date - newest first)
   const notices = [
     {
-      id: 1,
-      title: "Third Semester Time Table - July 2025",
+      id: 4,
+      title: "Academic Calendar 2025-26 Released",
       description:
-        "Class schedule for III Semester B.Tech Computer Science & Business Systems (Session: July 2025 to Nov. 2025)",
-      date: "2025-07-01",
+        "Official academic calendar for the year 2025-26 has been published. Check important dates for exams, holidays, and academic activities.",
+      date: "2025-07-30",
       type: "Academic",
       priority: "high",
       downloadLink:
-        "https://html-starter-beige-beta.vercel.app/BTech_CSBS_Sem_III_Time%20Table_July_25.pdf",
+        "https://ietdavv.edu.in/images/downloads/Admission/Academic_Calendar_2025-26.jpeg",
+      isPDF: false,
+    },
+    {
+      id: 3,
+      title: "B.Tech CSBS Counselling Schedule Released",
+      description:
+        "Official counselling schedule for B.Tech Computer Science & Business Systems admissions has been published. Check the document for detailed timings and procedures.",
+      date: "2025-07-23",
+      type: "Administrative",
+      priority: "high",
+      downloadLink:
+        "https://ietdavv.edu.in/images/downloads/Admission/BTech_CSBS_Counselling_schedule.pdf",
       isPDF: true,
     },
     {
@@ -47,15 +59,15 @@ export default function Notices() {
       isPDF: true,
     },
     {
-      id: 3,
-      title: "B.Tech CSBS Counselling Schedule Released",
+      id: 1,
+      title: "Third Semester Time Table - July 2025",
       description:
-        "Official counselling schedule for B.Tech Computer Science & Business Systems admissions has been published. Check the document for detailed timings and procedures.",
-      date: "2025-07-23",
-      type: "Administrative",
+        "Class schedule for III Semester B.Tech Computer Science & Business Systems (Session: July 2025 to Nov. 2025)",
+      date: "2025-07-01",
+      type: "Academic",
       priority: "high",
       downloadLink:
-        "https://ietdavv.edu.in/images/downloads/Admission/BTech_CSBS_Counselling_schedule.pdf",
+        "https://html-starter-beige-beta.vercel.app/BTech_CSBS_Sem_III_Time%20Table_July_25.pdf",
       isPDF: true,
     },
   ];
