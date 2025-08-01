@@ -1024,30 +1024,7 @@ export default function Index() {
                     </div>
                   </div>
 
-                  <div className="border-t border-border/20 pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <Star className="w-4 h-4 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-foreground mb-3">
-                          Why We Still Believe In It
-                        </h3>
-                        <div className="space-y-4 text-muted-foreground">
-                          <p>
-                            Despite the challenges, we believe CSBS offers something unique: a curriculum designed
-                            specifically for today's industry needs, direct TCS partnership, and the opportunity
-                            to be part of something groundbreaking.
-                          </p>
-                          <p>
-                            <strong className="text-foreground">You're not just getting a degree</strong> –
-                            you're getting a focused, relevant education that bridges the gap between technology
-                            and business, which is increasingly valuable in today's market.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
 
                   <div className="bg-primary/5 rounded-lg p-6 border border-primary/10">
                     <p className="text-foreground font-medium text-center">
