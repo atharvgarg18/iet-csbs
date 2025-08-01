@@ -31,6 +31,7 @@ import {
   Zap,
   Globe,
   Target,
+  Heart,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
