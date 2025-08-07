@@ -129,7 +129,7 @@ export default function Admissions() {
           <div className="max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-2 rounded-full text-sm font-medium border border-red-500/30">
               <Clock className="w-4 h-4" />
-              ⚠️ URGENT: Check Registration Deadline in Official PDF
+              ⚠️ URGENT: Registration closes 11th August | Counselling 12th August 10:30 AM
             </div>
           </div>
         </section>
