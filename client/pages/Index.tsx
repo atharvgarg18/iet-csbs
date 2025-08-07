@@ -813,14 +813,15 @@ export default function Index() {
                         <div className="flex items-center gap-2">
                           <Clock className="w-5 h-5 text-green-400" />
                           <span className="text-green-300 font-medium">
-                            Second counselling announced
+                            {daysUntilDeadline > 0
+                              ? `${daysUntilDeadline} days left to register`
+                              : "Registration closes today!"}
                           </span>
                         </div>
                         <p className="text-green-200 dark:text-green-100">
-                          🎉 75 additional seats added! Total seats now 150. Previous counselling results unaffected.{" "}
-                          <strong className="text-green-300">
-                            Register now before the new deadline closes!
-                          </strong>
+                          Registration: <strong className="text-green-300">8-11 August</strong> |
+                          Counselling: <strong className="text-green-300">12 August at 10:30 AM</strong> |
+                          Venue: <strong className="text-green-300">IET DAVV M Block</strong>
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
                           <a
