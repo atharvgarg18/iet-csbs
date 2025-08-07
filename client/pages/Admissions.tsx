@@ -334,18 +334,18 @@ export default function Admissions() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground mb-2">
-                      Merit-Based Selection
+                      Merit-Based Selection for Additional 75 Seats
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      <strong>Important:</strong> After registration closes,
-                      students will be directly called for counselling based on
+                      <strong>Important:</strong> After registration closes for the additional seats,
+                      students will be directly called for second counselling based on
                       their JEE scores. Counselling will be conducted at the
                       college level where students with better ranks will be
-                      given preference for admission. The process continues
-                      until all 150 seats are filled (75 additional seats have been added).
+                      given preference for the 75 additional seats. <strong>Previous counselling
+                      results and admissions remain completely unaffected.</strong>
                       <span className="text-primary font-medium">
                         {" "}
-                        Your JEE rank determines your admission priority.
+                        Your JEE rank determines your admission priority for the new seats.
                       </span>
                     </p>
                   </div>
