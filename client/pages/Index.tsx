@@ -891,13 +891,13 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Register online with valid JEE scores
+                        Register online for second counselling round
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Direct counselling based on JEE rank
+                        Second counselling for remaining seats
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
@@ -909,7 +909,7 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Seat allocation based on merit and preference
+                        Final seat allocation based on merit
                       </span>
                     </div>
                   </CardContent>
