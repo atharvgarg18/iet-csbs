@@ -23,6 +23,18 @@ export default function Notices() {
   // Current notices (ordered by date - newest first)
   const notices = [
     {
+      id: 6,
+      title: "⚠️ Registration Deadline Alert for Additional Seats",
+      description:
+        "URGENT: Registration for the 75 additional CSBS seats will close as per the deadline mentioned in the official document dated August 6, 2025. Don't miss this opportunity - check the PDF for exact closing date and time.",
+      date: "2025-08-07",
+      type: "Administrative",
+      priority: "high",
+      downloadLink:
+        "https://ietdavv.edu.in/images/downloads/Admission/CSBS_2_Web_6082025.pdf",
+      isPDF: true,
+    },
+    {
       id: 5,
       title: "Second Counselling & 75 Additional Seats Added",
       description:
