@@ -23,11 +23,23 @@ export default function Notices() {
   // Current notices (ordered by date - newest first)
   const notices = [
     {
-      id: 6,
-      title: "⚠️ Registration Deadline Alert for Additional Seats",
+      id: 7,
+      title: "📅 Detailed Counselling Schedule - 12th August 2025",
       description:
-        "URGENT: Registration for the 75 additional CSBS seats will close as per the deadline mentioned in the official document dated August 6, 2025. Don't miss this opportunity - check the PDF for exact closing date and time.",
-      date: "2025-08-07",
+        "Complete counselling schedule: Earlier applicants + new applicants (8-11 Aug registration) will have counselling on 12th Aug at 10:30 AM, IET DAVV M Block. Subsequent counselling on 13-14 Aug if seats remain. Previous counselling results remain unchanged.",
+      date: "2025-08-08",
+      type: "Administrative",
+      priority: "high",
+      downloadLink:
+        "https://ietdavv.edu.in/images/downloads/Admission/CSBS_2_Web_6082025.pdf",
+      isPDF: true,
+    },
+    {
+      id: 6,
+      title: "⚠️ Last 3 Days: Registration Closes 11th August",
+      description:
+        "URGENT: New applicants can register from 8-11 August 2025. Registration closes on 11th August. Earlier applicants who couldn't appear/get admission on 4th Aug are also eligible for 12th Aug counselling.",
+      date: "2025-08-08",
       type: "Administrative",
       priority: "high",
       downloadLink:
@@ -38,7 +50,7 @@ export default function Notices() {
       id: 5,
       title: "Second Counselling & 75 Additional Seats Added",
       description:
-        "Following the completion of first counselling, second counselling announced with 75 additional seats (total 150). Registration reopened until new deadline. Previous counselling results remain unaffected. Check the document for registration closing date, detailed schedule and procedures.",
+        "Following the completion of first counselling, second counselling announced with 75 additional seats (total 150). Registration for new applicants: 8-11 August. Counselling: 12th August at IET DAVV M Block. Previous counselling results remain unaffected.",
       date: "2025-08-06",
       type: "Administrative",
       priority: "high",
