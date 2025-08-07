@@ -849,16 +849,16 @@ export default function Index() {
                     </CardContent>
                   </Card>
                 ) : (
-                  <Card className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30 backdrop-blur-xl shadow-2xl shadow-yellow-500/20">
+                  <Card className="bg-gradient-to-r from-red-500/10 to-pink-500/10 border-red-500/30 backdrop-blur-xl shadow-2xl shadow-red-500/20">
                     <CardHeader>
-                      <CardTitle className="text-yellow-400 dark:text-yellow-300 font-bold">
-                        Counselling in Progress
+                      <CardTitle className="text-red-400 dark:text-red-300 font-bold">
+                        Registration Closed
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-yellow-200 dark:text-yellow-100">
-                        First counselling completed. Second counselling updates will be announced soon.
-                        Stay tuned for further notifications.
+                      <p className="text-red-200 dark:text-red-100">
+                        Registration for additional 75 seats closed on 11th August.
+                        Counselling scheduled for 12th August at 10:30 AM, IET DAVV M Block.
                       </p>
                     </CardContent>
                   </Card>
