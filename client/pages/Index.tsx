@@ -41,10 +41,14 @@ export default function Index() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
-    // Registration has reopened for second counselling following completion of first counselling
-    // Applications are currently open as announced on August 6, 2025
-    setIsApplicationOpen(true);
-    setDaysUntilDeadline(0); // Will show "Registration Open" message
+    // Registration period: 8-11 August 2025 for new applicants
+    const registrationEnd = new Date("2025-08-11T23:59:59");
+    const today = new Date();
+    const diffTime = registrationEnd.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    setDaysUntilDeadline(Math.max(0, diffDays));
+    setIsApplicationOpen(diffDays > 0);
   }, []);
 
   const features = [
