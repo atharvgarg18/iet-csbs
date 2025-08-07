@@ -813,9 +813,9 @@ export default function Index() {
                           </span>
                         </div>
                         <p className="text-green-200 dark:text-green-100">
-                          75 additional seats have been added! Total seats increased to 150.{" "}
+                          🎉 75 additional seats added! Total seats now 150. Previous counselling results unaffected.{" "}
                           <strong className="text-green-300">
-                            Apply now for second counselling!
+                            Register now before the new deadline closes!
                           </strong>
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
