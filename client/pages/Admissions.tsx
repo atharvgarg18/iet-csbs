@@ -341,18 +341,16 @@ export default function Admissions() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground mb-2">
-                      Merit-Based Selection for Additional 75 Seats
+                      Complete Counselling Schedule & Eligibility
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      <strong>Important:</strong> After registration closes for the additional seats,
-                      students will be directly called for second counselling based on
-                      their JEE scores. Counselling will be conducted at the
-                      college level where students with better ranks will be
-                      given preference for the 75 additional seats. <strong>Previous counselling
-                      results and admissions remain completely unaffected.</strong>
+                      <strong>Eligible Candidates:</strong> (1) Earlier applicants who couldn't appear or get admission on 4th Aug,
+                      (2) New applicants registering 8-11 Aug. <strong>Counselling Date:</strong> 12th August 2025 at 10:30 AM,
+                      IET DAVV M Block. <strong>Subsequent counselling:</strong> 13-14 Aug if seats remain vacant.
+                      <strong>Previous counselling schedule and results remain completely unchanged.</strong>
                       <span className="text-primary font-medium">
                         {" "}
-                        Your JEE rank determines your admission priority for the new seats.
+                        Merit-based selection for all 75 additional seats.
                       </span>
                     </p>
                   </div>
