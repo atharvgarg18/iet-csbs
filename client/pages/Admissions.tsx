@@ -120,6 +120,16 @@ export default function Admissions() {
       <div className="relative z-10">
         <Navigation />
 
+        {/* Urgent Deadline Notice */}
+        <section className="py-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-red-500/10 to-orange-500/10 border-b border-red-500/20">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-2 rounded-full text-sm font-medium border border-red-500/30">
+              <Clock className="w-4 h-4" />
+              ⚠️ URGENT: Check Registration Deadline in Official PDF
+            </div>
+          </div>
+        </section>
+
         {/* Hero Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center space-y-8">
