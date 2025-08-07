@@ -33,14 +33,10 @@ export default function Admissions() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
-    // Set deadline to July 25, 2025 23:59:59 IST
-    const deadline = new Date("2025-07-25T23:59:59+05:30");
-    const today = new Date();
-    const diffTime = deadline.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    setDaysUntilDeadline(diffDays);
-    setIsApplicationOpen(diffDays > 0);
+    // Registration reopened for second counselling with 75 additional seats
+    // Applications are currently open following the announcement on August 6, 2025
+    setIsApplicationOpen(true);
+    setDaysUntilDeadline(0); // Will show "Registration Open" message
   }, []);
 
   const admissionSteps = [
