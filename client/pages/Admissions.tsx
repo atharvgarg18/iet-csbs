@@ -148,7 +148,7 @@ export default function Admissions() {
                   <div className="flex items-center justify-center gap-3">
                     <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
                     <CardTitle className="text-green-400 font-bold text-xl">
-                      Applications are LIVE!
+                      Registration Reopened - 75 New Seats Added!
                     </CardTitle>
                   </div>
                 </CardHeader>
@@ -157,14 +157,12 @@ export default function Admissions() {
                     <div className="flex items-center justify-center gap-2">
                       <Clock className="w-5 h-5 text-green-400" />
                       <span className="text-green-300 font-medium text-lg">
-                        {daysUntilDeadline > 0
-                          ? `${daysUntilDeadline} days remaining to apply`
-                          : "Last day to apply!"}
+                        Second counselling announced
                       </span>
                     </div>
                     <p className="text-green-200 text-lg">
-                      Application deadline:{" "}
-                      <strong className="text-green-300">July 25, 2025</strong>
+                      <strong className="text-green-300">75 additional seats</strong> have been added,
+                      bringing total seats to <strong className="text-green-300">150</strong>
                     </p>
                     <a
                       href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
@@ -174,23 +172,23 @@ export default function Admissions() {
                     >
                       <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300 text-lg px-8 py-6">
                         <ExternalLink className="w-5 h-5 mr-2" />
-                        Apply Now - Don't Miss Out!
+                        Apply for Second Counselling
                       </Button>
                     </a>
                   </div>
                 </CardContent>
               </Card>
             ) : (
-              <Card className="max-w-2xl mx-auto bg-gradient-to-r from-red-500/10 to-pink-500/10 border-red-500/30 backdrop-blur-xl shadow-2xl shadow-red-500/20">
+              <Card className="max-w-2xl mx-auto bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30 backdrop-blur-xl shadow-2xl shadow-yellow-500/20">
                 <CardHeader>
-                  <CardTitle className="text-red-400 font-bold text-xl">
-                    Applications Closed
+                  <CardTitle className="text-yellow-400 font-bold text-xl">
+                    Counselling in Progress
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-red-200">
-                    The application period has ended. Stay tuned for the next
-                    admission cycle.
+                  <p className="text-yellow-200">
+                    First counselling completed. Second counselling with 75 additional seats
+                    will be announced soon.
                   </p>
                 </CardContent>
               </Card>
