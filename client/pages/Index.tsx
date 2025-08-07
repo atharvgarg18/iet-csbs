@@ -800,7 +800,7 @@ export default function Index() {
                       <div className="flex items-center gap-3">
                         <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
                         <CardTitle className="text-green-400 dark:text-green-300 font-bold">
-                          Applications Open!
+                          Registration Reopened!
                         </CardTitle>
                       </div>
                     </CardHeader>
@@ -809,15 +809,13 @@ export default function Index() {
                         <div className="flex items-center gap-2">
                           <Clock className="w-5 h-5 text-green-400" />
                           <span className="text-green-300 font-medium">
-                            {daysUntilDeadline > 0
-                              ? `${daysUntilDeadline} days remaining to apply`
-                              : "Last day to apply!"}
+                            Second counselling announced
                           </span>
                         </div>
                         <p className="text-green-200 dark:text-green-100">
-                          Application deadline:{" "}
+                          Following completion of first counselling, registration has reopened for remaining seats.{" "}
                           <strong className="text-green-300">
-                            July 25, 2025
+                            Apply now for second counselling!
                           </strong>
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
