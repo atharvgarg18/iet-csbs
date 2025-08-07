@@ -157,8 +157,8 @@ export default function Index() {
                   Second Counselling Announced
                 </div>
                 <p className="text-base text-muted-foreground mb-4">
-                  Confused about joining CSBS? Get our honest perspective before
-                  making your decision.
+                  75 additional seats announced! Previous admissions unaffected.
+                  Confused about joining CSBS? Get our honest perspective before the registration deadline.
                 </p>
                 <a
                   href="#should-you-join"
