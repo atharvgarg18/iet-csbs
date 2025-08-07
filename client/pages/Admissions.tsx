@@ -91,9 +91,9 @@ export default function Admissions() {
     },
     {
       title: "Total Seats",
-      description: "Limited seats available for this premium program",
+      description: "Increased seats available for this premium program",
       icon: Users,
-      value: "75",
+      value: "150",
       color: "from-purple-500/20 to-pink-500/20",
     },
     {
