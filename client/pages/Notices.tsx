@@ -24,9 +24,9 @@ export default function Notices() {
   const notices = [
     {
       id: 5,
-      title: "Second Counselling & Registration Reopened",
+      title: "Second Counselling & 75 Additional Seats Added",
       description:
-        "Following the completion of first counselling, second counselling has been announced with registration reopened for remaining seats. Check the document for detailed schedule and procedures.",
+        "Following the completion of first counselling, second counselling has been announced with 75 additional seats, bringing total capacity to 150. Registration reopened for these additional seats. Check the document for detailed schedule and procedures.",
       date: "2025-08-06",
       type: "Administrative",
       priority: "high",
