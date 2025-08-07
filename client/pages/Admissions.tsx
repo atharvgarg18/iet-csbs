@@ -372,11 +372,11 @@ export default function Admissions() {
                     <Heart className="w-10 h-10 text-secondary" />
                   </div>
                   <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                    75 Additional Seats - Limited Time!
+                    Register by 11th August - Counselling 12th August!
                   </h2>
                   <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Don't let this opportunity slip away. With 75 new seats added, you have another chance
-                    to join this industry-aligned program. Register before the deadline!
+                    75 new seats available! Register during 8-11 August. Counselling on 12th August at 10:30 AM,
+                    IET DAVV M Block. Earlier applicants also eligible for 12th August counselling.
                   </p>
                   {isApplicationOpen ? (
                     <div className="space-y-4">
