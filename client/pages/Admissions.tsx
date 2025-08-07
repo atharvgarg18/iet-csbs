@@ -355,11 +355,11 @@ export default function Admissions() {
                     <Heart className="w-10 h-10 text-secondary" />
                   </div>
                   <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                    Ready to Transform Your Future?
+                    75 Additional Seats - Limited Time!
                   </h2>
                   <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Don't let this opportunity slip away. Join a program that's
-                    designed to make you industry-ready from day one.
+                    Don't let this opportunity slip away. With 75 new seats added, you have another chance
+                    to join this industry-aligned program. Register before the deadline!
                   </p>
                   {isApplicationOpen ? (
                     <div className="space-y-4">
