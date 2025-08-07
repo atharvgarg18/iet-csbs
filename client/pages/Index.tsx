@@ -896,25 +896,25 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Register online for 75 additional seats (before deadline)
+                        New applicants register during 8-11 August 2025
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Second counselling for new seats only
+                        Counselling on 12th August at 10:30 AM, IET DAVV M Block
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Previous counselling results remain valid
+                        Earlier applicants + new applicants eligible for 12th Aug
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Merit-based allocation for additional seats
+                        Subsequent counselling 13-14 Aug if seats remain
                       </span>
                     </div>
                   </CardContent>
