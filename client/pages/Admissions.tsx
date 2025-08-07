@@ -392,7 +392,7 @@ export default function Admissions() {
                         </Button>
                       </a>
                       <p className="text-sm text-muted-foreground">
-                        ⏰ Only {daysUntilDeadline} days left to apply
+                        ⏰ Registration closes 11th August | Counselling 12th August at 10:30 AM
                       </p>
                     </div>
                   ) : (
