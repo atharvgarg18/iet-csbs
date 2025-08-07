@@ -70,7 +70,7 @@ export default function Admissions() {
       step: 4,
       title: "Seat Allocation",
       description:
-        "Seats allocated based on merit rank until capacity is filled",
+        "Seats allocated based on merit rank until all 150 seats are filled",
       icon: CheckCircle,
       color: "primary",
       status: "upcoming",
