@@ -813,7 +813,7 @@ export default function Index() {
                           </span>
                         </div>
                         <p className="text-green-200 dark:text-green-100">
-                          Following completion of first counselling, registration has reopened for remaining seats.{" "}
+                          75 additional seats have been added! Total seats increased to 150.{" "}
                           <strong className="text-green-300">
                             Apply now for second counselling!
                           </strong>
