@@ -161,8 +161,9 @@ export default function Admissions() {
                       </span>
                     </div>
                     <p className="text-green-200 text-lg">
-                      <strong className="text-green-300">75 additional seats</strong> have been added,
-                      bringing total seats to <strong className="text-green-300">150</strong>
+                      <strong className="text-green-300">75 additional seats</strong> added (total 150).
+                      <strong className="text-green-300">Previous counselling results remain unaffected.</strong><br/>
+                      Register before the new deadline mentioned in the official document.
                     </p>
                     <a
                       href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
