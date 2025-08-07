@@ -23,6 +23,18 @@ export default function Notices() {
   // Current notices (ordered by date - newest first)
   const notices = [
     {
+      id: 5,
+      title: "Second Counselling & Registration Reopened",
+      description:
+        "Following the completion of first counselling, second counselling has been announced with registration reopened for remaining seats. Check the document for detailed schedule and procedures.",
+      date: "2025-08-06",
+      type: "Administrative",
+      priority: "high",
+      downloadLink:
+        "https://ietdavv.edu.in/images/downloads/Admission/CSBS_2_Web_6082025.pdf",
+      isPDF: true,
+    },
+    {
       id: 4,
       title: "Academic Calendar 2025-26 Released",
       description:
@@ -36,12 +48,12 @@ export default function Notices() {
     },
     {
       id: 3,
-      title: "B.Tech CSBS Counselling Schedule Released",
+      title: "B.Tech CSBS First Counselling Schedule Released",
       description:
-        "Official counselling schedule for B.Tech Computer Science & Business Systems admissions has been published. Check the document for detailed timings and procedures.",
+        "Official first counselling schedule for B.Tech Computer Science & Business Systems admissions has been published. First counselling has been completed as per schedule.",
       date: "2025-07-26",
       type: "Administrative",
-      priority: "high",
+      priority: "medium",
       downloadLink:
         "https://ietdavv.edu.in/images/downloads/Admission/BTech_CSBS_Counselling_schedule.pdf",
       isPDF: true,
