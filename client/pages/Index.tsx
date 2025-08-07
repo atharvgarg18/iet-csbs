@@ -844,17 +844,16 @@ export default function Index() {
                     </CardContent>
                   </Card>
                 ) : (
-                  <Card className="bg-gradient-to-r from-red-500/10 to-pink-500/10 border-red-500/30 backdrop-blur-xl shadow-2xl shadow-red-500/20">
+                  <Card className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30 backdrop-blur-xl shadow-2xl shadow-yellow-500/20">
                     <CardHeader>
-                      <CardTitle className="text-red-400 dark:text-red-300 font-bold">
-                        Applications Closed
+                      <CardTitle className="text-yellow-400 dark:text-yellow-300 font-bold">
+                        Counselling in Progress
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-red-200 dark:text-red-100">
-                        The application period for the CSBS program 2025-29 has
-                        ended on July 25, 2025. Please check back next year for
-                        the 2026-30 batch.
+                      <p className="text-yellow-200 dark:text-yellow-100">
+                        First counselling completed. Second counselling updates will be announced soon.
+                        Stay tuned for further notifications.
                       </p>
                     </CardContent>
                   </Card>
