@@ -331,7 +331,7 @@ export default function Admissions() {
                       their JEE scores. Counselling will be conducted at the
                       college level where students with better ranks will be
                       given preference for admission. The process continues
-                      until all 75 seats are filled.
+                      until all 150 seats are filled (75 additional seats have been added).
                       <span className="text-primary font-medium">
                         {" "}
                         Your JEE rank determines your admission priority.
