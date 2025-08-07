@@ -862,7 +862,7 @@ export default function Index() {
                 <div className="grid grid-cols-2 gap-4">
                   <Card className="text-center p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
                     <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-foreground">76</div>
+                    <div className="text-2xl font-bold text-foreground">150</div>
                     <div className="text-sm text-muted-foreground">
                       Total Seats
                     </div>
