@@ -891,25 +891,25 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Register online for second counselling round
+                        Register online for 75 additional seats (before deadline)
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Second counselling for remaining seats
+                        Second counselling for new seats only
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Attend counselling at IET DAVV campus
+                        Previous counselling results remain valid
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Final seat allocation based on merit
+                        Merit-based allocation for additional seats
                       </span>
                     </div>
                   </CardContent>
