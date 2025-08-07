@@ -161,8 +161,9 @@ export default function Index() {
                   Registration Closes 11th Aug | Counselling 12th Aug
                 </div>
                 <p className="text-base text-muted-foreground mb-4">
-                  75 additional seats! Registration: 8-11 Aug | Counselling: 12 Aug, 10:30 AM.
-                  Confused about joining CSBS? Get our honest perspective before the deadline.
+                  75 additional seats! Registration: 8-11 Aug | Counselling: 12
+                  Aug, 10:30 AM. Confused about joining CSBS? Get our honest
+                  perspective before the deadline.
                 </p>
                 <a
                   href="#should-you-join"
@@ -819,9 +820,18 @@ export default function Index() {
                           </span>
                         </div>
                         <p className="text-green-200 dark:text-green-100">
-                          Registration: <strong className="text-green-300">8-11 August</strong> |
-                          Counselling: <strong className="text-green-300">12 August at 10:30 AM</strong> |
-                          Venue: <strong className="text-green-300">IET DAVV M Block</strong>
+                          Registration:{" "}
+                          <strong className="text-green-300">
+                            8-11 August
+                          </strong>{" "}
+                          | Counselling:{" "}
+                          <strong className="text-green-300">
+                            12 August at 10:30 AM
+                          </strong>{" "}
+                          | Venue:{" "}
+                          <strong className="text-green-300">
+                            IET DAVV M Block
+                          </strong>
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
                           <a
@@ -857,8 +867,9 @@ export default function Index() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-red-200 dark:text-red-100">
-                        Registration for additional 75 seats closed on 11th August.
-                        Counselling scheduled for 12th August at 10:30 AM, IET DAVV M Block.
+                        Registration for additional 75 seats closed on 11th
+                        August. Counselling scheduled for 12th August at 10:30
+                        AM, IET DAVV M Block.
                       </p>
                     </CardContent>
                   </Card>
@@ -867,7 +878,9 @@ export default function Index() {
                 <div className="grid grid-cols-2 gap-4">
                   <Card className="text-center p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
                     <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-foreground">150</div>
+                    <div className="text-2xl font-bold text-foreground">
+                      150
+                    </div>
                     <div className="text-sm text-muted-foreground">
                       Total Seats
                     </div>
@@ -908,7 +921,8 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Earlier applicants + new applicants eligible for 12th Aug
+                        Earlier applicants + new applicants eligible for 12th
+                        Aug
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
