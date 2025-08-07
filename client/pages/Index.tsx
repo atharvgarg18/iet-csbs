@@ -154,7 +154,7 @@ export default function Index() {
               <div className="pt-8 max-w-2xl mx-auto text-center">
                 <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-medium border border-secondary/20 mb-4">
                   <Heart className="w-3 h-3" />
-                  Counselling Around the Corner
+                  Second Counselling Announced
                 </div>
                 <p className="text-base text-muted-foreground mb-4">
                   Confused about joining CSBS? Get our honest perspective before
