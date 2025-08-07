@@ -171,13 +171,16 @@ export default function Admissions() {
                     <div className="flex items-center justify-center gap-2">
                       <Clock className="w-5 h-5 text-green-400" />
                       <span className="text-green-300 font-medium text-lg">
-                        Second counselling announced
+                        {daysUntilDeadline > 0
+                          ? `Only ${daysUntilDeadline} days left to register!`
+                          : "Last day to register!"}
                       </span>
                     </div>
                     <p className="text-green-200 text-lg">
-                      <strong className="text-green-300">75 additional seats</strong> added (total 150).
-                      <strong className="text-green-300">Previous counselling results remain unaffected.</strong><br/>
-                      Register before the new deadline mentioned in the official document.
+                      <strong className="text-green-300">Registration: 8-11 August</strong> |
+                      <strong className="text-green-300">Counselling: 12 August, 10:30 AM</strong><br/>
+                      <strong className="text-green-300">Venue: IET DAVV M Block</strong> |
+                      Previous results remain unaffected.
                     </p>
                     <a
                       href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
