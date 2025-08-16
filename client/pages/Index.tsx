@@ -989,75 +989,7 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Should You Join Section */}
-        <section
-          id="should-you-join"
-          className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-muted/35 to-muted/25"
-        >
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium border border-secondary/20">
-                <Heart className="w-4 h-4" />
-                Our Honest Take
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Our Two Cents on Should You Join CSBS?
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Here's our unfiltered perspective to help you decide
-              </p>
-            </div>
 
-            <Card className="p-8 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <ExternalLink className="w-4 h-4 text-secondary" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-foreground mb-3">
-                        The Reality Check
-                      </h3>
-                      <div className="space-y-4 text-muted-foreground">
-                        <p>
-                          <strong className="text-foreground">
-                            Let's be honest:
-                          </strong>{" "}
-                          This program is new and will have hurdles. We're
-                          competing with legacy branches like CSE and IT that
-                          have been running for decades and have established
-                          reputations, alumni networks, and proven track
-                          records.
-                        </p>
-                        <p>
-                          The program is still settling into its rhythm, though
-                          the initial inertia has been broken by the inaugural
-                          Class of 2028. We're the pioneers, which means we're
-                          building the foundation for future batches.
-                        </p>
-                        <p className="text-primary font-medium">
-                          If you're getting a better option in an already
-                          established branch with proven placement records and
-                          industry connections, weigh the pros and cons
-                          carefully. This decision is yours to make.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-primary/5 rounded-lg p-6 border border-primary/10">
-                    <p className="text-foreground font-medium text-center">
-                      💡 <strong>Our advice:</strong> Choose based on your
-                      goals, risk tolerance, and career aspirations. There's no
-                      wrong choice – just different paths.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
 
         {/* FAQ Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
