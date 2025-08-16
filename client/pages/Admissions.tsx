@@ -152,36 +152,36 @@ export default function Admissions() {
 
             {/* Status Card */}
             <Card className="max-w-2xl mx-auto bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/30 backdrop-blur-xl shadow-2xl shadow-blue-500/20">
-              <CardHeader>
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg shadow-blue-400/50"></div>
-                  <CardTitle className="text-blue-400 font-bold text-xl">
+              <CardHeader className="pb-3 sm:pb-4">
+                <div className="flex items-center justify-center gap-2 sm:gap-3">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg shadow-blue-400/50"></div>
+                  <CardTitle className="text-blue-400 font-bold text-base sm:text-lg lg:text-xl text-center">
                     Welcome New CSBS Students! 🎉
                   </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 text-center">
+                <div className="space-y-3 sm:space-y-4 text-center">
                   <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-blue-400" />
-                    <span className="text-blue-300 font-medium text-lg">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                    <span className="text-blue-300 font-medium text-sm sm:text-base lg:text-lg">
                       Counselling completed successfully!
                     </span>
                   </div>
-                  <div className="text-blue-200 text-lg space-y-2">
+                  <div className="text-blue-200 text-sm sm:text-base lg:text-lg space-y-2">
                     <p><strong className="text-blue-300">📅 Classes Start:</strong> 18 August 2025</p>
                     <p><strong className="text-blue-300">🎓 Induction Program:</strong> 28-29 August 2025</p>
                     <p><strong className="text-blue-300">📍 Important:</strong> All admitted students must report at IET on 18 August</p>
-                    <p className="text-sm text-blue-300">Class timetable and details will be notified at IET Website</p>
+                    <p className="text-xs sm:text-sm text-blue-300">Class timetable and details will be notified at IET Website</p>
                   </div>
                   <a
                     href="https://ietdavv.edu.in/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block"
+                    className="inline-block w-full sm:w-auto"
                   >
-                    <Button className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 text-lg px-8 py-6">
-                      <ExternalLink className="w-5 h-5 mr-2" />
+                    <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px]">
+                      <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                       Check IET Website for Updates
                     </Button>
                   </a>
