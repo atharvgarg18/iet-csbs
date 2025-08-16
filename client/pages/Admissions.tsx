@@ -175,14 +175,14 @@ export default function Admissions() {
                     <p className="text-sm text-blue-300">Class timetable and details will be notified at IET Website</p>
                   </div>
                   <a
-                    href="/assets/induction-program-notice.html"
+                    href="https://ietdavv.edu.in/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block"
                   >
                     <Button className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 text-lg px-8 py-6">
                       <ExternalLink className="w-5 h-5 mr-2" />
-                      View Official Notice
+                      Check IET Website for Updates
                     </Button>
                   </a>
                 </div>
