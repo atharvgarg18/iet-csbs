@@ -33,14 +33,9 @@ export default function Admissions() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
-    // Registration period: 8-11 August 2025 for new applicants
-    const registrationEnd = new Date("2025-08-11T23:59:59");
-    const today = new Date();
-    const diffTime = registrationEnd.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    setDaysUntilDeadline(Math.max(0, diffDays));
-    setIsApplicationOpen(diffDays > 0);
+    // Counselling completed, admissions closed for this cycle
+    setIsApplicationOpen(false);
+    setDaysUntilDeadline(0);
   }, []);
 
   const admissionSteps = [
@@ -129,8 +124,7 @@ export default function Admissions() {
           <div className="max-w-7xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-2 rounded-full text-sm font-medium border border-red-500/30">
               <Clock className="w-4 h-4" />
-              ⚠️ URGENT: Registration closes 11th August | Counselling 12th
-              August 10:30 AM
+              ⚠️ URGENT: Registration closes 11th August | Counselling 12th August 10:30 AM
             </div>
           </div>
         </section>
@@ -178,18 +172,10 @@ export default function Admissions() {
                       </span>
                     </div>
                     <p className="text-green-200 text-lg">
-                      <strong className="text-green-300">
-                        Registration: 8-11 August
-                      </strong>{" "}
-                      |
-                      <strong className="text-green-300">
-                        Counselling: 12 August, 10:30 AM
-                      </strong>
-                      <br />
-                      <strong className="text-green-300">
-                        Venue: IET DAVV M Block
-                      </strong>{" "}
-                      | Previous results remain unaffected.
+                      <strong className="text-green-300">Registration: 8-11 August</strong> |
+                      <strong className="text-green-300">Counselling: 12 August, 10:30 AM</strong><br/>
+                      <strong className="text-green-300">Venue: IET DAVV M Block</strong> |
+                      Previous results remain unaffected.
                     </p>
                     <a
                       href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
@@ -214,8 +200,8 @@ export default function Admissions() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-yellow-200">
-                    First counselling completed. Second counselling with 75
-                    additional seats will be announced soon.
+                    First counselling completed. Second counselling with 75 additional seats
+                    will be announced soon.
                   </p>
                 </CardContent>
               </Card>
@@ -353,17 +339,10 @@ export default function Admissions() {
                       Complete Counselling Schedule & Eligibility
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      <strong>Eligible Candidates:</strong> (1) Earlier
-                      applicants who couldn't appear or get admission on 4th
-                      Aug, (2) New applicants registering 8-11 Aug.{" "}
-                      <strong>Counselling Date:</strong> 12th August 2025 at
-                      10:30 AM, IET DAVV M Block.{" "}
-                      <strong>Subsequent counselling:</strong> 13-14 Aug if
-                      seats remain vacant.
-                      <strong>
-                        Previous counselling schedule and results remain
-                        completely unchanged.
-                      </strong>
+                      <strong>Eligible Candidates:</strong> (1) Earlier applicants who couldn't appear or get admission on 4th Aug,
+                      (2) New applicants registering 8-11 Aug. <strong>Counselling Date:</strong> 12th August 2025 at 10:30 AM,
+                      IET DAVV M Block. <strong>Subsequent counselling:</strong> 13-14 Aug if seats remain vacant.
+                      <strong>Previous counselling schedule and results remain completely unchanged.</strong>
                       <span className="text-primary font-medium">
                         {" "}
                         Merit-based selection for all 75 additional seats.
@@ -389,10 +368,8 @@ export default function Admissions() {
                     Register by 11th August - Counselling 12th August!
                   </h2>
                   <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    75 new seats available! Register during 8-11 August.
-                    Counselling on 12th August at 10:30 AM, IET DAVV M Block.
-                    Earlier applicants also eligible for 12th August
-                    counselling.
+                    75 new seats available! Register during 8-11 August. Counselling on 12th August at 10:30 AM,
+                    IET DAVV M Block. Earlier applicants also eligible for 12th August counselling.
                   </p>
                   {isApplicationOpen ? (
                     <div className="space-y-4">
@@ -408,8 +385,7 @@ export default function Admissions() {
                         </Button>
                       </a>
                       <p className="text-sm text-muted-foreground">
-                        ⏰ Registration closes 11th August | Counselling 12th
-                        August at 10:30 AM
+                        ⏰ Registration closes 11th August | Counselling 12th August at 10:30 AM
                       </p>
                     </div>
                   ) : (
