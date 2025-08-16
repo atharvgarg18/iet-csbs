@@ -24,14 +24,14 @@ export default function Notices() {
   const notices = [
     {
       id: 8,
-      title:
-        "🎓 Induction Program & Classes Start Date for Newly Admitted Students",
+      title: "🎓 Induction Program & Classes Start Date for Newly Admitted Students",
       description:
         "Counselling completed! Induction Program for all newly admitted B.Tech and B.Des first year students rescheduled to 28-29 August 2025. Regular classes start from 18 August 2025. All newly admitted students must report at IET on 18 August. Class timetable and details will be notified at IET Website.",
       date: "2025-08-15",
       type: "Academic",
       priority: "high",
-      downloadLink: "https://ietdavv.edu.in/",
+      downloadLink:
+        "/assets/induction-program-notice.html",
       isPDF: false,
     },
     {
@@ -48,7 +48,7 @@ export default function Notices() {
     },
     {
       id: 6,
-      title: "⚠️ Last 3 Days: Registration Closes 11th August",
+      title: "⚠�� Last 3 Days: Registration Closes 11th August",
       description:
         "URGENT: New applicants can register from 8-11 August 2025. Registration closes on 11th August. Earlier applicants who couldn't appear/get admission on 4th Aug are also eligible for 12th Aug counselling.",
       date: "2025-08-08",
