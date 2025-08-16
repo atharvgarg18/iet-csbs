@@ -169,10 +169,26 @@ export default function Admissions() {
                     </span>
                   </div>
                   <div className="text-blue-200 text-lg space-y-2">
-                    <p><strong className="text-blue-300">📅 Classes Start:</strong> 18 August 2025</p>
-                    <p><strong className="text-blue-300">🎓 Induction Program:</strong> 28-29 August 2025</p>
-                    <p><strong className="text-blue-300">📍 Important:</strong> All admitted students must report at IET on 18 August</p>
-                    <p className="text-sm text-blue-300">Class timetable and details will be notified at IET Website</p>
+                    <p>
+                      <strong className="text-blue-300">
+                        📅 Classes Start:
+                      </strong>{" "}
+                      18 August 2025
+                    </p>
+                    <p>
+                      <strong className="text-blue-300">
+                        🎓 Induction Program:
+                      </strong>{" "}
+                      28-29 August 2025
+                    </p>
+                    <p>
+                      <strong className="text-blue-300">📍 Important:</strong>{" "}
+                      All admitted students must report at IET on 18 August
+                    </p>
+                    <p className="text-sm text-blue-300">
+                      Class timetable and details will be notified at IET
+                      Website
+                    </p>
                   </div>
                   <a
                     href="https://ietdavv.edu.in/"
@@ -321,10 +337,17 @@ export default function Admissions() {
                       Complete Counselling Schedule & Eligibility
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      <strong>Eligible Candidates:</strong> (1) Earlier applicants who couldn't appear or get admission on 4th Aug,
-                      (2) New applicants registering 8-11 Aug. <strong>Counselling Date:</strong> 12th August 2025 at 10:30 AM,
-                      IET DAVV M Block. <strong>Subsequent counselling:</strong> 13-14 Aug if seats remain vacant.
-                      <strong>Previous counselling schedule and results remain completely unchanged.</strong>
+                      <strong>Eligible Candidates:</strong> (1) Earlier
+                      applicants who couldn't appear or get admission on 4th
+                      Aug, (2) New applicants registering 8-11 Aug.{" "}
+                      <strong>Counselling Date:</strong> 12th August 2025 at
+                      10:30 AM, IET DAVV M Block.{" "}
+                      <strong>Subsequent counselling:</strong> 13-14 Aug if
+                      seats remain vacant.
+                      <strong>
+                        Previous counselling schedule and results remain
+                        completely unchanged.
+                      </strong>
                       <span className="text-primary font-medium">
                         {" "}
                         Merit-based selection for all 75 additional seats.
@@ -350,8 +373,9 @@ export default function Admissions() {
                     Congratulations Class of 2029!
                   </h2>
                   <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Admissions for CSBS 2025-29 batch completed with 150 total students.
-                    Admitted students get ready for an exciting journey ahead!
+                    Admissions for CSBS 2025-29 batch completed with 150 total
+                    students. Admitted students get ready for an exciting
+                    journey ahead!
                   </p>
                   <div className="space-y-4">
                     <a
@@ -366,7 +390,8 @@ export default function Admissions() {
                       </Button>
                     </a>
                     <p className="text-sm text-muted-foreground">
-                      📚 Classes start 18 August | 🎓 Induction 28-29 August | Check IET website regularly
+                      📚 Classes start 18 August | 🎓 Induction 28-29 August |
+                      Check IET website regularly
                     </p>
                   </div>
                 </div>

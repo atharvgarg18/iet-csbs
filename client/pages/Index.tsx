@@ -156,8 +156,8 @@ export default function Index() {
                   Welcome Class of 2029! Classes Start 18 August
                 </div>
                 <p className="text-base text-muted-foreground">
-                  Admissions completed with 150 total seats filled!
-                  The CSBS program is now ready to welcome its new batch of students.
+                  Admissions completed with 150 total seats filled! The CSBS
+                  program is now ready to welcome its new batch of students.
                 </p>
               </div>
             </div>
@@ -807,9 +807,18 @@ export default function Index() {
                           </span>
                         </div>
                         <p className="text-green-200 dark:text-green-100">
-                          Registration: <strong className="text-green-300">8-11 August</strong> |
-                          Counselling: <strong className="text-green-300">12 August at 10:30 AM</strong> |
-                          Venue: <strong className="text-green-300">IET DAVV M Block</strong>
+                          Registration:{" "}
+                          <strong className="text-green-300">
+                            8-11 August
+                          </strong>{" "}
+                          | Counselling:{" "}
+                          <strong className="text-green-300">
+                            12 August at 10:30 AM
+                          </strong>{" "}
+                          | Venue:{" "}
+                          <strong className="text-green-300">
+                            IET DAVV M Block
+                          </strong>
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
                           <a
@@ -849,9 +858,17 @@ export default function Index() {
                           Counselling completed successfully! 🎉
                         </p>
                         <div className="text-sm text-blue-200 space-y-1">
-                          <p><strong>📅 Classes Start:</strong> 18 August 2025</p>
-                          <p><strong>🎓 Induction Program:</strong> 28-29 August 2025</p>
-                          <p><strong>📍 Reporting:</strong> All admitted students must report at IET on 18 August</p>
+                          <p>
+                            <strong>📅 Classes Start:</strong> 18 August 2025
+                          </p>
+                          <p>
+                            <strong>🎓 Induction Program:</strong> 28-29 August
+                            2025
+                          </p>
+                          <p>
+                            <strong>📍 Reporting:</strong> All admitted students
+                            must report at IET on 18 August
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -861,7 +878,9 @@ export default function Index() {
                 <div className="grid grid-cols-2 gap-4">
                   <Card className="text-center p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
                     <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-foreground">150</div>
+                    <div className="text-2xl font-bold text-foreground">
+                      150
+                    </div>
                     <div className="text-sm text-muted-foreground">
                       Total Seats
                     </div>
@@ -988,8 +1007,6 @@ export default function Index() {
             </div>
           </div>
         </section>
-
-
 
         {/* FAQ Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
