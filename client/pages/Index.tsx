@@ -151,13 +151,13 @@ export default function Index() {
 
               {/* Our Two Cents CTA - Important for counselling period */}
               <div className="pt-8 max-w-2xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-medium border border-secondary/20 mb-4">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium border border-primary/20 mb-4">
                   <Heart className="w-3 h-3" />
-                  Registration Closes 11th Aug | Counselling 12th Aug
+                  Welcome Class of 2029! Classes Start 18 August
                 </div>
                 <p className="text-base text-muted-foreground mb-4">
-                  75 additional seats! Registration: 8-11 Aug | Counselling: 12 Aug, 10:30 AM.
-                  Confused about joining CSBS? Get our honest perspective before the deadline.
+                  Admissions completed with 150 total seats filled!
+                  Confused about joining CSBS? Get our honest perspective about the program.
                 </p>
                 <a
                   href="#should-you-join"
