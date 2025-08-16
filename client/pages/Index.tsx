@@ -165,27 +165,27 @@ export default function Index() {
         </section>
 
         {/* Stats Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               {stats.map((stat) => {
                 const Icon = stat.icon;
                 return (
                   <Card
                     key={stat.label}
-                    className="text-center p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm group"
+                    className="text-center p-3 sm:p-4 lg:p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm group"
                   >
-                    <CardContent className="pt-4 relative">
+                    <CardContent className="pt-2 sm:pt-4 relative">
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <Icon className="w-10 h-10 mx-auto mb-3 text-primary group-hover:text-secondary transition-colors duration-300 relative z-10" />
-                      <div className="text-3xl font-bold bg-gradient-to-br from-foreground to-primary bg-clip-text text-transparent mb-1 relative z-10">
+                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 mx-auto mb-2 sm:mb-3 text-primary group-hover:text-secondary transition-colors duration-300 relative z-10" />
+                      <div className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-br from-foreground to-primary bg-clip-text text-transparent mb-1 relative z-10">
                         {stat.value}
                       </div>
-                      <div className="text-sm text-muted-foreground relative z-10">
+                      <div className="text-xs sm:text-sm text-muted-foreground relative z-10 leading-tight">
                         {stat.label}
                       </div>
                       {stat.subtitle && (
-                        <div className="text-xs bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mt-1 font-medium relative z-10">
+                        <div className="text-xs bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mt-1 font-medium relative z-10 leading-tight">
                           {stat.subtitle}
                         </div>
                       )}
