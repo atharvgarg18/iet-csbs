@@ -98,25 +98,25 @@ export default function Index() {
         <Navigation />
 
         {/* Hero Section */}
-        <section className="relative py-20 lg:py-32 px-4 sm:px-6 lg:px-8">
+        <section className="relative py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center space-y-8">
-              <div className="space-y-6">
+            <div className="text-center space-y-6 sm:space-y-8">
+              <div className="space-y-4 sm:space-y-6">
                 <Badge
                   variant="secondary"
-                  className="text-sm px-6 py-3 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 backdrop-blur-sm"
+                  className="text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 backdrop-blur-sm"
                 >
-                  <span className="text-2xl mr-2">🎓</span>
-                  Industry-Aligned Program • TCS Partnership
+                  <span className="text-lg sm:text-2xl mr-2">🎓</span>
+                  <span className="text-xs sm:text-sm">Industry-Aligned Program • TCS Partnership</span>
                 </Badge>
-                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground tracking-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground tracking-tight leading-tight">
                   Computer Science &
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient block sm:inline">
                     {" "}
                     Business Systems
                   </span>
                 </h1>
-                <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed px-2">
                   A pioneering 4-year B.Tech program developed in collaboration
                   with{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent font-semibold">
@@ -129,35 +129,35 @@ export default function Index() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link to="/notes">
-                  <Button size="lg" className="text-lg px-8 py-6">
-                    <BookOpen className="w-5 h-5 mr-2" />
+              <div className="flex flex-col gap-3 sm:gap-4 justify-center items-center max-w-md sm:max-w-none mx-auto">
+                <Link to="/notes" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px]">
+                    <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     Access Notes
-                    <ArrowRight className="w-5 h-5 ml-2" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                   </Button>
                 </Link>
-                <Link to="/papers">
+                <Link to="/papers" className="w-full sm:w-auto">
                   <Button
                     variant="outline"
                     size="lg"
-                    className="text-lg px-8 py-6"
+                    className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px]"
                   >
-                    <FileText className="w-5 h-5 mr-2" />
+                    <FileText className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     View Papers
                   </Button>
                 </Link>
               </div>
 
-              {/* Our Two Cents CTA - Important for counselling period */}
-              <div className="pt-8 max-w-2xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium border border-primary/20 mb-4">
+              {/* Welcome message */}
+              <div className="pt-6 sm:pt-8 max-w-2xl mx-auto text-center">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-2 rounded-full text-xs font-medium border border-primary/20 mb-3 sm:mb-4">
                   <Heart className="w-3 h-3" />
-                  Welcome Class of 2029! Classes Start 18 August
+                  <span className="text-xs">Welcome Class of 2029! Classes Start 18 August</span>
                 </div>
-                <p className="text-base text-muted-foreground">
-                  Admissions completed with 150 total seats filled! The CSBS
-                  program is now ready to welcome its new batch of students.
+                <p className="text-sm sm:text-base text-muted-foreground px-4">
+                  Admissions completed with 150 total seats filled!
+                  The CSBS program is now ready to welcome its new batch of students.
                 </p>
               </div>
             </div>
@@ -807,18 +807,9 @@ export default function Index() {
                           </span>
                         </div>
                         <p className="text-green-200 dark:text-green-100">
-                          Registration:{" "}
-                          <strong className="text-green-300">
-                            8-11 August
-                          </strong>{" "}
-                          | Counselling:{" "}
-                          <strong className="text-green-300">
-                            12 August at 10:30 AM
-                          </strong>{" "}
-                          | Venue:{" "}
-                          <strong className="text-green-300">
-                            IET DAVV M Block
-                          </strong>
+                          Registration: <strong className="text-green-300">8-11 August</strong> |
+                          Counselling: <strong className="text-green-300">12 August at 10:30 AM</strong> |
+                          Venue: <strong className="text-green-300">IET DAVV M Block</strong>
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
                           <a
@@ -858,17 +849,9 @@ export default function Index() {
                           Counselling completed successfully! 🎉
                         </p>
                         <div className="text-sm text-blue-200 space-y-1">
-                          <p>
-                            <strong>📅 Classes Start:</strong> 18 August 2025
-                          </p>
-                          <p>
-                            <strong>🎓 Induction Program:</strong> 28-29 August
-                            2025
-                          </p>
-                          <p>
-                            <strong>📍 Reporting:</strong> All admitted students
-                            must report at IET on 18 August
-                          </p>
+                          <p><strong>📅 Classes Start:</strong> 18 August 2025</p>
+                          <p><strong>🎓 Induction Program:</strong> 28-29 August 2025</p>
+                          <p><strong>📍 Reporting:</strong> All admitted students must report at IET on 18 August</p>
                         </div>
                       </div>
                     </CardContent>
@@ -878,9 +861,7 @@ export default function Index() {
                 <div className="grid grid-cols-2 gap-4">
                   <Card className="text-center p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
                     <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-foreground">
-                      150
-                    </div>
+                    <div className="text-2xl font-bold text-foreground">150</div>
                     <div className="text-sm text-muted-foreground">
                       Total Seats
                     </div>
@@ -1007,6 +988,8 @@ export default function Index() {
             </div>
           </div>
         </section>
+
+
 
         {/* FAQ Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
