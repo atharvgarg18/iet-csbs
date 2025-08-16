@@ -155,17 +155,10 @@ export default function Index() {
                   <Heart className="w-3 h-3" />
                   Welcome Class of 2029! Classes Start 18 August
                 </div>
-                <p className="text-base text-muted-foreground mb-4">
+                <p className="text-base text-muted-foreground">
                   Admissions completed with 150 total seats filled!
-                  Confused about joining CSBS? Get our honest perspective about the program.
+                  The CSBS program is now ready to welcome its new batch of students.
                 </p>
-                <a
-                  href="#should-you-join"
-                  className="inline-flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-300 font-medium text-sm"
-                >
-                  <span>Read Our Two Cents on Joining CSBS</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
               </div>
             </div>
           </div>
