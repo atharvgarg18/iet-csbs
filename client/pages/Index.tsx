@@ -896,40 +896,40 @@ export default function Index() {
         </section>
 
         {/* Enhanced CTA Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-muted/30 to-muted/20">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
-                <Zap className="w-4 h-4" />
+        <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-muted/30 to-muted/20">
+          <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-primary/20">
+                <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
                 Academic Resources
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
                 Ready to Explore?
               </h2>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground px-4">
                 Access comprehensive study materials, notes, and test papers for
                 your academic journey
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/notes">
+            <div className="flex flex-col gap-3 sm:gap-4 justify-center max-w-md sm:max-w-none mx-auto">
+              <Link to="/notes" className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="text-lg px-8 py-6 w-full sm:w-auto bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px] bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
                 >
-                  <BookOpen className="w-5 h-5 mr-2" />
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   Browse Notes
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                 </Button>
               </Link>
-              <Link to="/papers">
+              <Link to="/papers" className="w-full sm:w-auto">
                 <Button
                   variant="outline"
                   size="lg"
-                  className="text-lg px-8 py-6 w-full sm:w-auto border-2 border-primary hover:bg-primary hover:text-white"
+                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px] border-2 border-primary hover:bg-primary hover:text-white"
                 >
-                  <FileText className="w-5 h-5 mr-2" />
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   View Test Papers
                 </Button>
               </Link>
