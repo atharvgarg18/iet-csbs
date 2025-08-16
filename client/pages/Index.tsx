@@ -844,17 +844,23 @@ export default function Index() {
                     </CardContent>
                   </Card>
                 ) : (
-                  <Card className="bg-gradient-to-r from-red-500/10 to-pink-500/10 border-red-500/30 backdrop-blur-xl shadow-2xl shadow-red-500/20">
+                  <Card className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/30 backdrop-blur-xl shadow-2xl shadow-blue-500/20">
                     <CardHeader>
-                      <CardTitle className="text-red-400 dark:text-red-300 font-bold">
-                        Registration Closed
+                      <CardTitle className="text-blue-400 dark:text-blue-300 font-bold">
+                        Admissions Completed - Welcome New Students!
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-red-200 dark:text-red-100">
-                        Registration for additional 75 seats closed on 11th August.
-                        Counselling scheduled for 12th August at 10:30 AM, IET DAVV M Block.
-                      </p>
+                      <div className="space-y-3">
+                        <p className="text-blue-200 dark:text-blue-100">
+                          Counselling completed successfully! 🎉
+                        </p>
+                        <div className="text-sm text-blue-200 space-y-1">
+                          <p><strong>📅 Classes Start:</strong> 18 August 2025</p>
+                          <p><strong>🎓 Induction Program:</strong> 28-29 August 2025</p>
+                          <p><strong>📍 Reporting:</strong> All admitted students must report at IET on 18 August</p>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 )}
