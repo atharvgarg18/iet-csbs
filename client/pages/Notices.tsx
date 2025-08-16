@@ -23,13 +23,25 @@ export default function Notices() {
   // Current notices (ordered by date - newest first)
   const notices = [
     {
-      id: 7,
-      title: "📅 Detailed Counselling Schedule - 12th August 2025",
+      id: 8,
+      title: "🎓 Induction Program & Classes Start Date for Newly Admitted Students",
       description:
-        "Complete counselling schedule: Earlier applicants + new applicants (8-11 Aug registration) will have counselling on 12th Aug at 10:30 AM, IET DAVV M Block. Subsequent counselling on 13-14 Aug if seats remain. Previous counselling results remain unchanged.",
-      date: "2025-08-08",
-      type: "Administrative",
+        "Counselling completed! Induction Program for all newly admitted B.Tech and B.Des first year students rescheduled to 28-29 August 2025. Regular classes start from 18 August 2025. All newly admitted students must report at IET on 18 August. Class timetable and details will be notified at IET Website.",
+      date: "2025-08-15",
+      type: "Academic",
       priority: "high",
+      downloadLink:
+        "https://ietdavv.edu.in/",
+      isPDF: false,
+    },
+    {
+      id: 7,
+      title: "✅ Counselling Completed - 12th August 2025",
+      description:
+        "Counselling has been successfully completed as per schedule. Earlier applicants + new applicants (8-11 Aug registration) attended counselling on 12th Aug at 10:30 AM, IET DAVV M Block. Admissions process concluded.",
+      date: "2025-08-12",
+      type: "Administrative",
+      priority: "medium",
       downloadLink:
         "https://ietdavv.edu.in/images/downloads/Admission/CSBS_2_Web_6082025.pdf",
       isPDF: true,
