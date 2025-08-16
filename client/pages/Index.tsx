@@ -940,37 +940,37 @@ export default function Index() {
 
 
         {/* FAQ Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium border border-secondary/20">
-                <Target className="w-4 h-4" />
+            <div className="text-center space-y-4 sm:space-y-6 mb-8 sm:mb-12">
+              <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-secondary/20">
+                <Target className="w-3 h-3 sm:w-4 sm:h-4" />
                 Common Questions
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
                 Frequently Asked Questions
               </h2>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground px-4">
                 Get answers to the most common queries about CSBS
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <details className="group">
-                  <summary className="flex items-center justify-between p-6 cursor-pointer list-none bg-gradient-to-r from-card to-secondary/5 hover:bg-secondary/10 transition-colors duration-300">
-                    <h3 className="text-lg font-semibold text-foreground">
+                  <summary className="flex items-center justify-between p-4 sm:p-6 cursor-pointer list-none bg-gradient-to-r from-card to-secondary/5 hover:bg-secondary/10 transition-colors duration-300 min-h-[60px]">
+                    <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-foreground pr-4 leading-tight">
                       Will there be limitations in placement opportunities since
                       TCS designed the curriculum? Can we sit with CSE/IT
                       branches?
                     </h3>
-                    <div className="group-open:rotate-180 transition-transform duration-300">
-                      <ArrowRight className="w-5 h-5 text-secondary" />
+                    <div className="group-open:rotate-180 transition-transform duration-300 flex-shrink-0">
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
                     </div>
                   </summary>
-                  <CardContent className="px-6 pb-6">
-                    <div className="pt-4 border-t border-border/20">
-                      <p className="text-muted-foreground leading-relaxed">
+                  <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                    <div className="pt-3 sm:pt-4 border-t border-border/20">
+                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                         <strong className="text-foreground">
                           Great question!
                         </strong>{" "}
@@ -984,7 +984,7 @@ export default function Index() {
                         </span>
                         .
                       </p>
-                      <p className="text-muted-foreground mt-3">
+                      <p className="text-sm sm:text-base text-muted-foreground mt-3 leading-relaxed">
                         You get the best of both worlds: priority consideration
                         from TCS plus the freedom to explore opportunities
                         across the entire tech industry.
@@ -996,17 +996,17 @@ export default function Index() {
 
               <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <details className="group">
-                  <summary className="flex items-center justify-between p-6 cursor-pointer list-none bg-gradient-to-r from-card to-primary/5 hover:bg-primary/10 transition-colors duration-300">
-                    <h3 className="text-lg font-semibold text-foreground">
+                  <summary className="flex items-center justify-between p-4 sm:p-6 cursor-pointer list-none bg-gradient-to-r from-card to-primary/5 hover:bg-primary/10 transition-colors duration-300 min-h-[60px]">
+                    <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-foreground pr-4 leading-tight">
                       Are the classes held at the main IET DAVV campus?
                     </h3>
-                    <div className="group-open:rotate-180 transition-transform duration-300">
-                      <ArrowRight className="w-5 h-5 text-primary" />
+                    <div className="group-open:rotate-180 transition-transform duration-300 flex-shrink-0">
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                   </summary>
-                  <CardContent className="px-6 pb-6">
-                    <div className="pt-4 border-t border-border/20">
-                      <p className="text-muted-foreground leading-relaxed">
+                  <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                    <div className="pt-3 sm:pt-4 border-t border-border/20">
+                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                         <strong className="text-foreground">
                           Yes, absolutely!
                         </strong>{" "}
@@ -1015,7 +1015,7 @@ export default function Index() {
                         all the campus facilities, laboratories, library, and
                         infrastructure that the institute offers.
                       </p>
-                      <p className="text-muted-foreground mt-3">
+                      <p className="text-sm sm:text-base text-muted-foreground mt-3 leading-relaxed">
                         You're not in a separate facility or branch campus –
                         you're part of the main IET DAVV community with full
                         access to all campus resources and activities.
@@ -1027,18 +1027,18 @@ export default function Index() {
 
               <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <details className="group">
-                  <summary className="flex items-center justify-between p-6 cursor-pointer list-none bg-gradient-to-r from-card to-accent/5 hover:bg-accent/10 transition-colors duration-300">
-                    <h3 className="text-lg font-semibold text-foreground">
+                  <summary className="flex items-center justify-between p-4 sm:p-6 cursor-pointer list-none bg-gradient-to-r from-card to-accent/5 hover:bg-accent/10 transition-colors duration-300 min-h-[60px]">
+                    <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-foreground pr-4 leading-tight">
                       How is CSBS different from regular Computer Science
                       Engineering?
                     </h3>
-                    <div className="group-open:rotate-180 transition-transform duration-300">
-                      <ArrowRight className="w-5 h-5 text-accent" />
+                    <div className="group-open:rotate-180 transition-transform duration-300 flex-shrink-0">
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
                     </div>
                   </summary>
-                  <CardContent className="px-6 pb-6">
-                    <div className="pt-4 border-t border-border/20">
-                      <p className="text-muted-foreground leading-relaxed">
+                  <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                    <div className="pt-3 sm:pt-4 border-t border-border/20">
+                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                         <strong className="text-foreground">
                           CSBS is more focused and industry-aligned.
                         </strong>{" "}
@@ -1048,7 +1048,7 @@ export default function Index() {
                         entirely on computer science fundamentals plus business
                         systems.
                       </p>
-                      <p className="text-muted-foreground mt-3">
+                      <p className="text-sm sm:text-base text-muted-foreground mt-3 leading-relaxed">
                         Every subject in CSBS is handpicked to be relevant to
                         today's tech industry, making you job-ready from day one
                         without wasting time on outdated or irrelevant
