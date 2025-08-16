@@ -768,175 +768,123 @@ export default function Index() {
         </section>
 
         {/* Application Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-muted/25 to-muted/35">
+        <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-muted/25 to-muted/35">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
-                <Calendar className="w-4 h-4" />
-                Admissions Open
+            <div className="text-center space-y-4 sm:space-y-6 mb-8 sm:mb-12">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-primary/20">
+                <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                Admissions Completed
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Ready to Start Your CSBS Journey?
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+                Welcome New CSBS Students!
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Transform your future with our industry-aligned Computer Science
-                and Business Systems program
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+                Your journey with the industry-aligned Computer Science
+                and Business Systems program begins soon
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6">
-                {isApplicationOpen ? (
-                  <Card className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30 backdrop-blur-xl shadow-2xl shadow-green-500/20">
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-                        <CardTitle className="text-green-400 dark:text-green-300 font-bold">
-                          Registration Reopened!
-                        </CardTitle>
+            <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+              <div className="space-y-4 sm:space-y-6">
+                <Card className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/30 backdrop-blur-xl shadow-2xl shadow-blue-500/20">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-blue-400 dark:text-blue-300 font-bold text-base sm:text-lg">
+                      Admissions Completed - Welcome New Students!
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <p className="text-blue-200 dark:text-blue-100 text-sm sm:text-base">
+                        Counselling completed successfully! 🎉
+                      </p>
+                      <div className="text-xs sm:text-sm text-blue-200 space-y-1">
+                        <p><strong>📅 Classes Start:</strong> 18 August 2025</p>
+                        <p><strong>🎓 Induction Program:</strong> 28-29 August 2025</p>
+                        <p><strong>📍 Reporting:</strong> All admitted students must report at IET on 18 August</p>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2">
-                          <Clock className="w-5 h-5 text-green-400" />
-                          <span className="text-green-300 font-medium">
-                            {daysUntilDeadline > 0
-                              ? `${daysUntilDeadline} days left to register`
-                              : "Registration closes today!"}
-                          </span>
-                        </div>
-                        <p className="text-green-200 dark:text-green-100">
-                          Registration: <strong className="text-green-300">8-11 August</strong> |
-                          Counselling: <strong className="text-green-300">12 August at 10:30 AM</strong> |
-                          Venue: <strong className="text-green-300">IET DAVV M Block</strong>
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-3">
-                          <a
-                            href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-block"
-                          >
-                            <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300 w-full sm:w-auto">
-                              <ExternalLink className="w-4 h-4 mr-2" />
-                              Apply Now
-                            </Button>
-                          </a>
-                          <Link to="/admissions">
-                            <Button
-                              variant="outline"
-                              className="border-green-500 text-green-400 hover:bg-green-500/10 w-full sm:w-auto"
-                            >
-                              <FileText className="w-4 h-4 mr-2" />
-                              Learn Process
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <Card className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/30 backdrop-blur-xl shadow-2xl shadow-blue-500/20">
-                    <CardHeader>
-                      <CardTitle className="text-blue-400 dark:text-blue-300 font-bold">
-                        Admissions Completed - Welcome New Students!
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <p className="text-blue-200 dark:text-blue-100">
-                          Counselling completed successfully! 🎉
-                        </p>
-                        <div className="text-sm text-blue-200 space-y-1">
-                          <p><strong>📅 Classes Start:</strong> 18 August 2025</p>
-                          <p><strong>🎓 Induction Program:</strong> 28-29 August 2025</p>
-                          <p><strong>📍 Reporting:</strong> All admitted students must report at IET on 18 August</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+                    </div>
+                  </CardContent>
+                </Card>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <Card className="text-center p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
-                    <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-foreground">150</div>
-                    <div className="text-sm text-muted-foreground">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <Card className="text-center p-3 sm:p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
+                    <Users className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-primary" />
+                    <div className="text-xl sm:text-2xl font-bold text-foreground">150</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground leading-tight">
                       Total Seats
                     </div>
                   </Card>
-                  <Card className="text-center p-4 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10">
-                    <Award className="w-8 h-8 mx-auto mb-2 text-secondary" />
-                    <div className="text-2xl font-bold text-foreground">
+                  <Card className="text-center p-3 sm:p-4 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10">
+                    <Award className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-secondary" />
+                    <div className="text-xl sm:text-2xl font-bold text-foreground">
                       JEE
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs sm:text-sm text-muted-foreground leading-tight">
                       Based Admission
                     </div>
                   </Card>
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <Card className="p-6 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Target className="w-5 h-5 text-primary" />
-                      Admission Process
+              <div className="space-y-4 sm:space-y-6">
+                <Card className="p-4 sm:p-6 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm">
+                  <CardHeader className="pb-3 sm:pb-4 px-0">
+                    <CardTitle className="flex items-center gap-2 text-foreground text-base sm:text-lg">
+                      <Target className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                      Admission Timeline
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 px-0">
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                      <span className="text-sm text-foreground">
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 text-primary mt-1 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-foreground">
                         ✅ Registration completed (8-11 August 2025)
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                      <span className="text-sm text-foreground">
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 text-primary mt-1 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-foreground">
                         ✅ Counselling completed (12th August)
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                      <span className="text-sm text-foreground">
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 text-primary mt-1 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-foreground">
                         📅 Classes start 18 August - Report to IET
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                      <span className="text-sm text-foreground">
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 text-primary mt-1 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-foreground">
                         🎓 Induction Program: 28-29 August 2025
                       </span>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Phone className="w-5 h-5 text-secondary" />
-                      Need Help?
+                <Card className="p-4 sm:p-6 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
+                  <CardHeader className="pb-3 sm:pb-4 px-0">
+                    <CardTitle className="flex items-center gap-2 text-foreground text-base sm:text-lg">
+                      <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
+                      Contact Information
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 px-0">
                     <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-secondary" />
-                      <span className="text-sm text-foreground">
+                      <Mail className="w-3 h-3 sm:w-4 sm:h-4 text-secondary flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-foreground break-all">
                         admissions@ietdavv.edu.in
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-secondary" />
-                      <span className="text-sm text-foreground">
+                      <Phone className="w-3 h-3 sm:w-4 sm:h-4 text-secondary flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-foreground">
                         +91-731-2570179
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-secondary" />
-                      <span className="text-sm text-foreground">
+                    <div className="flex items-start gap-2">
+                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-secondary flex-shrink-0 mt-0.5" />
+                      <span className="text-xs sm:text-sm text-foreground leading-relaxed">
                         IET DAVV, Khandwa Road, Indore
                       </span>
                     </div>
