@@ -24,21 +24,21 @@ export default function Notes() {
         <Navigation />
 
         {/* Hero Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
-              <BookOpen className="w-4 h-4" />
+        <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-primary/20">
+              <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
               Study Resources
             </div>
 
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
+            <div className="space-y-3 sm:space-y-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
                 CSBS{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
                   Notes
                 </span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
                 Comprehensive study materials for the Class of 2028
               </p>
             </div>
@@ -46,39 +46,41 @@ export default function Notes() {
         </section>
 
         {/* Main Notes Section */}
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
+        <section className="pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <Card className="overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm">
-              <CardHeader className="text-center pb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <BookOpen className="w-8 h-8 text-primary" />
+              <CardHeader className="text-center pb-6 sm:pb-8 px-4 sm:px-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                 </div>
-                <CardTitle className="text-3xl font-bold text-foreground mb-4">
+                <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-3 sm:mb-4">
                   Class of 2028 Notes Collection
                 </CardTitle>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    <span>76 Students</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>Currently in 2nd Year</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Star className="w-4 h-4 text-yellow-500" />
-                    <span>Regularly Updated</span>
+                <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center text-muted-foreground">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
+                    <div className="flex items-center gap-2 justify-center">
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span>150 Students</span>
+                    </div>
+                    <div className="flex items-center gap-2 justify-center">
+                      <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span>Currently in 2nd Year</span>
+                    </div>
+                    <div className="flex items-center gap-2 justify-center">
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
+                      <span>Regularly Updated</span>
+                    </div>
                   </div>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-8">
+              <CardContent className="space-y-6 sm:space-y-8 px-4 sm:px-6">
                 {/* Drive Access Card */}
-                <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 text-center">
-                  <h3 className="text-2xl font-bold text-foreground mb-4">
+                <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-4 sm:p-6 lg:p-8 text-center">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-3 sm:mb-4">
                     Complete Notes Archive
                   </h3>
-                  <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
                     Access the comprehensive collection of notes, study
                     materials, and resources curated by your fellow classmates
                     and maintained by the Notes Department.
@@ -88,9 +90,10 @@ export default function Notes() {
                     href="https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK"
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="inline-block w-full sm:w-auto"
                   >
-                    <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 text-lg px-8 py-6">
-                      <ExternalLink className="w-5 h-5 mr-2" />
+                    <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px]">
+                      <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                       Open Notes Drive
                     </Button>
                   </a>
