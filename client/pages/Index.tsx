@@ -198,16 +198,16 @@ export default function Index() {
         </section>
 
         {/* About Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div className="space-y-6">
                 <div className="space-y-4">
-                  <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
                     About the CSBS Program
                   </h2>
                   <div className="space-y-4">
-                    <p className="text-lg text-muted-foreground leading-relaxed">
+                    <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                       <span className="text-accent font-semibold">
                         Still studying Civil or Mechanical Engineering in your
                         CS degree in 2025?
@@ -216,7 +216,7 @@ export default function Index() {
                       from the stone age, CSBS is laser-focused on what actually
                       matters in today's tech industry.
                     </p>
-                    <p className="text-lg text-muted-foreground leading-relaxed">
+                    <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                       Developed in partnership with{" "}
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent font-semibold">
                         Tata Consultancy Services (TCS)
@@ -230,7 +230,7 @@ export default function Index() {
                       you your dream package and set you up for real-world
                       success.
                     </p>
-                    <p className="text-lg text-foreground font-medium">
+                    <p className="text-base sm:text-lg text-foreground font-medium">
                       This isn't just another engineering degree. It's your
                       direct pathway to becoming a{" "}
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">
@@ -244,7 +244,7 @@ export default function Index() {
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                       <strong className="text-foreground">
                         Industry-Aligned Curriculum:
                       </strong>
@@ -254,7 +254,7 @@ export default function Index() {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                       <strong className="text-foreground">
                         Dual Expertise:
                       </strong>
@@ -264,7 +264,7 @@ export default function Index() {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                       <strong className="text-foreground">
                         Future-Ready Skills:
                       </strong>
@@ -274,22 +274,22 @@ export default function Index() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {features.map((feature) => {
                   const Icon = feature.icon;
                   return (
                     <Card
                       key={feature.title}
-                      className="p-4 hover:shadow-md transition-shadow"
+                      className="p-3 sm:p-4 hover:shadow-md transition-shadow"
                     >
-                      <CardHeader className="pb-3">
-                        <Icon className="w-8 h-8 text-primary mb-2" />
-                        <CardTitle className="text-lg">
+                      <CardHeader className="pb-2 sm:pb-3">
+                        <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary mb-2" />
+                        <CardTitle className="text-base sm:text-lg leading-tight">
                           {feature.title}
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="pt-0">
-                        <CardDescription className="text-sm">
+                        <CardDescription className="text-xs sm:text-sm leading-relaxed">
                           {feature.description}
                         </CardDescription>
                       </CardContent>
