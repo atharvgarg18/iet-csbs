@@ -347,35 +347,28 @@ export default function Admissions() {
                     <Heart className="w-10 h-10 text-secondary" />
                   </div>
                   <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                    Register by 11th August - Counselling 12th August!
+                    Congratulations Class of 2029!
                   </h2>
                   <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    75 new seats available! Register during 8-11 August. Counselling on 12th August at 10:30 AM,
-                    IET DAVV M Block. Earlier applicants also eligible for 12th August counselling.
+                    Admissions for CSBS 2025-29 batch completed with 150 total students.
+                    Admitted students get ready for an exciting journey ahead!
                   </p>
-                  {isApplicationOpen ? (
-                    <div className="space-y-4">
-                      <a
-                        href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button className="bg-gradient-to-r from-secondary to-accent hover:from-secondary/90 hover:to-accent/90 text-white shadow-lg shadow-secondary/25 hover:shadow-secondary/40 transition-all duration-300 text-xl px-12 py-6">
-                          <Zap className="w-6 h-6 mr-2" />
-                          Apply Now - Secure Your Spot!
-                          <ArrowRight className="w-6 h-6 ml-2" />
-                        </Button>
-                      </a>
-                      <p className="text-sm text-muted-foreground">
-                        ⏰ Registration closes 11th August | Counselling 12th August at 10:30 AM
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-lg text-muted-foreground">
-                      Applications will reopen for the next academic year. Stay
-                      connected!
+                  <div className="space-y-4">
+                    <a
+                      href="https://ietdavv.edu.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button className="bg-gradient-to-r from-secondary to-accent hover:from-secondary/90 hover:to-accent/90 text-white shadow-lg shadow-secondary/25 hover:shadow-secondary/40 transition-all duration-300 text-xl px-12 py-6">
+                        <ExternalLink className="w-6 h-6 mr-2" />
+                        Visit IET Website for Updates
+                        <ArrowRight className="w-6 h-6 ml-2" />
+                      </Button>
+                    </a>
+                    <p className="text-sm text-muted-foreground">
+                      📚 Classes start 18 August | 🎓 Induction 28-29 August | Check IET website regularly
                     </p>
-                  )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
