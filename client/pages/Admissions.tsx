@@ -151,61 +151,43 @@ export default function Admissions() {
             </div>
 
             {/* Status Card */}
-            {isApplicationOpen ? (
-              <Card className="max-w-2xl mx-auto bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30 backdrop-blur-xl shadow-2xl shadow-green-500/20">
-                <CardHeader>
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-                    <CardTitle className="text-green-400 font-bold text-xl">
-                      Registration Reopened - 75 New Seats Added!
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4 text-center">
-                    <div className="flex items-center justify-center gap-2">
-                      <Clock className="w-5 h-5 text-green-400" />
-                      <span className="text-green-300 font-medium text-lg">
-                        {daysUntilDeadline > 0
-                          ? `Only ${daysUntilDeadline} days left to register!`
-                          : "Last day to register!"}
-                      </span>
-                    </div>
-                    <p className="text-green-200 text-lg">
-                      <strong className="text-green-300">Registration: 8-11 August</strong> |
-                      <strong className="text-green-300">Counselling: 12 August, 10:30 AM</strong><br/>
-                      <strong className="text-green-300">Venue: IET DAVV M Block</strong> |
-                      Previous results remain unaffected.
-                    </p>
-                    <a
-                      href="https://davv.mponline.gov.in/Portal/Services/DAVV/Entrance/NON_CET/Admission_Entrance_Form.aspx"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block"
-                    >
-                      <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-300 text-lg px-8 py-6">
-                        <ExternalLink className="w-5 h-5 mr-2" />
-                        Apply for Second Counselling
-                      </Button>
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="max-w-2xl mx-auto bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30 backdrop-blur-xl shadow-2xl shadow-yellow-500/20">
-                <CardHeader>
-                  <CardTitle className="text-yellow-400 font-bold text-xl">
-                    Counselling in Progress
+            <Card className="max-w-2xl mx-auto bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/30 backdrop-blur-xl shadow-2xl shadow-blue-500/20">
+              <CardHeader>
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg shadow-blue-400/50"></div>
+                  <CardTitle className="text-blue-400 font-bold text-xl">
+                    Welcome New CSBS Students! 🎉
                   </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-yellow-200">
-                    First counselling completed. Second counselling with 75 additional seats
-                    will be announced soon.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-blue-400" />
+                    <span className="text-blue-300 font-medium text-lg">
+                      Counselling completed successfully!
+                    </span>
+                  </div>
+                  <div className="text-blue-200 text-lg space-y-2">
+                    <p><strong className="text-blue-300">📅 Classes Start:</strong> 18 August 2025</p>
+                    <p><strong className="text-blue-300">🎓 Induction Program:</strong> 28-29 August 2025</p>
+                    <p><strong className="text-blue-300">📍 Important:</strong> All admitted students must report at IET on 18 August</p>
+                    <p className="text-sm text-blue-300">Class timetable and details will be notified at IET Website</p>
+                  </div>
+                  <a
+                    href="https://ietdavv.edu.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <Button className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 text-lg px-8 py-6">
+                      <ExternalLink className="w-5 h-5 mr-2" />
+                      Check IET Website for Updates
+                    </Button>
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
