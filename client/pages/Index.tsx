@@ -897,25 +897,25 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        New applicants register during 8-11 August 2025
+                        ✅ Registration completed (8-11 August 2025)
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Counselling on 12th August at 10:30 AM, IET DAVV M Block
+                        ✅ Counselling completed (12th August)
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Earlier applicants + new applicants eligible for 12th Aug
+                        📅 Classes start 18 August - Report to IET
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Star className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-sm text-foreground">
-                        Subsequent counselling 13-14 Aug if seats remain
+                        🎓 Induction Program: 28-29 August 2025
                       </span>
                     </div>
                   </CardContent>
