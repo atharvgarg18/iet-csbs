@@ -31,7 +31,7 @@ export default function Notices() {
       type: "Academic",
       priority: "high",
       downloadLink:
-        "/assets/induction-program-notice.html",
+        "https://ietdavv.edu.in/",
       isPDF: false,
     },
     {
@@ -48,7 +48,7 @@ export default function Notices() {
     },
     {
       id: 6,
-      title: "⚠�� Last 3 Days: Registration Closes 11th August",
+      title: "⚠️ Last 3 Days: Registration Closes 11th August",
       description:
         "URGENT: New applicants can register from 8-11 August 2025. Registration closes on 11th August. Earlier applicants who couldn't appear/get admission on 4th Aug are also eligible for 12th Aug counselling.",
       date: "2025-08-08",
