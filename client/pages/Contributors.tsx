@@ -24,8 +24,12 @@ import {
   Github,
   ExternalLink,
 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Contributors() {
+  useEffect(() => {
+    document.title = "Contributors - CSBS IET DAVV";
+  }, []);
   const departments = [
     {
       name: "Notes Department",
