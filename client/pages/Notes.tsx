@@ -10,8 +10,12 @@ import {
   Download,
   Star,
 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Notes() {
+  useEffect(() => {
+    document.title = "Notes - CSBS IET DAVV";
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 relative overflow-hidden">
       {/* Animated background elements */}
