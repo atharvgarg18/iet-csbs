@@ -8,6 +8,9 @@ const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Set page title
+    document.title = "Page Not Found - CSBS IET DAVV";
+
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname,
