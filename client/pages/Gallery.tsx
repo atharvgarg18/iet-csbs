@@ -1,6 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,10 @@ import {
 
 export default function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  useEffect(() => {
+    document.title = "Gallery - CSBS IET DAVV";
+  }, []);
 
   // Gallery items organized by categories
   const galleryItems = [
