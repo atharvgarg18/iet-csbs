@@ -20,8 +20,12 @@ import {
   Star,
   Target,
 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Syllabus() {
+  useEffect(() => {
+    document.title = "Syllabus - CSBS IET DAVV";
+  }, []);
   const allSemestersPDF = {
     title: "Complete CSBS Curriculum (All 8 Semesters)",
     description:
