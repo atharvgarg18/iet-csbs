@@ -21,8 +21,12 @@ import {
   Award,
   Zap,
 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function AtAGlance() {
+  useEffect(() => {
+    document.title = "At A Glance - CSBS IET DAVV";
+  }, []);
   const timeline = [
     {
       date: "May 2024",
