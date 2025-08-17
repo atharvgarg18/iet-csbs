@@ -18,8 +18,12 @@ import {
   Clock,
   AlertCircle,
 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Notices() {
+  useEffect(() => {
+    document.title = "Notices - CSBS IET DAVV";
+  }, []);
   // Current notices (ordered by date - newest first)
   const notices = [
     {
