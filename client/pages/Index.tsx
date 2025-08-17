@@ -41,6 +41,9 @@ export default function Index() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(true);
 
   useEffect(() => {
+    // Set page title
+    document.title = "Home - CSBS IET DAVV";
+
     // Counselling completed, admissions closed for this cycle
     setIsApplicationOpen(false);
     setDaysUntilDeadline(0);
@@ -107,9 +110,7 @@ export default function Index() {
                   className="text-xs sm:text-sm px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 backdrop-blur-sm"
                 >
                   <span className="text-lg sm:text-2xl mr-2">🎓</span>
-                  <span className="text-xs sm:text-sm">
-                    Industry-Aligned Program • TCS Partnership
-                  </span>
+                  <span className="text-xs sm:text-sm">Industry-Aligned Program • TCS Partnership</span>
                 </Badge>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground tracking-tight leading-tight">
                   Computer Science &
@@ -133,10 +134,7 @@ export default function Index() {
 
               <div className="flex flex-col gap-3 sm:gap-4 justify-center items-center max-w-md sm:max-w-none mx-auto">
                 <Link to="/notes" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px]"
-                  >
+                  <Button size="lg" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px]">
                     <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     Access Notes
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
@@ -158,13 +156,11 @@ export default function Index() {
               <div className="pt-6 sm:pt-8 max-w-2xl mx-auto text-center">
                 <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-2 rounded-full text-xs font-medium border border-primary/20 mb-3 sm:mb-4">
                   <Heart className="w-3 h-3" />
-                  <span className="text-xs">
-                    Welcome Class of 2029! Classes Start 18 August
-                  </span>
+                  <span className="text-xs">Welcome Class of 2029! Classes Start 18 August</span>
                 </div>
                 <p className="text-sm sm:text-base text-muted-foreground px-4">
-                  Admissions completed with 150 total seats filled! The CSBS
-                  program is now ready to welcome its new batch of students.
+                  Admissions completed with 150 total seats filled!
+                  The CSBS program is now ready to welcome its new batch of students.
                 </p>
               </div>
             </div>
@@ -786,8 +782,8 @@ export default function Index() {
                 Welcome New CSBS Students!
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-                Your journey with the industry-aligned Computer Science and
-                Business Systems program begins soon
+                Your journey with the industry-aligned Computer Science
+                and Business Systems program begins soon
               </p>
             </div>
 
@@ -805,17 +801,9 @@ export default function Index() {
                         Counselling completed successfully! 🎉
                       </p>
                       <div className="text-xs sm:text-sm text-blue-200 space-y-1">
-                        <p>
-                          <strong>📅 Classes Start:</strong> 18 August 2025
-                        </p>
-                        <p>
-                          <strong>🎓 Induction Program:</strong> 28-29 August
-                          2025
-                        </p>
-                        <p>
-                          <strong>📍 Reporting:</strong> All admitted students
-                          must report at IET on 18 August
-                        </p>
+                        <p><strong>📅 Classes Start:</strong> 18 August 2025</p>
+                        <p><strong>🎓 Induction Program:</strong> 28-29 August 2025</p>
+                        <p><strong>📍 Reporting:</strong> All admitted students must report at IET on 18 August</p>
                       </div>
                     </div>
                   </CardContent>
@@ -824,9 +812,7 @@ export default function Index() {
                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <Card className="text-center p-3 sm:p-4 bg-gradient-to-br from-card to-primary/5 border border-primary/10">
                     <Users className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-primary" />
-                    <div className="text-xl sm:text-2xl font-bold text-foreground">
-                      150
-                    </div>
+                    <div className="text-xl sm:text-2xl font-bold text-foreground">150</div>
                     <div className="text-xs sm:text-sm text-muted-foreground leading-tight">
                       Total Seats
                     </div>
@@ -953,6 +939,8 @@ export default function Index() {
             </div>
           </div>
         </section>
+
+
 
         {/* FAQ Section */}
         <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
