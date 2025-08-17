@@ -12,8 +12,12 @@ import {
   Calculator,
   TrendingUp,
 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Papers() {
+  useEffect(() => {
+    document.title = "Papers - CSBS IET DAVV";
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-accent/10 relative overflow-hidden">
       {/* Animated background elements */}
