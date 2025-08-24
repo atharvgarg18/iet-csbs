@@ -109,7 +109,7 @@ export default function Papers() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    <span>150 Students</span>
+                    <span>75 Students</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
