@@ -162,7 +162,7 @@ export default function Index() {
                 <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-2 rounded-full text-xs font-medium border border-primary/20 mb-3 sm:mb-4">
                   <Heart className="w-3 h-3" />
                   <span className="text-xs">
-                    Welcome Class of 2029! Classes Start 18 August
+                    Welcome Class of 2029! Classes have begun
                   </span>
                 </div>
                 <p className="text-sm sm:text-base text-muted-foreground px-4">
