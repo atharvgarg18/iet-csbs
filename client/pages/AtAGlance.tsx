@@ -90,7 +90,7 @@ export default function AtAGlance() {
 
   const stats = [
     { label: "Inaugral Batch", value: "2024-28", icon: Users },
-    { label: "Students Enrolled", value: "76", icon: Trophy },
+    { label: "Students Enrolled", value: "75", icon: Trophy },
     { label: "Semesters Completed", value: "2", icon: CheckCircle },
     { label: "Industry Partner", value: "TCS", icon: Zap },
   ];

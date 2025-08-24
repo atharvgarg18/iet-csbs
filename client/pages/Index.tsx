@@ -82,7 +82,7 @@ export default function Index() {
       label: "Total Seats",
       value: "150",
       icon: Users,
-      subtitle: "75 Original + 75 New Seats",
+      subtitle: "'28 Batch: 75, '29 Batch: 150",
     },
     { label: "Industry Partner", value: "TCS", icon: Building2 },
     { label: "Admission Based", value: "JEE", icon: Award },
