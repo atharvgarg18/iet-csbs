@@ -31,7 +31,7 @@ export default function Notices() {
       title:
         "🎓 Induction Program & Classes Start Date for Newly Admitted Students",
       description:
-        "Counselling completed! Induction Program for all newly admitted B.Tech and B.Des first year students rescheduled to 28-29 August 2025. Regular classes start from 18 August 2025. All newly admitted students must report at IET on 18 August. Class timetable and details will be notified at IET Website.",
+        "Counselling completed! Induction Program for all newly admitted B.Tech and B.Des first year students further extended to 15-16 September 2025. Regular classes have started from 18 August 2025. All newly admitted students must report at IET. Class timetable and details will be notified at IET Website.",
       date: "2025-08-15",
       type: "Academic",
       priority: "high",
