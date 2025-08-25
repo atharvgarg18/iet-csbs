@@ -395,7 +395,7 @@ export default function Admissions() {
                       </Button>
                     </a>
                     <p className="text-sm text-muted-foreground">
-                      📚 Classes start 18 August | 🎓 Induction 28-29 August |
+                      📚 Classes started 18 August | 🎓 Induction 15-16 September |
                       Check IET website regularly
                     </p>
                   </div>

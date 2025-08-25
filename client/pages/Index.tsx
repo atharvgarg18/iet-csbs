@@ -812,7 +812,7 @@ export default function Index() {
                           <strong>📅 Classes Start:</strong> 18 August 2025
                         </p>
                         <p>
-                          <strong>🎓 Induction Program:</strong> 28-29 August
+                          <strong>🎓 Induction Program:</strong> 15-16 September
                           2025
                         </p>
                         <p>
@@ -876,7 +876,7 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Star className="w-3 h-3 sm:w-4 sm:h-4 text-primary mt-1 flex-shrink-0" />
                       <span className="text-xs sm:text-sm text-foreground">
-                        🎓 Induction Program: 28-29 August 2025
+                        🎓 Induction Program: 15-16 September 2025
                       </span>
                     </div>
                   </CardContent>
