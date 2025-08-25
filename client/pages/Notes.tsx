@@ -64,7 +64,7 @@ export default function Notes() {
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
                     <div className="flex items-center gap-2 justify-center">
                       <Users className="w-3 h-3 sm:w-4 sm:h-4" />
-                      <span>150 Students</span>
+                      <span>75 Students</span>
                     </div>
                     <div className="flex items-center gap-2 justify-center">
                       <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
