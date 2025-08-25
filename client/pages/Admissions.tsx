@@ -184,7 +184,7 @@ export default function Admissions() {
                       <strong className="text-blue-300">
                         🎓 Induction Program:
                       </strong>{" "}
-                      28-29 August 2025
+                      15-16 September 2025
                     </p>
                     <p>
                       <strong className="text-blue-300">📍 Important:</strong>{" "}
