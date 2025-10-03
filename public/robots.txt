@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://iet-csbs.vercel.app/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 1
@@ -10,14 +10,18 @@ Crawl-delay: 1
 # Specific directives for search engines
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
-# Block access to admin areas (if any)
+# Block access to admin areas and API endpoints
 Disallow: /api/
 Disallow: /admin/
 Disallow: /_redirects
+Disallow: /.env
+Disallow: /server/
 Disallow: /vercel.json
 
 # Allow important pages

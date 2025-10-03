@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollToTop from "@/components/ScrollToTop";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { registerServiceWorker } from "@/lib/serviceWorker";
 import Index from "./pages/Index";
 import Notes from "./pages/Notes";
 import Papers from "./pages/Papers";
@@ -16,10 +18,12 @@ import Notices from "./pages/Notices";
 import AtAGlance from "./pages/AtAGlance";
 import Gallery from "./pages/Gallery";
 import Syllabus from "./pages/Syllabus";
-import Admissions from "./pages/Admissions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+// Register service worker for caching
+registerServiceWorker();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -27,9 +31,10 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/papers" element={<Papers />} />
@@ -38,17 +43,16 @@ const App = () => (
             <Route path="/at-a-glance" element={<AtAGlance />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/syllabus" element={<Syllabus />} />
-            <Route path="/admissions" element={<Admissions />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        </ErrorBoundary>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
 
 const container = document.getElementById("root")!;
-if (!container._reactRootContainer) {
-  createRoot(container).render(<App />);
-}
+const root = createRoot(container);
+root.render(<App />);

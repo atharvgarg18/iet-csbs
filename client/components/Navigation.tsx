@@ -12,7 +12,6 @@ import {
   FileText,
   Users,
   Bell,
-  TrendingUp,
   Camera,
   ExternalLink,
   Menu,
@@ -32,7 +31,6 @@ export default function Navigation() {
     { name: "Notices", href: "/notices", icon: Bell },
     { name: "Gallery", href: "/gallery", icon: Camera },
     { name: "Contributors", href: "/contributors", icon: Users },
-    { name: "Admissions", href: "/admissions", icon: TrendingUp, isCTA: true },
   ];
 
   return (
@@ -61,26 +59,23 @@ export default function Navigation() {
             {navigation.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.href;
-              const isCTA = item.isCTA;
               return (
                 <Link key={item.name} to={item.href}>
                   <Button
-                    variant={isActive ? "default" : isCTA ? "default" : "ghost"}
+                    variant={isActive ? "default" : "ghost"}
                     size="sm"
                     className={cn(
                       "flex items-center gap-1 relative overflow-hidden group transition-all duration-300 text-xs px-2 py-2 xl:px-3 xl:gap-2",
                       isActive
                         ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25"
-                        : isCTA
-                          ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 border border-primary/20"
-                          : "hover:bg-primary/10 hover:text-primary",
+                        : "hover:bg-primary/10 hover:text-primary",
                     )}
                   >
                     <Icon className="w-3 h-3 xl:w-4 xl:h-4 z-10" />
                     <span className="z-10 hidden lg:inline xl:text-sm">
                       {item.name}
                     </span>
-                    {!isActive && !isCTA && (
+                    {!isActive && (
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     )}
                   </Button>
@@ -114,7 +109,6 @@ export default function Navigation() {
             {navigation.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.href;
-              const isCTA = item.isCTA;
               return (
                 <Link
                   key={item.name}
@@ -122,19 +116,17 @@ export default function Navigation() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Button
-                    variant={isActive ? "default" : isCTA ? "default" : "ghost"}
+                    variant={isActive ? "default" : "ghost"}
                     className={cn(
                       "w-full justify-start gap-3 relative overflow-hidden group",
                       isActive
                         ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg"
-                        : isCTA
-                          ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg border border-primary/20"
-                          : "hover:bg-primary/10 hover:text-primary",
+                        : "hover:bg-primary/10 hover:text-primary",
                     )}
                   >
                     <Icon className="w-4 h-4 z-10" />
                     <span className="z-10">{item.name}</span>
-                    {!isActive && !isCTA && (
+                    {!isActive && (
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     )}
                   </Button>
