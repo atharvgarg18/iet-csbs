@@ -19,7 +19,7 @@ import AtAGlance from "./pages/AtAGlance";
 import Gallery from "./pages/Gallery";
 import Syllabus from "./pages/Syllabus";
 import NotFound from "./pages/NotFound";
-import AdminLayout from "./components/admin/AdminLayout";
+import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import BatchesManagement from "./pages/admin/BatchesManagement";
 import NotesManagement from "./pages/admin/NotesManagement";

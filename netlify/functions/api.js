@@ -348,48 +348,27 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Global authentication check for all admin routes - TEMPORARILY BYPASSED FOR DEBUGGING
+    // Simplified authentication for admin routes
     if (apiRoute.startsWith('/admin/')) {
-      console.log('Admin route accessed:', apiRoute);
-      console.log('Cookie header:', headers.cookie);
-      
       const user = await verifySession(headers.cookie);
-      console.log('User from session:', user ? user.email : 'null');
       
-      // TEMPORARILY ALLOW ALL ADMIN ACCESS FOR DEBUGGING
-      if (!user) {
-        console.log('No user found - allowing anyway for debugging');
-        // Continue without blocking - this is temporary
-      } else {
-        console.log('User found:', user.email, 'role:', user.role);
+      // For now, just check if user exists and is active
+      if (!user || !user.is_active) {
+        return {
+          statusCode: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'Authentication required' }),
+        };
       }
       
-      // Admin routes that require admin access
-      // const adminOnlyRoutes = ['/admin/users'];
-      // const isAdminRoute = adminOnlyRoutes.some(route => apiRoute.includes(route));
-      
-      // console.log('Is admin route:', isAdminRoute, 'User role:', user?.role);
-      
-      // if (isAdminRoute && !requireAdmin(user)) {
-      //   console.log('Admin access denied');
-      //   return {
-      //     statusCode: 401,
-      //     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      //     body: JSON.stringify({ success: false, message: 'Admin access required' }),
-      //   };
-      // }
-      
-      // Other admin routes require at least editor access
-      // if (!isAdminRoute && !requireEditor(user)) {
-      //   console.log('Editor access denied');
-      //   return {
-      //     statusCode: 401,
-      //     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      //     body: JSON.stringify({ success: false, message: 'Editor access required' }),
-      //   };
-      // }
-      
-      console.log('Authentication bypassed for debugging');
+      // Admin-only routes
+      if (apiRoute.includes('/admin/users') && user.role !== 'admin') {
+        return {
+          statusCode: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'Admin access required' }),
+        };
+      }
     }
 
     // Admin routes with actual database operations
