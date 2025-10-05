@@ -1,6 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
-import bcrypt from 'bcrypt';
-import crypto from 'crypto';
+const { createClient } = require('@supabase/supabase-js');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 // Helper to create Supabase client
 function getSupabaseClient() {
@@ -33,7 +33,7 @@ async function verifyPassword(password, hash) {
 }
 
 // Main handler
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   const { httpMethod, path, body, headers } = event;
   
   // Set CORS headers
@@ -54,11 +54,23 @@ export const handler = async (event, context) => {
   }
 
   try {
+    // Log all requests for debugging
+    console.log('Function called:', {
+      method: httpMethod,
+      path: path,
+      headers: Object.keys(headers),
+      body: body ? body.substring(0, 100) : 'no body'
+    });
+    
     // Parse the path to handle different routes
     const pathSegments = path.split('/').filter(Boolean);
     
     // Debug route
     if (httpMethod === 'GET' && path.includes('/debug')) {
+      // Show first few characters of env vars for debugging (safely)
+      const supabaseUrl = process.env.VITE_SUPABASE_URL;
+      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -66,8 +78,13 @@ export const handler = async (event, context) => {
           message: "API is working on Netlify",
           timestamp: new Date().toISOString(),
           environment: process.env.NODE_ENV || 'production',
-          hasSupabaseUrl: !!process.env.VITE_SUPABASE_URL,
-          hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+          hasSupabaseUrl: !!supabaseUrl,
+          hasServiceKey: !!serviceKey,
+          supabaseUrlPreview: supabaseUrl ? supabaseUrl.substring(0, 20) + '...' : 'missing',
+          serviceKeyPreview: serviceKey ? serviceKey.substring(0, 20) + '...' : 'missing',
+          allEnvKeys: Object.keys(process.env).filter(key => 
+            key.includes('SUPABASE') || key.includes('VITE')
+          ),
           path: path,
           method: httpMethod
         }),
@@ -83,7 +100,8 @@ export const handler = async (event, context) => {
       };
     }
 
-    // Login route
+    // Login route (with debug logging)
+    console.log('Login route check:', httpMethod === 'POST', path, path.includes('/auth/login'));
     if (httpMethod === 'POST' && path.includes('/auth/login')) {
       const { email, password } = JSON.parse(body || '{}');
       
@@ -262,15 +280,24 @@ export const handler = async (event, context) => {
       };
     }
 
-    // Route not found
+    // Route not found - show detailed debug info
     return {
       statusCode: 404,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         success: false, 
         message: 'Route not found',
-        path: path,
-        method: httpMethod,
+        debug: {
+          receivedPath: path,
+          receivedMethod: httpMethod,
+          pathSegments: pathSegments,
+          loginRouteCheck: {
+            isPost: httpMethod === 'POST',
+            pathIncludesAuth: path.includes('/auth'),
+            pathIncludesLogin: path.includes('/login'),
+            pathIncludesAuthLogin: path.includes('/auth/login')
+          }
+        },
         availableRoutes: [
           'GET /api/ping',
           'GET /api/debug',
