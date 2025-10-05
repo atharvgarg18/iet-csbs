@@ -5,11 +5,20 @@
 
 
 [functions]
-  external_node_modules = ["@supabase/supabase-js", "bcrypt"]
+  external_node_modules = ["@supabase/supabase-js", "bcrypt", "crypto"]
+  node_bundler = "esbuild"
+  
+[functions.api]
   node_bundler = "esbuild"
   
 [[redirects]]
-  force = true
   from = "/api/*"
-  status = 200
   to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# Test redirect for debugging
+[[redirects]]
+  from = "/test/*"
+  to = "/.netlify/functions/test/:splat"
+  status = 200
