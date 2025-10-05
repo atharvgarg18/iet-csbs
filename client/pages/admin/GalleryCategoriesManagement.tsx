@@ -140,7 +140,7 @@ export default function GalleryCategoriesManagement() {
     if (!editingCategory || !formData.name.trim()) return;
     
     try {
-      const response = await fetch(`/api/admin/gallery-categories/${editingCategory.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-categories/${editingCategory.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -164,7 +164,7 @@ export default function GalleryCategoriesManagement() {
 
   const handleDeleteCategory = async (categoryId: string) => {
     try {
-      const response = await fetch(`/api/admin/gallery-categories/${categoryId}`, { 
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-categories/${categoryId}`, { 
         method: 'DELETE' 
       });
       

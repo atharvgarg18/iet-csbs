@@ -158,7 +158,7 @@ const NoticeManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/admin/notices/${editingNotice.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notices/${editingNotice.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -196,7 +196,7 @@ const NoticeManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/admin/notices/${id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notices/${id}`, {
         method: 'DELETE',
       });
 
@@ -223,7 +223,7 @@ const NoticeManagement: React.FC = () => {
 
   const toggleNoticeStatus = async (notice: Notice, field: 'is_published' | 'is_featured') => {
     try {
-      const response = await fetch(`/api/admin/notices/${notice.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notices/${notice.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

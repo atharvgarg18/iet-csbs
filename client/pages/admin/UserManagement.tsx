@@ -143,7 +143,7 @@ const UserManagement: React.FC = () => {
         is_active: formData.is_active
       };
 
-      const response = await fetch(`/api/admin/users/${editingUser.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/users/${editingUser.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const UserManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/users/${userId}`, {
         method: 'DELETE',
       });
 

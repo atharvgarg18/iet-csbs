@@ -213,7 +213,7 @@ const GalleryImagesManagement: React.FC = () => {
         event_date: formData.event_date.trim() || null
       };
       
-      const response = await fetch(`/api/admin/gallery-images/${editingImage.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-images/${editingImage.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ const GalleryImagesManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/admin/gallery-images/${id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-images/${id}`, {
         method: 'DELETE',
       });
 
@@ -278,7 +278,7 @@ const GalleryImagesManagement: React.FC = () => {
 
   const toggleImageStatus = async (image: GalleryImage) => {
     try {
-      const response = await fetch(`/api/admin/gallery-images/${image.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-images/${image.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -142,7 +142,7 @@ const NoticeCategoriesManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/admin/notice-categories/${editingCategory.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notice-categories/${editingCategory.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ const NoticeCategoriesManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/admin/notice-categories/${id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notice-categories/${id}`, {
         method: 'DELETE',
       });
 
@@ -207,7 +207,7 @@ const NoticeCategoriesManagement: React.FC = () => {
 
   const toggleCategoryStatus = async (category: NoticeCategory) => {
     try {
-      const response = await fetch(`/api/admin/notice-categories/${category.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notice-categories/${category.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

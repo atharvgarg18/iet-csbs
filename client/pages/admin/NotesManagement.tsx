@@ -142,7 +142,7 @@ export default function NotesManagement() {
     if (!editingNote || !formData.drive_link.trim()) return;
     
     try {
-      const response = await fetch(`/api/admin/notes/${editingNote.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notes/${editingNote.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -169,7 +169,7 @@ export default function NotesManagement() {
 
   const handleDeleteNote = async (noteId: string) => {
     try {
-      const response = await fetch(`/api/admin/notes/${noteId}`, { 
+      const response = await fetch(`/.netlify/functions/api/admin/notes/${noteId}`, { 
         method: 'DELETE' 
       });
       
