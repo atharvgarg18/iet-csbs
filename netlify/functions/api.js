@@ -288,25 +288,247 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Temporary placeholder routes for admin management (return empty data)
-    if (httpMethod === 'GET' && (
-      path.includes('/admin/batches') ||
-      path.includes('/admin/sections') ||
-      path.includes('/admin/notes') ||
-      path.includes('/admin/papers') ||
-      path.includes('/admin/gallery-categories') ||
-      path.includes('/admin/gallery-images') ||
-      path.includes('/admin/notice-categories') ||
-      path.includes('/admin/notices')
-    )) {
+    // Admin routes with actual database operations
+    const supabase = getSupabaseClient();
+
+    // GET /admin/batches
+    if (httpMethod === 'GET' && path.includes('/admin/batches')) {
+      const { data, error } = await supabase.from('batches').select('*').order('created_at', { ascending: false });
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          success: true, 
-          data: [],
-          message: "Admin management routes are being set up. Data will be available soon."
-        }),
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/batches
+    if (httpMethod === 'POST' && path.includes('/admin/batches')) {
+      const { name } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('batches').insert({ name }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // GET /admin/sections
+    if (httpMethod === 'GET' && path.includes('/admin/sections')) {
+      const { data, error } = await supabase.from('sections').select(`
+        *,
+        batch:batches(*)
+      `).order('created_at', { ascending: false });
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/sections
+    if (httpMethod === 'POST' && path.includes('/admin/sections')) {
+      const { batch_id, name } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('sections').insert({ batch_id, name }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // GET /admin/notes
+    if (httpMethod === 'GET' && path.includes('/admin/notes')) {
+      const { data, error } = await supabase.from('notes').select(`
+        *,
+        section:sections(*, batch:batches(*))
+      `).order('created_at', { ascending: false });
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/notes
+    if (httpMethod === 'POST' && path.includes('/admin/notes')) {
+      const { section_id, drive_link, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('notes').insert({ section_id, drive_link, description }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // GET /admin/papers
+    if (httpMethod === 'GET' && path.includes('/admin/papers')) {
+      const { data, error } = await supabase.from('papers').select(`
+        *,
+        section:sections(*, batch:batches(*))
+      `).order('created_at', { ascending: false });
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/papers
+    if (httpMethod === 'POST' && path.includes('/admin/papers')) {
+      const { section_id, drive_link, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('papers').insert({ section_id, drive_link, description }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // GET /admin/gallery-categories
+    if (httpMethod === 'GET' && path.includes('/admin/gallery-categories')) {
+      const { data, error } = await supabase.from('gallery_categories').select('*').order('name');
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/gallery-categories
+    if (httpMethod === 'POST' && path.includes('/admin/gallery-categories')) {
+      const { name, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('gallery_categories').insert({ name, description }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // GET /admin/gallery-images
+    if (httpMethod === 'GET' && path.includes('/admin/gallery-images')) {
+      const { data, error } = await supabase.from('gallery_images').select(`
+        *,
+        category:gallery_categories(*)
+      `).order('created_at', { ascending: false });
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/gallery-images
+    if (httpMethod === 'POST' && path.includes('/admin/gallery-images')) {
+      const { category_id, image_url, title, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('gallery_images').insert({ category_id, image_url, title, description }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // GET /admin/notice-categories
+    if (httpMethod === 'GET' && path.includes('/admin/notice-categories')) {
+      const { data, error } = await supabase.from('notice_categories').select('*').order('name');
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/notice-categories
+    if (httpMethod === 'POST' && path.includes('/admin/notice-categories')) {
+      const { name, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('notice_categories').insert({ name, description }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // GET /admin/notices
+    if (httpMethod === 'GET' && path.includes('/admin/notices')) {
+      const { data, error } = await supabase.from('notices').select(`
+        *,
+        category:notice_categories(*)
+      `).order('created_at', { ascending: false });
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: data || [] }),
+      };
+    }
+
+    // POST /admin/notices
+    if (httpMethod === 'POST' && path.includes('/admin/notices')) {
+      const { category_id, title, content, publish_date, is_published } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('notices').insert({ 
+        category_id, title, content, publish_date, is_published 
+      }).select().single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
       };
     }
 
