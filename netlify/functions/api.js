@@ -5,7 +5,7 @@ const crypto = require('crypto');
 // Helper to create Supabase client
 function getSupabaseClient() {
   const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://jcdciqwvtmgtdxsjyyab.supabase.co';
-  const supabaseServiceKey = processBASE_SERVICE_ROLE_KEY;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   
   if (!supabaseServiceKey) {
     throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
