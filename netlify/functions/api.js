@@ -567,6 +567,20 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Handle unsupported methods with proper error message
+    if (['PUT', 'DELETE'].includes(httpMethod)) {
+      return {
+        statusCode: 405,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          success: false,
+          message: `Method ${httpMethod} not implemented yet for route: ${apiRoute}`,
+          route: apiRoute,
+          method: httpMethod
+        }),
+      };
+    }
+
     // Route not found - show detailed debug info
     return {
       statusCode: 404,
