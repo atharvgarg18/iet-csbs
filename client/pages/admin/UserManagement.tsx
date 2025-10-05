@@ -38,7 +38,7 @@ const UserManagement: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/users');
+      const response = await fetch('/.netlify/functions/api/admin/users');
       const data = await response.json();
 
       if (data.success) {
@@ -80,7 +80,7 @@ const UserManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch('/.netlify/functions/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

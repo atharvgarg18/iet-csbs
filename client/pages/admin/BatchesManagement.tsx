@@ -64,7 +64,7 @@ export default function BatchesManagement() {
   const loadBatches = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/batches');
+      const response = await fetch('/.netlify/functions/api/admin/batches');
       const data = await response.json();
       
       if (data.error) {
