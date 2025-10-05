@@ -19,6 +19,18 @@ import AtAGlance from "./pages/AtAGlance";
 import Gallery from "./pages/Gallery";
 import Syllabus from "./pages/Syllabus";
 import NotFound from "./pages/NotFound";
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import BatchesManagement from "./pages/admin/BatchesManagement";
+import NotesManagement from "./pages/admin/NotesManagement";
+import PapersManagement from "./pages/admin/PapersManagement";
+import GalleryImagesManagement from "./pages/admin/GalleryImagesManagement";
+import GalleryCategoriesManagement from "./pages/admin/GalleryCategoriesManagement";
+import NoticeCategoriesManagement from "./pages/admin/NoticeCategoriesManagement";
+import NoticeManagement from "./pages/admin/NoticeManagement";
+import UserManagement from "./pages/admin/UserManagement";
+import AdminLogin from "./pages/admin/AdminLogin";
+import { AuthProvider } from "./components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
 
@@ -27,11 +39,12 @@ registerServiceWorker();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="dark">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <ErrorBoundary>
+    <AuthProvider>
+      <ThemeProvider defaultTheme="dark">
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <ErrorBoundary>
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
@@ -43,6 +56,21 @@ const App = () => (
             <Route path="/at-a-glance" element={<AtAGlance />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/syllabus" element={<Syllabus />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="batches" element={<BatchesManagement />} />
+              <Route path="notes" element={<NotesManagement />} />
+              <Route path="papers" element={<PapersManagement />} />
+              <Route path="gallery-categories" element={<GalleryCategoriesManagement />} />
+              <Route path="gallery-images" element={<GalleryImagesManagement />} />
+              <Route path="notice-categories" element={<NoticeCategoriesManagement />} />
+              <Route path="notices" element={<NoticeManagement />} />
+              <Route path="users" element={<UserManagement />} />
+            </Route>
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -50,6 +78,7 @@ const App = () => (
         </ErrorBoundary>
       </TooltipProvider>
     </ThemeProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

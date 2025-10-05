@@ -1,275 +1,254 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Bell,
   Calendar,
-  Download,
   ExternalLink,
-  Pin,
-  Clock,
   AlertCircle,
+  BookOpen,
+  Star,
+  Clock,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Notice } from "@shared/api";
+import { supabase } from "@/lib/supabase";
 
 export default function Notices() {
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     document.title = "Notices - CSBS IET DAVV";
+    fetchNoticesData();
   }, []);
-  // Current notices (ordered by date - newest first)
-  const notices = [
-    {
-      id: 8,
-      title:
-        "🎓 Induction Program & Classes Start Date for Newly Admitted Students",
-      description:
-        "Counselling completed! Induction Program for all newly admitted B.Tech and B.Des first year students further extended to 15-16 September 2025. Regular classes have started from 18 August 2025. All newly admitted students must report at IET. Class timetable and details will be notified at IET Website.",
-      date: "2025-08-25",
-      type: "Academic",
-      priority: "high",
-      downloadLink: "https://ietdavv.edu.in/",
-      isPDF: false,
-    },
-    {
-      id: 7,
-      title: "✅ Counselling Completed - 12th August 2025",
-      description:
-        "Counselling has been successfully completed as per schedule. Earlier applicants + new applicants (8-11 Aug registration) attended counselling on 12th Aug at 10:30 AM, IET DAVV M Block. Admissions process concluded.",
-      date: "2025-08-12",
-      type: "Administrative",
-      priority: "medium",
-      downloadLink:
-        "https://ietdavv.edu.in/images/downloads/Admission/CSBS_2_Web_6082025.pdf",
-      isPDF: true,
-    },
-    {
-      id: 6,
-      title: "⚠️ Last 3 Days: Registration Closes 11th August",
-      description:
-        "URGENT: New applicants can register from 8-11 August 2025. Registration closes on 11th August. Earlier applicants who couldn't appear/get admission on 4th Aug are also eligible for 12th Aug counselling.",
-      date: "2025-08-08",
-      type: "Administrative",
-      priority: "high",
-      downloadLink:
-        "https://ietdavv.edu.in/images/downloads/Admission/CSBS_2_Web_6082025.pdf",
-      isPDF: true,
-    },
-    {
-      id: 5,
-      title: "Second Counselling & 75 Additional Seats Added",
-      description:
-        "Following the completion of first counselling, second counselling announced with 75 additional seats (total 150). Registration for new applicants: 8-11 August. Counselling: 12th August at IET DAVV M Block. Previous counselling results remain unaffected.",
-      date: "2025-08-06",
-      type: "Administrative",
-      priority: "high",
-      downloadLink:
-        "https://ietdavv.edu.in/images/downloads/Admission/CSBS_2_Web_6082025.pdf",
-      isPDF: true,
-    },
-    {
-      id: 4,
-      title: "Academic Calendar 2025-26 Released",
-      description:
-        "Official academic calendar for the year 2025-26 has been published. Check important dates for exams, holidays, and academic activities.",
-      date: "2025-07-30",
-      type: "Academic",
-      priority: "high",
-      downloadLink:
-        "https://ietdavv.edu.in/images/downloads/Admission/Academic_Calendar_2025-26.jpeg",
-      isPDF: false,
-    },
-    {
-      id: 3,
-      title: "B.Tech CSBS First Counselling Schedule Released",
-      description:
-        "Official first counselling schedule for B.Tech Computer Science & Business Systems admissions has been published. First counselling has been completed as per schedule.",
-      date: "2025-07-26",
-      type: "Administrative",
-      priority: "medium",
-      downloadLink:
-        "https://ietdavv.edu.in/images/downloads/Admission/BTech_CSBS_Counselling_schedule.pdf",
-      isPDF: true,
-    },
-    {
-      id: 2,
-      title: "Application Deadline Extended Again",
-      description:
-        "Last date for CSBS program applications has been further extended to July 25th, 2025.",
-      date: "2025-07-15",
-      type: "Administrative",
-      priority: "high",
-      downloadLink:
-        "https://ietdavv.edu.in/images/downloads/Admission/Adv_CSBS_BDes_Web_2025.pdf",
-      isPDF: true,
-    },
-    {
-      id: 1,
-      title: "Third Semester Time Table - July 2025",
-      description:
-        "Class schedule for III Semester B.Tech Computer Science & Business Systems (Session: July 2025 to Nov. 2025)",
-      date: "2025-07-01",
-      type: "Academic",
-      priority: "high",
-      downloadLink:
-        "https://html-starter-beige-beta.vercel.app/BTech_CSBS_Sem_III_Time%20Table_July_25.pdf",
-      isPDF: true,
-    },
-  ];
 
-  const getNoticeTypeColor = (type: string) => {
-    const colors = {
-      Academic: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-      Event: "bg-green-500/10 text-green-400 border-green-500/30",
-      Administrative: "bg-orange-500/10 text-orange-400 border-orange-500/30",
-    };
-    return (
-      colors[type as keyof typeof colors] ||
-      "bg-gray-500/10 text-gray-400 border-gray-500/30"
-    );
+  const fetchNoticesData = async () => {
+    try {
+      setLoading(true);
+      
+      const { data: noticesData, error: noticesError } = await supabase
+        .from('notices')
+        .select(`
+          id,
+          category_id,
+          title,
+          content,
+          is_published,
+          is_featured,
+          publish_date,
+          attachment_url,
+          created_at,
+          updated_at,
+          category:notice_categories (
+            id,
+            name,
+            color,
+            is_active
+          )
+        `)
+        .eq('is_published', true)
+        .order('is_featured', { ascending: false })
+        .order('publish_date', { ascending: false });
+
+      if (noticesError) throw noticesError;
+
+      setNotices((noticesData || []) as unknown as Notice[]);
+    } catch (err) {
+      console.error('Error fetching notices:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load notices');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const getPriorityIcon = (priority: string) => {
-    if (priority === "high") return <Pin className="w-4 h-4 text-red-400" />;
-    if (priority === "medium")
-      return <AlertCircle className="w-4 h-4 text-yellow-400" />;
-    return <Bell className="w-4 h-4 text-blue-400" />;
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const isRecent = (dateString: string) => {
+    const noticeDate = new Date(dateString);
+    const now = new Date();
+    const diffInDays = Math.floor((now.getTime() - noticeDate.getTime()) / (1000 * 60 * 60 * 24));
+    return diffInDays <= 7;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 dark:from-background dark:via-primary/10 dark:to-secondary/20 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      </div>
+    <div className="min-h-screen bg-background relative">
 
-      <div className="relative z-10">
-        <Navigation />
-
-        {/* Hero Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
-              <Bell className="w-4 h-4" />
-              Official Notices
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-              CSBS{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
-                Notices
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Stay updated with the latest announcements, academic schedules,
-              and important information for the CSBS program.
-            </p>
+      <Navigation />
+      
+      {/* Main content with site-consistent styling */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        {/* Header with site design consistency */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/5 rounded-full px-4 py-2 mb-6">
+            <Bell className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Official Updates</span>
           </div>
-        </section>
+          <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+            Notices
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Stay updated with important announcements, deadlines, and official communications
+          </p>
+        </div>
 
-        {/* Notices Grid */}
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto space-y-8">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground">
-                  Latest Notices
-                </h2>
-                <p className="text-muted-foreground">
-                  Important updates and announcements
-                </p>
-              </div>
-              <Badge variant="secondary" className="px-4 py-2">
-                {notices.length} Active Notices
-              </Badge>
+        {/* Loading State */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="relative mb-8">
+              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+              <Bell className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary" />
             </div>
+            <p className="text-xl text-foreground font-medium mb-2">Loading notices...</p>
+            <p className="text-muted-foreground">Please wait while we fetch the latest updates</p>
+          </div>
+        )}
 
-            <div className="grid gap-6">
-              {notices.map((notice) => (
-                <Card
-                  key={notice.id}
-                  className="hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:scale-[1.02] bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm"
-                >
-                  <CardHeader className="pb-4">
-                    <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                      <div className="space-y-3 flex-1">
-                        <div className="flex items-center gap-3 flex-wrap">
-                          {getPriorityIcon(notice.priority)}
-                          <Badge className={getNoticeTypeColor(notice.type)}>
-                            {notice.type}
+        {/* Error State */}
+        {error && (
+          <Card className="border-destructive/20 bg-destructive/5 p-12 text-center mb-12">
+            <CardContent className="p-0">
+              <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Bell className="w-8 h-8 text-destructive" />
+              </div>
+              <h3 className="text-2xl font-bold text-destructive mb-2">Unable to Load Content</h3>
+              <p className="text-destructive/80 text-lg mb-4">{error}</p>
+              <Button onClick={fetchNoticesData} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
+                Try Again
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Main Content - Notices List */}
+        {!loading && !error && (
+          <div className="space-y-3">
+            {notices.map((notice, noticeIndex) => (
+              <Card key={notice.id} className="border-0 bg-card/50 hover:bg-card/80 transition-colors">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-4">
+                    <div className={`w-8 h-8 rounded-lg ${
+                      noticeIndex % 4 === 0 ? 'bg-primary/10' :
+                      noticeIndex % 4 === 1 ? 'bg-secondary/10' :
+                      noticeIndex % 4 === 2 ? 'bg-accent/10' : 'bg-primary/10'
+                    } flex items-center justify-center flex-shrink-0 mt-1`}>
+                      {notice.is_featured ? (
+                        <Star className={`w-4 h-4 ${
+                          noticeIndex % 4 === 0 ? 'text-primary' :
+                          noticeIndex % 4 === 1 ? 'text-secondary' :
+                          noticeIndex % 4 === 2 ? 'text-accent' : 'text-primary'
+                        }`} />
+                      ) : (
+                        <Bell className={`w-4 h-4 ${
+                          noticeIndex % 4 === 0 ? 'text-primary' :
+                          noticeIndex % 4 === 1 ? 'text-secondary' :
+                          noticeIndex % 4 === 2 ? 'text-accent' : 'text-primary'
+                        }`} />
+                      )}
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        {notice.is_featured && (
+                          <Badge variant="default" className="h-5 text-xs bg-primary">
+                            Featured
                           </Badge>
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Calendar className="w-4 h-4" />
-                            {new Date(notice.date).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
-                          </div>
-                        </div>
-                        <CardTitle className="text-xl text-foreground hover:text-primary transition-colors duration-300">
-                          {notice.title}
-                        </CardTitle>
-                        <CardDescription className="text-base">
-                          {notice.description}
-                        </CardDescription>
+                        )}
+                        {notice.category && (
+                          <Badge variant="secondary" className="h-5 text-xs">
+                            {notice.category.name}
+                          </Badge>
+                        )}
+                        {isRecent(notice.publish_date || notice.created_at) && (
+                          <Badge variant="outline" className="h-5 text-xs border-accent text-accent">
+                            New
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      <h3 className="font-semibold text-foreground text-lg mb-2 leading-tight">
+                        {notice.title}
+                      </h3>
+                      
+                      {notice.content && (
+                        <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+                          {notice.content}
+                        </p>
+                      )}
+                      
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Calendar className="w-3 h-3" />
+                        <span>Published {formatDate(notice.publish_date || notice.created_at)}</span>
+                        {notice.created_at !== notice.updated_at && (
+                          <>
+                            <span>•</span>
+                            <Clock className="w-3 h-3" />
+                            <span>Updated {formatDate(notice.updated_at)}</span>
+                          </>
+                        )}
                       </div>
                     </div>
-                  </CardHeader>
-
-                  <CardContent className="pt-0">
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <a
-                        href={notice.downloadLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button size="sm" className="flex-1 sm:flex-none">
-                          <Download className="w-4 h-4 mr-2" />
-                          {notice.isPDF ? "Download PDF" : "View Document"}
+                    
+                    {notice.attachment_url && (
+                      <div className="flex-shrink-0">
+                        <Button asChild size="sm" className={`${
+                          noticeIndex % 4 === 0 ? 'bg-primary hover:bg-primary/90' :
+                          noticeIndex % 4 === 1 ? 'bg-secondary hover:bg-secondary/90' :
+                          noticeIndex % 4 === 2 ? 'bg-accent hover:bg-accent/90' : 'bg-primary hover:bg-primary/90'
+                        } shadow-sm`}>
+                          <a href={notice.attachment_url} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="w-3 h-3 mr-1" />
+                            View
+                          </a>
                         </Button>
-                      </a>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 sm:flex-none"
-                      >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        View Details
-                      </Button>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+
+            {notices.length === 0 && (
+              <div className="text-center py-24">
+                <Card className="p-16 bg-muted/30 border-dashed border-2 border-muted-foreground/20">
+                  <CardContent className="p-0">
+                    <div className="relative mb-8">
+                      <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl mx-auto flex items-center justify-center">
+                        <Bell className="w-16 h-16 text-primary" />
+                      </div>
+                      <div className="absolute top-2 right-1/4 animate-bounce">
+                        <Star className="w-6 h-6 text-accent" />
+                      </div>
+                      <div className="absolute bottom-4 left-1/4 animate-pulse">
+                        <Star className="w-5 h-5 text-secondary" />
+                      </div>
                     </div>
+                    <h3 className="text-3xl font-bold text-foreground mb-4">No Notices Available!</h3>
+                    <p className="text-lg text-muted-foreground max-w-md mx-auto mb-6">
+                      There are no published notices at the moment. Check back later for updates.
+                    </p>
+                    <Button onClick={fetchNoticesData} variant="outline" className="gap-2">
+                      <Bell className="w-4 h-4" />
+                      Refresh
+                    </Button>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-
-            {/* Coming Soon Notice */}
-            <Card className="p-8 text-center bg-gradient-to-br from-card to-muted/5 border border-border/50 backdrop-blur-sm">
-              <CardContent>
-                <div className="w-16 h-16 bg-gradient-to-br from-muted to-muted/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-8 h-8 text-muted-foreground" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-2">
-                  More Notices Coming Soon
-                </h3>
-                <p className="text-muted-foreground max-w-md mx-auto">
-                  This section will be regularly updated with new notices,
-                  announcements, and important information for CSBS students.
-                </p>
-              </CardContent>
-            </Card>
+              </div>
+            )}
           </div>
-        </section>
-
-        <Footer />
+        )}
       </div>
+      <Footer />
     </div>
   );
 }

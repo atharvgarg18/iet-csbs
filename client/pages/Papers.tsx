@@ -1,203 +1,259 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   FileText,
   ExternalLink,
-  Users,
-  Calendar,
-  Award,
+  AlertCircle,
+  BookOpen,
   Star,
-  Calculator,
-  TrendingUp,
+  Clock,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Paper, Section } from "@shared/api";
+import { supabase } from "@/lib/supabase";
 
 export default function Papers() {
+  const [papers, setPapers] = useState<Paper[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     document.title = "Papers - CSBS IET DAVV";
+    fetchPapersData();
   }, []);
+
+  const fetchPapersData = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch papers with section and batch info - same as Notes page
+      const { data: papersData, error: papersError } = await supabase
+        .from('papers')
+        .select(`
+          id,
+          section_id,
+          drive_link,
+          description,
+          created_at,
+          updated_at,
+          section:sections (
+            id,
+            batch_id,
+            name,
+            is_active,
+            batch:batches (
+              id,
+              name,
+              is_active
+            )
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      // Fetch sections with batch info - same as Notes page
+      const { data: sectionsData, error: sectionsError } = await supabase
+        .from('sections')
+        .select(`
+          id,
+          batch_id,
+          name,
+          is_active,
+          created_at,
+          updated_at,
+          batch:batches (
+            id,
+            name,
+            is_active
+          )
+        `)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (papersError) throw papersError;
+      if (sectionsError) throw sectionsError;
+
+      setPapers((papersData || []) as unknown as Paper[]);
+      setSections((sectionsData || []) as unknown as Section[]);
+    } catch (err) {
+      console.error('Error fetching papers:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load papers');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const groupPapersBySection = () => {
+    return sections.map(section => {
+      const sectionPapers = papers.filter(paper => paper.section_id === section.id);
+      return {
+        section,
+        papers: sectionPapers
+      };
+    }).filter(group => group.papers.length > 0); // Only show sections with papers
+  };
+
+  // Get grouped data
+  const filteredSections = groupPapersBySection();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-accent/10 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      </div>
+    <div className="min-h-screen bg-background relative">
 
-      <div className="relative z-10">
-        <Navigation />
-
-        {/* Hero Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium border border-secondary/20">
-              <FileText className="w-4 h-4" />
-              Exam Resources
-            </div>
-
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-                CSBS{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-accent to-primary animate-gradient">
-                  Papers
-                </span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                MST and End Semester papers for the Class of 2028
-              </p>
-            </div>
+      <Navigation />
+      
+      {/* Main content with site-consistent styling */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        {/* Header with site design consistency */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/5 rounded-full px-4 py-2 mb-6">
+            <FileText className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Exam Resources</span>
           </div>
-        </section>
+          <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+            Question Papers
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Access previous year question papers and exam resources organized by sections for your preparation
+          </p>
+        </div>
 
-        {/* Main Papers Section */}
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto space-y-8">
-            {/* MST Grading System Explanation */}
-            <Card className="bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-accent/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Calculator className="w-8 h-8 text-accent" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-foreground">
-                  MST Grading System
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-3 gap-6 text-center">
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-accent">3</div>
-                    <div className="text-foreground font-medium">MST Tests</div>
-                    <div className="text-sm text-muted-foreground">
-                      Per semester
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-secondary">
-                      Best 2
-                    </div>
-                    <div className="text-foreground font-medium">Count</div>
-                    <div className="text-sm text-muted-foreground">
-                      @ 20 marks each
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-primary">
-                      40 + 60
-                    </div>
-                    <div className="text-foreground font-medium">
-                      Total Marks
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      MST + End Sem
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Loading State */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="relative mb-8">
+              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+              <FileText className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary" />
+            </div>
+            <p className="text-xl text-foreground font-medium mb-2">Loading question papers...</p>
+            <p className="text-muted-foreground">Please wait while we fetch your resources</p>
+          </div>
+        )}
 
-            {/* Papers Access */}
-            <Card className="overflow-hidden hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
-              <CardHeader className="text-center pb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-8 h-8 text-secondary" />
-                </div>
-                <CardTitle className="text-3xl font-bold text-foreground mb-4">
-                  Class of 2028 Papers Collection
-                </CardTitle>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    <span>75 Students</span>
+        {/* Error State */}
+        {error && (
+          <Card className="border-destructive/20 bg-destructive/5 p-12 text-center mb-12">
+            <CardContent className="p-0">
+              <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-destructive" />
+              </div>
+              <h3 className="text-2xl font-bold text-destructive mb-2">Unable to Load Content</h3>
+              <p className="text-destructive/80 text-lg mb-4">{error}</p>
+              <Button onClick={fetchPapersData} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
+                Try Again
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Main Content - Groups by Section */}
+        {!loading && !error && (
+          <div className="space-y-12">
+            {filteredSections.map((group, groupIndex) => (
+              <div key={group.section.id} className="group">
+                {/* Section Header */}
+                <div className="flex items-center gap-4 mb-8 pb-4 border-b border-border/50">
+                  <div className={`w-12 h-12 rounded-2xl ${
+                    groupIndex % 3 === 0 ? 'bg-primary/10' :
+                    groupIndex % 3 === 1 ? 'bg-secondary/10' : 'bg-accent/10'
+                  } flex items-center justify-center`}>
+                    <FileText className={`w-6 h-6 ${
+                      groupIndex % 3 === 0 ? 'text-primary' :
+                      groupIndex % 3 === 1 ? 'text-secondary' : 'text-accent'
+                    }`} />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>2nd Year</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Star className="w-4 h-4 text-yellow-500" />
-                    <span>Updated After Each MST</span>
+                  <div className="flex-1">
+                    <h2 className="text-xl font-bold text-foreground">
+                      {group.section.batch?.name} - Section {group.section.name}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {group.papers.length} papers available
+                    </p>
                   </div>
                 </div>
-              </CardHeader>
 
-              <CardContent className="space-y-8">
-                {/* Drive Access Card */}
-                <div className="bg-gradient-to-r from-secondary/10 to-accent/10 rounded-2xl p-8 text-center">
-                  <h3 className="text-2xl font-bold text-foreground mb-4">
-                    Complete Papers Archive
-                  </h3>
-                  <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                    Access all MST and End Semester question papers from
-                    previous attempts. Perfect for exam preparation and
-                    understanding question patterns.
-                  </p>
+                {/* Compact Papers List */}
+                <div className="space-y-2">
+                  {group.papers.map((paper, paperIndex) => (
+                    <Card key={paper.id} className="border-0 bg-card/50 hover:bg-card/80 transition-colors">
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-4">
+                          <div className={`w-8 h-8 rounded-lg ${
+                            paperIndex % 4 === 0 ? 'bg-primary/10' :
+                            paperIndex % 4 === 1 ? 'bg-secondary/10' :
+                            paperIndex % 4 === 2 ? 'bg-accent/10' : 'bg-primary/10'
+                          } flex items-center justify-center flex-shrink-0`}>
+                            <Star className={`w-4 h-4 ${
+                              paperIndex % 4 === 0 ? 'text-primary' :
+                              paperIndex % 4 === 1 ? 'text-secondary' :
+                              paperIndex % 4 === 2 ? 'text-accent' : 'text-primary'
+                            }`} />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-foreground mb-1 truncate">
+                              {paper.description || "Question Paper"}
+                            </h3>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <span>Google Drive Resource</span>
+                              <span>•</span>
+                              <Clock className="w-3 h-3" />
+                              <span>{new Date(paper.created_at).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                          
+                          <Button asChild size="sm" className={`${
+                            paperIndex % 4 === 0 ? 'bg-primary hover:bg-primary/90' :
+                            paperIndex % 4 === 1 ? 'bg-secondary hover:bg-secondary/90' :
+                            paperIndex % 4 === 2 ? 'bg-accent hover:bg-accent/90' : 'bg-primary hover:bg-primary/90'
+                          } shadow-sm`}>
+                            <a href={paper.drive_link} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="w-3 h-3 mr-1" />
+                              Open
+                            </a>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ))}
 
-                  <a
-                    href="https://drive.google.com/drive/folders/1dltzniRbeR2vK4iOlXeIPGMU8cq1ioko"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Button className="bg-gradient-to-r from-secondary to-accent hover:from-secondary/90 hover:to-accent/90 text-white shadow-lg shadow-secondary/25 hover:shadow-secondary/40 transition-all duration-300 text-lg px-8 py-6">
-                      <ExternalLink className="w-5 h-5 mr-2" />
-                      Open Papers Drive
+            {filteredSections.length === 0 && (
+              <div className="text-center py-24">
+                <Card className="p-16 bg-muted/30 border-dashed border-2 border-muted-foreground/20">
+                  <CardContent className="p-0">
+                    <div className="relative mb-8">
+                      <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl mx-auto flex items-center justify-center">
+                        <FileText className="w-16 h-16 text-primary" />
+                      </div>
+                      <div className="absolute top-2 right-1/4 animate-bounce">
+                        <Star className="w-6 h-6 text-accent" />
+                      </div>
+                      <div className="absolute bottom-4 left-1/4 animate-pulse">
+                        <Star className="w-5 h-5 text-secondary" />
+                      </div>
+                    </div>
+                    <h3 className="text-3xl font-bold text-foreground mb-4">Question Papers Coming Soon!</h3>
+                    <p className="text-lg text-muted-foreground max-w-md mx-auto mb-6">
+                      We're preparing comprehensive question papers for you. Check back soon for fresh materials!
+                    </p>
+                    <Button onClick={fetchPapersData} variant="outline" className="gap-2">
+                      <FileText className="w-4 h-4" />
+                      Refresh
                     </Button>
-                  </a>
-                </div>
-
-                {/* Quick Info */}
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="text-center p-6 bg-gradient-to-br from-card to-secondary/5 rounded-xl border border-secondary/10">
-                    <Award className="w-8 h-8 text-secondary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">
-                      MST Papers
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Previous test papers for practice
-                    </p>
-                  </div>
-
-                  <div className="text-center p-6 bg-gradient-to-br from-card to-accent/5 rounded-xl border border-accent/10">
-                    <TrendingUp className="w-8 h-8 text-accent mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">
-                      End Sem
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      End semester question papers
-                    </p>
-                  </div>
-
-                  <div className="text-center p-6 bg-gradient-to-br from-card to-primary/5 rounded-xl border border-primary/10">
-                    <FileText className="w-8 h-8 text-primary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">
-                      Solutions
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Sample solutions when available
-                    </p>
-                  </div>
-                </div>
-
-                {/* Contributors Credit */}
-                <div className="text-center pt-8 border-t border-border/20">
-                  <p className="text-muted-foreground">
-                    Curated with ❤️ by the{" "}
-                    <span className="text-secondary font-medium">
-                      MST's & End Sem Papers Department
-                    </span>
-                  </p>
-                  <p className="text-sm text-muted-foreground/70 mt-1">
-                    Managed by Advait Kshirsagar & Gurpreet Singh Bhatia
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </div>
-        </section>
-
-        <Footer />
+        )}
       </div>
+      <Footer />
     </div>
   );
 }
