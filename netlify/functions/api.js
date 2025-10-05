@@ -5,7 +5,7 @@ const crypto = require('crypto');
 // Helper to create Supabase client
 function getSupabaseClient() {
   const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://jcdciqwvtmgtdxsjyyab.supabase.co';
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseServiceKey = processBASE_SERVICE_ROLE_KEY;
   
   if (!supabaseServiceKey) {
     throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
@@ -30,6 +30,45 @@ async function hashPassword(password) {
 
 async function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
+}
+
+// Authentication helper
+async function verifySession(cookies) {
+  if (!cookies) return null;
+  
+  const sessionMatch = cookies.match(/session=([^;]+)/);
+  if (!sessionMatch) return null;
+  
+  const sessionToken = sessionMatch[1];
+  const supabase = getSupabaseClient();
+  
+  const { data: sessions, error } = await supabase
+    .from('user_sessions')
+    .select(`
+      *,
+      user:users(*)
+    `)
+    .eq('session_token', sessionToken)
+    .eq('is_active', true)
+    .gte('expires_at', new Date().toISOString())
+    .limit(1);
+
+  if (error || !sessions || sessions.length === 0) return null;
+  
+  return sessions[0].user;
+}
+
+// Authorization helpers
+function requireAuth(user) {
+  return user && user.is_active;
+}
+
+function requireAdmin(user) {
+  return user && user.is_active && user.role === 'admin';
+}
+
+function requireEditor(user) {
+  return user && user.is_active && (user.role === 'admin' || user.role === 'editor');
 }
 
 // Main handler
@@ -268,11 +307,8 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // User management routes
+    // User management routes (admin only)
     if (httpMethod === 'GET' && apiRoute.includes('/admin/users')) {
-      // TODO: Add authentication middleware check here
-      const supabase = getSupabaseClient();
-      
       const { data: users, error } = await supabase
         .from('users')
         .select('id, email, full_name, role, is_active, last_login, created_at')
@@ -291,6 +327,32 @@ exports.handler = async (event, context) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({ success: true, data: users }),
       };
+    }
+
+    // Global authentication check for all admin routes
+    if (apiRoute.startsWith('/admin/')) {
+      const user = await verifySession(headers.cookie);
+      
+      // Admin routes that require admin access
+      const adminOnlyRoutes = ['/admin/users'];
+      const isAdminRoute = adminOnlyRoutes.some(route => apiRoute.includes(route));
+      
+      if (isAdminRoute && !requireAdmin(user)) {
+        return {
+          statusCode: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'Admin access required' }),
+        };
+      }
+      
+      // Other admin routes require at least editor access
+      if (!isAdminRoute && !requireEditor(user)) {
+        return {
+          statusCode: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'Editor access required' }),
+        };
+      }
     }
 
     // Admin routes with actual database operations
