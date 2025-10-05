@@ -324,6 +324,48 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // PUT /admin/batches/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/batches/')) {
+      const batchId = apiRoute.split('/admin/batches/')[1];
+      const { name, is_active } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('batches')
+        .update({ name, is_active })
+        .eq('id', batchId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/batches/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/batches/')) {
+      const batchId = apiRoute.split('/admin/batches/')[1];
+      const { error } = await supabase.from('batches').delete().eq('id', batchId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Batch deleted successfully' }),
+      };
+    }
+
     // GET /admin/sections
     if (httpMethod === 'GET' && apiRoute.includes('/admin/sections')) {
       const { data, error } = await supabase.from('sections').select(`
@@ -352,6 +394,48 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // PUT /admin/sections/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/sections/')) {
+      const sectionId = apiRoute.split('/admin/sections/')[1];
+      const { batch_id, name } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('sections')
+        .update({ batch_id, name })
+        .eq('id', sectionId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/sections/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/sections/')) {
+      const sectionId = apiRoute.split('/admin/sections/')[1];
+      const { error } = await supabase.from('sections').delete().eq('id', sectionId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Section deleted successfully' }),
       };
     }
 
@@ -386,6 +470,48 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // PUT /admin/notes/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/notes/')) {
+      const noteId = apiRoute.split('/admin/notes/')[1];
+      const { section_id, drive_link, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('notes')
+        .update({ section_id, drive_link, description })
+        .eq('id', noteId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/notes/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/notes/')) {
+      const noteId = apiRoute.split('/admin/notes/')[1];
+      const { error } = await supabase.from('notes').delete().eq('id', noteId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Note deleted successfully' }),
+      };
+    }
+
     // GET /admin/papers
     if (httpMethod === 'GET' && apiRoute.includes('/admin/papers')) {
       const { data, error } = await supabase.from('papers').select(`
@@ -417,6 +543,48 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // PUT /admin/papers/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/papers/')) {
+      const paperId = apiRoute.split('/admin/papers/')[1];
+      const { section_id, drive_link, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('papers')
+        .update({ section_id, drive_link, description })
+        .eq('id', paperId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/papers/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/papers/')) {
+      const paperId = apiRoute.split('/admin/papers/')[1];
+      const { error } = await supabase.from('papers').delete().eq('id', paperId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Paper deleted successfully' }),
+      };
+    }
+
     // GET /admin/gallery-categories
     if (httpMethod === 'GET' && apiRoute.includes('/admin/gallery-categories')) {
       const { data, error } = await supabase.from('gallery_categories').select('*').order('name');
@@ -442,6 +610,48 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // PUT /admin/gallery-categories/:id  
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/gallery-categories/')) {
+      const categoryId = apiRoute.split('/admin/gallery-categories/')[1];
+      const { name, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('gallery_categories')
+        .update({ name, description })
+        .eq('id', categoryId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/gallery-categories/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/gallery-categories/')) {
+      const categoryId = apiRoute.split('/admin/gallery-categories/')[1];
+      const { error } = await supabase.from('gallery_categories').delete().eq('id', categoryId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Gallery category deleted successfully' }),
       };
     }
 
@@ -476,6 +686,48 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // PUT /admin/gallery-images/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/gallery-images/')) {
+      const imageId = apiRoute.split('/admin/gallery-images/')[1];
+      const { category_id, image_url, title, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('gallery_images')
+        .update({ category_id, image_url, title, description })
+        .eq('id', imageId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/gallery-images/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/gallery-images/')) {
+      const imageId = apiRoute.split('/admin/gallery-images/')[1];
+      const { error } = await supabase.from('gallery_images').delete().eq('id', imageId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Gallery image deleted successfully' }),
+      };
+    }
+
     // GET /admin/notice-categories
     if (httpMethod === 'GET' && apiRoute.includes('/admin/notice-categories')) {
       const { data, error } = await supabase.from('notice_categories').select('*').order('name');
@@ -501,6 +753,48 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // PUT /admin/notice-categories/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/notice-categories/')) {
+      const categoryId = apiRoute.split('/admin/notice-categories/')[1];
+      const { name, description } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('notice_categories')
+        .update({ name, description })
+        .eq('id', categoryId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/notice-categories/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/notice-categories/')) {
+      const categoryId = apiRoute.split('/admin/notice-categories/')[1];
+      const { error } = await supabase.from('notice_categories').delete().eq('id', categoryId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Notice category deleted successfully' }),
       };
     }
 
@@ -537,6 +831,48 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // PUT /admin/notices/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/notices/')) {
+      const noticeId = apiRoute.split('/admin/notices/')[1];
+      const { category_id, title, content, publish_date, is_published } = JSON.parse(body || '{}');
+      const { data, error } = await supabase
+        .from('notices')
+        .update({ category_id, title, content, publish_date, is_published })
+        .eq('id', noticeId)
+        .select()
+        .single();
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/notices/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/notices/')) {
+      const noticeId = apiRoute.split('/admin/notices/')[1];
+      const { error } = await supabase.from('notices').delete().eq('id', noticeId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'Notice deleted successfully' }),
+      };
+    }
+
     // Logout route
     if (httpMethod === 'POST' && apiRoute.includes('/auth/logout')) {
       const cookies = headers.cookie || '';
@@ -567,14 +903,14 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Handle unsupported methods with proper error message
-    if (['PUT', 'DELETE'].includes(httpMethod)) {
+    // Handle other unsupported methods
+    if (['PATCH', 'HEAD'].includes(httpMethod)) {
       return {
         statusCode: 405,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           success: false,
-          message: `Method ${httpMethod} not implemented yet for route: ${apiRoute}`,
+          message: `Method ${httpMethod} not supported`,
           route: apiRoute,
           method: httpMethod
         }),

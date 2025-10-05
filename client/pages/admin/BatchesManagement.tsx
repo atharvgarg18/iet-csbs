@@ -136,7 +136,7 @@ export default function BatchesManagement() {
 
   const handleDeleteBatch = async (batchId: string) => {
     try {
-      const response = await fetch(`/api/admin/batches/${batchId}`, { 
+      const response = await fetch(`/.netlify/functions/api/admin/batches/${batchId}`, { 
         method: 'DELETE' 
       });
       
@@ -155,7 +155,7 @@ export default function BatchesManagement() {
 
   const handleDeleteSection = async (sectionId: string) => {
     try {
-      const response = await fetch(`/api/admin/sections/${sectionId}`, { 
+      const response = await fetch(`/.netlify/functions/api/admin/sections/${sectionId}`, { 
         method: 'DELETE' 
       });
       
@@ -182,7 +182,7 @@ export default function BatchesManagement() {
     if (!editingBatch || !editBatchName.trim()) return;
     
     try {
-      const response = await fetch(`/api/admin/batches/${editingBatch.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/batches/${editingBatch.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

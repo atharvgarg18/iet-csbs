@@ -142,7 +142,7 @@ export default function PapersManagement() {
     if (!editingPaper || !formData.drive_link.trim()) return;
     
     try {
-      const response = await fetch(`/api/admin/papers/${editingPaper.id}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/papers/${editingPaper.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -169,7 +169,7 @@ export default function PapersManagement() {
 
   const handleDeletePaper = async (paperId: string) => {
     try {
-      const response = await fetch(`/api/admin/papers/${paperId}`, { 
+      const response = await fetch(`/.netlify/functions/api/admin/papers/${paperId}`, { 
         method: 'DELETE' 
       });
       
