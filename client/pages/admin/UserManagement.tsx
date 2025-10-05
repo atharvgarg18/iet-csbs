@@ -38,7 +38,9 @@ const UserManagement: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/.netlify/functions/api/admin/users');
+      const response = await fetch('/.netlify/functions/api/admin/users', {
+        credentials: 'include'
+      });
       const data = await response.json();
 
       if (data.success) {

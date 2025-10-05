@@ -64,7 +64,9 @@ export default function BatchesManagement() {
   const loadBatches = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/.netlify/functions/api/admin/batches');
+      const response = await fetch('/.netlify/functions/api/admin/batches', {
+        credentials: 'include'
+      });
       const data = await response.json();
       
       if (data.error) {
@@ -87,6 +89,7 @@ export default function BatchesManagement() {
       const response = await fetch('/.netlify/functions/api/admin/batches', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ name: newBatchName })
       });
       
@@ -112,6 +115,7 @@ export default function BatchesManagement() {
       const response = await fetch('/.netlify/functions/api/admin/sections', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ 
           batch_id: selectedBatchId,
           name: newSectionName 
@@ -137,7 +141,8 @@ export default function BatchesManagement() {
   const handleDeleteBatch = async (batchId: string) => {
     try {
       const response = await fetch(`/.netlify/functions/api/admin/batches/${batchId}`, { 
-        method: 'DELETE' 
+        method: 'DELETE',
+        credentials: 'include'
       });
       
       const data = await response.json();
@@ -156,7 +161,8 @@ export default function BatchesManagement() {
   const handleDeleteSection = async (sectionId: string) => {
     try {
       const response = await fetch(`/.netlify/functions/api/admin/sections/${sectionId}`, { 
-        method: 'DELETE' 
+        method: 'DELETE',
+        credentials: 'include'
       });
       
       const data = await response.json();
@@ -185,6 +191,7 @@ export default function BatchesManagement() {
       const response = await fetch(`/.netlify/functions/api/admin/batches/${editingBatch.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ 
           name: editBatchName.trim(),
           is_active: editingBatch.is_active 
