@@ -76,7 +76,7 @@ export default function PapersManagement() {
       setLoading(true);
       
       // Load sections first
-      const sectionsResponse = await fetch('/api/admin/sections');
+      const sectionsResponse = await fetch('/.netlify/functions/api/admin/sections');
       const sectionsData = await sectionsResponse.json();
       
       if (sectionsData.error) {
@@ -87,7 +87,7 @@ export default function PapersManagement() {
       setSections(sectionsData.data || []);
       
       // Load papers
-      const papersResponse = await fetch('/api/admin/papers');
+      const papersResponse = await fetch('/.netlify/functions/api/admin/papers');
       const papersData = await papersResponse.json();
       
       if (papersData.error) {
@@ -107,7 +107,7 @@ export default function PapersManagement() {
     if (!formData.section_id || !formData.drive_link.trim()) return;
     
     try {
-      const response = await fetch('/api/admin/papers', {
+      const response = await fetch('/.netlify/functions/api/admin/papers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

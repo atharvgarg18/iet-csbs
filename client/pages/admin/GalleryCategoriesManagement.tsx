@@ -85,7 +85,7 @@ export default function GalleryCategoriesManagement() {
   const loadCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/gallery-categories');
+      const response = await fetch('/.netlify/functions/api/admin/gallery-categories');
       const data = await response.json();
       
       if (data.error) {
@@ -105,7 +105,7 @@ export default function GalleryCategoriesManagement() {
     if (!formData.name.trim()) return;
     
     try {
-      const response = await fetch('/api/admin/gallery-categories', {
+      const response = await fetch('/.netlify/functions/api/admin/gallery-categories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
