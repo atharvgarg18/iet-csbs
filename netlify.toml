@@ -5,7 +5,7 @@
 
 
 [functions]
-  external_node_modules = ["express", "bcrypt", "cors", "cookie-parser", "@supabase/supabase-js"]
+  external_node_modules = ["@supabase/supabase-js", "bcrypt"]
   node_bundler = "esbuild"
   
 [[redirects]]
