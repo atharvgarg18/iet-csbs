@@ -1,6 +1,6 @@
-const { createClient } = require('@supabase/supabase-js');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
+import { createClient } from '@supabase/supabase-js';
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 // Helper to create Supabase client
 function getSupabaseClient() {
@@ -33,7 +33,7 @@ async function verifyPassword(password, hash) {
 }
 
 // Main handler
-exports.handler = async (event, context) => {
+export const handler = async (event, context) => {
   const { httpMethod, path, body, headers } = event;
   
   // Set CORS headers
