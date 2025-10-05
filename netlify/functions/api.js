@@ -263,6 +263,53 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // User management routes
+    if (httpMethod === 'GET' && path.includes('/admin/users')) {
+      // TODO: Add authentication middleware check here
+      const supabase = getSupabaseClient();
+      
+      const { data: users, error } = await supabase
+        .from('users')
+        .select('id, email, full_name, role, is_active, last_login, created_at')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: error.message }),
+        };
+      }
+
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data: users }),
+      };
+    }
+
+    // Temporary placeholder routes for admin management (return empty data)
+    if (httpMethod === 'GET' && (
+      path.includes('/admin/batches') ||
+      path.includes('/admin/sections') ||
+      path.includes('/admin/notes') ||
+      path.includes('/admin/papers') ||
+      path.includes('/admin/gallery-categories') ||
+      path.includes('/admin/gallery-images') ||
+      path.includes('/admin/notice-categories') ||
+      path.includes('/admin/notices')
+    )) {
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          success: true, 
+          data: [],
+          message: "Admin management routes are being set up. Data will be available soon."
+        }),
+      };
+    }
+
     // Logout route
     if (httpMethod === 'POST' && path.includes('/auth/logout')) {
       const cookies = headers.cookie || '';
