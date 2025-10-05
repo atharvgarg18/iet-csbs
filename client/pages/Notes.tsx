@@ -1,160 +1,263 @@
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  BookOpen,
+import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  BookOpen, 
+  FileText, 
+  Clock, 
   ExternalLink,
-  Users,
-  Calendar,
-  Download,
-  Star,
-} from "lucide-react";
-import { useEffect } from "react";
+  Star
+} from 'lucide-react';
+import { Note, Section, Batch } from '@shared/api';
 
 export default function Notes() {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
   useEffect(() => {
-    document.title = "Notes - CSBS IET DAVV";
+    fetchNotesData();
   }, []);
+
+  const fetchNotesData = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      
+
+      
+      // Fetch notes with section and batch info - same as Papers page
+      const { data: notesData, error: notesError } = await supabase
+        .from('notes')
+        .select(`
+          id,
+          section_id,
+          drive_link,
+          description,
+          created_at,
+          updated_at,
+          section:sections (
+            id,
+            batch_id,
+            name,
+            is_active,
+            batch:batches (
+              id,
+              name,
+              is_active
+            )
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      // Fetch sections with batch info - same as Papers page
+      const { data: sectionsData, error: sectionsError } = await supabase
+        .from('sections')
+        .select(`
+          id,
+          batch_id,
+          name,
+          is_active,
+          created_at,
+          updated_at,
+          batch:batches (
+            id,
+            name,
+            is_active
+          )
+        `)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (notesError) throw notesError;
+      if (sectionsError) throw sectionsError;
+
+      setNotes((notesData || []) as unknown as Note[]);
+      setSections((sectionsData || []) as unknown as Section[]);
+    } catch (err) {
+      console.error('Error fetching notes:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load notes');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const groupNotesBySection = () => {
+    return sections.map(section => {
+      const sectionNotes = notes.filter(note => note.section_id === section.id);
+      return {
+        section,
+        notes: sectionNotes
+      };
+    }).filter(group => group.notes.length > 0); // Only show sections with notes
+  };
+
+  // Get grouped data
+  const filteredSections = groupNotesBySection();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      </div>
+    <div className="min-h-screen bg-background relative">
 
-      <div className="relative z-10">
-        <Navigation />
 
-        {/* Hero Section */}
-        <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-primary/20">
-              <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-              Study Resources
-            </div>
-
-            <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-                CSBS{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
-                  Notes
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
-                Comprehensive study materials for the Class of 2028
-              </p>
-            </div>
+      <Navigation />
+      
+      {/* Main content with site-consistent styling */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        {/* Header with site design consistency */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/5 rounded-full px-4 py-2 mb-6">
+            <BookOpen className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Academic Resources</span>
           </div>
-        </section>
+          <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+            Study Notes
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Access comprehensive study materials and resources organized by sections for your academic success
+          </p>
+        </div>
 
-        {/* Main Notes Section */}
-        <section className="pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <Card className="overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-sm">
-              <CardHeader className="text-center pb-6 sm:pb-8 px-4 sm:px-6">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
-                </div>
-                <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-3 sm:mb-4">
-                  Class of 2028 Notes Collection
-                </CardTitle>
-                <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center text-muted-foreground">
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
-                    <div className="flex items-center gap-2 justify-center">
-                      <Users className="w-3 h-3 sm:w-4 sm:h-4" />
-                      <span>75 Students</span>
-                    </div>
-                    <div className="flex items-center gap-2 justify-center">
-                      <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                      <span>Currently in 2nd Year</span>
-                    </div>
-                    <div className="flex items-center gap-2 justify-center">
-                      <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
-                      <span>Regularly Updated</span>
-                    </div>
+
+
+        {/* Loading State */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="relative mb-8">
+              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+              <BookOpen className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary" />
+            </div>
+            <p className="text-xl text-foreground font-medium mb-2">Loading study materials...</p>
+            <p className="text-muted-foreground">Please wait while we fetch your resources</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <Card className="border-destructive/20 bg-destructive/5 p-12 text-center mb-12">
+            <CardContent className="p-0">
+              <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-destructive" />
+              </div>
+              <h3 className="text-2xl font-bold text-destructive mb-2">Unable to Load Content</h3>
+              <p className="text-destructive/80 text-lg mb-4">{error}</p>
+              <Button onClick={fetchNotesData} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
+                Try Again
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Main Content */}
+        {!loading && !error && (
+          <div className="space-y-12">
+            {filteredSections.map((group, sectionIndex) => (
+              <div key={group.section.id} className="mb-8">
+                
+                {/* Compact Section Header */}
+                <div className="flex items-center gap-4 mb-4 pb-3 border-b border-border/50">
+                  <div className={`w-10 h-10 rounded-lg ${
+                    sectionIndex % 3 === 0 ? 'bg-primary' :
+                    sectionIndex % 3 === 1 ? 'bg-secondary' : 'bg-accent'
+                  } flex items-center justify-center`}>
+                    <FileText className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-xl font-bold text-foreground">
+                      {group.section.batch?.name} - Section {group.section.name}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {group.notes.length} materials available
+                    </p>
                   </div>
                 </div>
-              </CardHeader>
 
-              <CardContent className="space-y-6 sm:space-y-8 px-4 sm:px-6">
-                {/* Drive Access Card */}
-                <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-4 sm:p-6 lg:p-8 text-center">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-3 sm:mb-4">
-                    Complete Notes Archive
-                  </h3>
-                  <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
-                    Access the comprehensive collection of notes, study
-                    materials, and resources curated by your fellow classmates
-                    and maintained by the Notes Department.
-                  </p>
+                {/* Compact Notes List */}
+                <div className="space-y-2">
+                  {group.notes.map((note, noteIndex) => (
+                    <Card key={note.id} className="border-0 bg-card/50 hover:bg-card/80 transition-colors">
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-4">
+                          <div className={`w-8 h-8 rounded-lg ${
+                            noteIndex % 4 === 0 ? 'bg-primary/10' :
+                            noteIndex % 4 === 1 ? 'bg-secondary/10' :
+                            noteIndex % 4 === 2 ? 'bg-accent/10' : 'bg-primary/10'
+                          } flex items-center justify-center flex-shrink-0`}>
+                            <Star className={`w-4 h-4 ${
+                              noteIndex % 4 === 0 ? 'text-primary' :
+                              noteIndex % 4 === 1 ? 'text-secondary' :
+                              noteIndex % 4 === 2 ? 'text-accent' : 'text-primary'
+                            }`} />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-foreground mb-1 truncate">
+                              {note.description || "Study Material"}
+                            </h3>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <span>Google Drive Resource</span>
+                              <span>•</span>
+                              <Clock className="w-3 h-3" />
+                              <span>{new Date(note.created_at).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                          
+                          <Button asChild size="sm" className={`${
+                            noteIndex % 4 === 0 ? 'bg-primary hover:bg-primary/90' :
+                            noteIndex % 4 === 1 ? 'bg-secondary hover:bg-secondary/90' :
+                            noteIndex % 4 === 2 ? 'bg-accent hover:bg-accent/90' : 'bg-primary hover:bg-primary/90'
+                          } shadow-sm`}>
+                            <a href={note.drive_link} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="w-3 h-3 mr-1" />
+                              Open
+                            </a>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ))}
 
-                  <a
-                    href="https://drive.google.com/drive/folders/19Nf8oa_KdmTia81fagfMWgaBm1c9ZqnK"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block w-full sm:w-auto"
-                  >
-                    <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 min-h-[48px]">
-                      <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                      Open Notes Drive
+            {/* Empty State */}
+            {filteredSections.length === 0 && (
+              <div className="text-center py-24">
+                <Card className="p-16 bg-muted/30 border-dashed border-2 border-muted-foreground/20">
+                  <CardContent className="p-0">
+                    <div className="relative mb-8">
+                      <div className="w-32 h-32 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl mx-auto flex items-center justify-center">
+                        <BookOpen className="w-16 h-16 text-primary" />
+                      </div>
+                      <div className="absolute top-2 right-1/4 animate-bounce">
+                        <Star className="w-6 h-6 text-accent" />
+                      </div>
+                      <div className="absolute bottom-4 left-1/4 animate-pulse">
+                        <Star className="w-5 h-5 text-secondary" />
+                      </div>
+                    </div>
+                    <h3 className="text-3xl font-bold text-foreground mb-4">Study Materials Coming Soon!</h3>
+                    <p className="text-lg text-muted-foreground max-w-md mx-auto mb-6">
+                      We're preparing comprehensive study resources for you. Check back soon for fresh materials!
+                    </p>
+                    <Button onClick={fetchNotesData} variant="outline" className="gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      Refresh
                     </Button>
-                  </a>
-                </div>
-
-                {/* Quick Info */}
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="text-center p-6 bg-gradient-to-br from-card to-accent/5 rounded-xl border border-accent/10">
-                    <Download className="w-8 h-8 text-accent mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">
-                      Easy Download
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Download individual files or entire folders
-                    </p>
-                  </div>
-
-                  <div className="text-center p-6 bg-gradient-to-br from-card to-primary/5 rounded-xl border border-primary/10">
-                    <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">
-                      Collaborative
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Notes shared by students, for students
-                    </p>
-                  </div>
-
-                  <div className="text-center p-6 bg-gradient-to-br from-card to-secondary/5 rounded-xl border border-secondary/10">
-                    <Calendar className="w-8 h-8 text-secondary mx-auto mb-3" />
-                    <h4 className="font-semibold text-foreground mb-2">
-                      Updated
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Fresh content added regularly
-                    </p>
-                  </div>
-                </div>
-
-                {/* Contributors Credit */}
-                <div className="text-center pt-8 border-t border-border/20">
-                  <p className="text-muted-foreground">
-                    Curated with ❤️ by the{" "}
-                    <span className="text-primary font-medium">
-                      Notes Department
-                    </span>
-                  </p>
-                  <p className="text-sm text-muted-foreground/70 mt-1">
-                    Managed by Bharat Jain Sanghvi
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </div>
-        </section>
-
-        <Footer />
+        )}
       </div>
+
+      <Footer />
     </div>
   );
 }
