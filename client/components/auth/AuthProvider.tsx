@@ -43,6 +43,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email, password }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Login response error:', response.status, errorText);
+        return { 
+          success: false, 
+          message: `Server error (${response.status}): ${errorText || 'Unknown error'}` 
+        };
+      }
+
       const data = await response.json();
 
       if (data.success && data.data?.user) {
@@ -53,7 +62,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (error) {
       console.error('Login error:', error);
-      return { success:false, message: 'Network error occurred' };
+      return { 
+        success: false, 
+        message: `Network error: ${error instanceof Error ? error.message : 'Unknown error'}` 
+      };
     }
   };
 

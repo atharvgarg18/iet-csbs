@@ -68,7 +68,12 @@ export function createServer() {
   const app = express();
 
   // Middleware
-  app.use(cors());
+  app.use(cors({
+    origin: true, // Allow all origins in development, configure for production
+    credentials: true, // Allow cookies to be sent
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
@@ -79,6 +84,15 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Debug route to check if API is working
+  app.get("/api/debug", (_req, res) => {
+    res.json({ 
+      message: "API is working",
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development'
+    });
+  });
 
   // Authentication routes
   app.post("/api/auth/login", login);
