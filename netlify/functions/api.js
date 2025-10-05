@@ -63,10 +63,14 @@ exports.handler = async (event, context) => {
     });
     
     // Parse the path to handle different routes
-    const pathSegments = path.split('/').filter(Boolean);
+    // Remove the Netlify function prefix to get the actual API route
+    const apiRoute = path.replace('/.netlify/functions/api', '') || '/';
+    const pathSegments = apiRoute.split('/').filter(Boolean);
+    
+    console.log('Parsed route:', { originalPath: path, apiRoute, pathSegments });
     
     // Debug route
-    if (httpMethod === 'GET' && path.includes('/debug')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/debug')) {
       // Show first few characters of env vars for debugging (safely)
       const supabaseUrl = process.env.VITE_SUPABASE_URL;
       const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -86,13 +90,14 @@ exports.handler = async (event, context) => {
             key.includes('SUPABASE') || key.includes('VITE')
           ),
           path: path,
+          apiRoute: apiRoute,
           method: httpMethod
         }),
       };
     }
 
     // Ping route
-    if (httpMethod === 'GET' && path.includes('/ping')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/ping')) {
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -101,7 +106,7 @@ exports.handler = async (event, context) => {
     }
 
     // Auth test route (GET)
-    if (httpMethod === 'GET' && path.includes('/auth/test')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/auth/test')) {
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -114,8 +119,8 @@ exports.handler = async (event, context) => {
     }
 
     // Login route (with debug logging)
-    console.log('Login route check:', httpMethod === 'POST', path, path.includes('/auth/login'));
-    if (httpMethod === 'POST' && (path.includes('/auth/login') || path.includes('auth/login') || path.endsWith('/login'))) {
+    console.log('Login route check:', httpMethod === 'POST', apiRoute, apiRoute.includes('/auth/login'));
+    if (httpMethod === 'POST' && (apiRoute.includes('/auth/login') || apiRoute.includes('auth/login') || apiRoute.endsWith('/login'))) {
       const { email, password } = JSON.parse(body || '{}');
       
       if (!email || !password) {
@@ -208,7 +213,7 @@ exports.handler = async (event, context) => {
     }
 
     // Auth check route
-    if (httpMethod === 'GET' && path.includes('/auth/check')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/auth/check')) {
       const cookies = headers.cookie || '';
       const sessionMatch = cookies.match(/session=([^;]+)/);
       
@@ -264,7 +269,7 @@ exports.handler = async (event, context) => {
     }
 
     // User management routes
-    if (httpMethod === 'GET' && path.includes('/admin/users')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/users')) {
       // TODO: Add authentication middleware check here
       const supabase = getSupabaseClient();
       
@@ -292,7 +297,7 @@ exports.handler = async (event, context) => {
     const supabase = getSupabaseClient();
 
     // GET /admin/batches
-    if (httpMethod === 'GET' && path.includes('/admin/batches')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/batches')) {
       const { data, error } = await supabase.from('batches').select('*').order('created_at', { ascending: false });
       return {
         statusCode: 200,
@@ -302,7 +307,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/batches
-    if (httpMethod === 'POST' && path.includes('/admin/batches')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/batches')) {
       const { name } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('batches').insert({ name }).select().single();
       if (error) {
@@ -320,7 +325,7 @@ exports.handler = async (event, context) => {
     }
 
     // GET /admin/sections
-    if (httpMethod === 'GET' && path.includes('/admin/sections')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/sections')) {
       const { data, error } = await supabase.from('sections').select(`
         *,
         batch:batches(*)
@@ -333,7 +338,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/sections
-    if (httpMethod === 'POST' && path.includes('/admin/sections')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/sections')) {
       const { batch_id, name } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('sections').insert({ batch_id, name }).select().single();
       if (error) {
@@ -351,7 +356,7 @@ exports.handler = async (event, context) => {
     }
 
     // GET /admin/notes
-    if (httpMethod === 'GET' && path.includes('/admin/notes')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/notes')) {
       const { data, error } = await supabase.from('notes').select(`
         *,
         section:sections(*, batch:batches(*))
@@ -364,7 +369,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/notes
-    if (httpMethod === 'POST' && path.includes('/admin/notes')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/notes')) {
       const { section_id, drive_link, description } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('notes').insert({ section_id, drive_link, description }).select().single();
       if (error) {
@@ -382,7 +387,7 @@ exports.handler = async (event, context) => {
     }
 
     // GET /admin/papers
-    if (httpMethod === 'GET' && path.includes('/admin/papers')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/papers')) {
       const { data, error } = await supabase.from('papers').select(`
         *,
         section:sections(*, batch:batches(*))
@@ -395,7 +400,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/papers
-    if (httpMethod === 'POST' && path.includes('/admin/papers')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/papers')) {
       const { section_id, drive_link, description } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('papers').insert({ section_id, drive_link, description }).select().single();
       if (error) {
@@ -413,7 +418,7 @@ exports.handler = async (event, context) => {
     }
 
     // GET /admin/gallery-categories
-    if (httpMethod === 'GET' && path.includes('/admin/gallery-categories')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/gallery-categories')) {
       const { data, error } = await supabase.from('gallery_categories').select('*').order('name');
       return {
         statusCode: 200,
@@ -423,7 +428,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/gallery-categories
-    if (httpMethod === 'POST' && path.includes('/admin/gallery-categories')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/gallery-categories')) {
       const { name, description } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('gallery_categories').insert({ name, description }).select().single();
       if (error) {
@@ -441,7 +446,7 @@ exports.handler = async (event, context) => {
     }
 
     // GET /admin/gallery-images
-    if (httpMethod === 'GET' && path.includes('/admin/gallery-images')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/gallery-images')) {
       const { data, error } = await supabase.from('gallery_images').select(`
         *,
         category:gallery_categories(*)
@@ -454,7 +459,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/gallery-images
-    if (httpMethod === 'POST' && path.includes('/admin/gallery-images')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/gallery-images')) {
       const { category_id, image_url, title, description } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('gallery_images').insert({ category_id, image_url, title, description }).select().single();
       if (error) {
@@ -472,7 +477,7 @@ exports.handler = async (event, context) => {
     }
 
     // GET /admin/notice-categories
-    if (httpMethod === 'GET' && path.includes('/admin/notice-categories')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/notice-categories')) {
       const { data, error } = await supabase.from('notice_categories').select('*').order('name');
       return {
         statusCode: 200,
@@ -482,7 +487,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/notice-categories
-    if (httpMethod === 'POST' && path.includes('/admin/notice-categories')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/notice-categories')) {
       const { name, description } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('notice_categories').insert({ name, description }).select().single();
       if (error) {
@@ -500,7 +505,7 @@ exports.handler = async (event, context) => {
     }
 
     // GET /admin/notices
-    if (httpMethod === 'GET' && path.includes('/admin/notices')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/admin/notices')) {
       const { data, error } = await supabase.from('notices').select(`
         *,
         category:notice_categories(*)
@@ -513,7 +518,7 @@ exports.handler = async (event, context) => {
     }
 
     // POST /admin/notices
-    if (httpMethod === 'POST' && path.includes('/admin/notices')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/notices')) {
       const { category_id, title, content, publish_date, is_published } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('notices').insert({ 
         category_id, title, content, publish_date, is_published 
@@ -533,7 +538,7 @@ exports.handler = async (event, context) => {
     }
 
     // Logout route
-    if (httpMethod === 'POST' && path.includes('/auth/logout')) {
+    if (httpMethod === 'POST' && apiRoute.includes('/auth/logout')) {
       const cookies = headers.cookie || '';
       const sessionMatch = cookies.match(/session=([^;]+)/);
       
@@ -575,9 +580,9 @@ exports.handler = async (event, context) => {
           pathSegments: pathSegments,
           loginRouteCheck: {
             isPost: httpMethod === 'POST',
-            pathIncludesAuth: path.includes('/auth'),
-            pathIncludesLogin: path.includes('/login'),
-            pathIncludesAuthLogin: path.includes('/auth/login')
+            pathIncludesAuth: apiRoute.includes('/auth'),
+            pathIncludesLogin: apiRoute.includes('/login'),
+            pathIncludesAuthLogin: apiRoute.includes('/auth/login')
           }
         },
         availableRoutes: [
