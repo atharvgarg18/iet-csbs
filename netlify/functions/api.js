@@ -34,12 +34,22 @@ async function verifyPassword(password, hash) {
 
 // Authentication helper
 async function verifySession(cookies) {
-  if (!cookies) return null;
+  console.log('verifySession called with cookies:', cookies);
+  
+  if (!cookies) {
+    console.log('No cookies provided');
+    return null;
+  }
   
   const sessionMatch = cookies.match(/session=([^;]+)/);
-  if (!sessionMatch) return null;
+  if (!sessionMatch) {
+    console.log('No session cookie found in:', cookies);
+    return null;
+  }
   
   const sessionToken = sessionMatch[1];
+  console.log('Found session token:', sessionToken.substring(0, 10) + '...');
+  
   const supabase = getSupabaseClient();
   
   const { data: sessions, error } = await supabase
@@ -53,8 +63,17 @@ async function verifySession(cookies) {
     .gte('expires_at', new Date().toISOString())
     .limit(1);
 
-  if (error || !sessions || sessions.length === 0) return null;
+  if (error) {
+    console.log('Database error in verifySession:', error);
+    return null;
+  }
   
+  if (!sessions || sessions.length === 0) {
+    console.log('No valid sessions found for token');
+    return null;
+  }
+  
+  console.log('Session found for user:', sessions[0].user?.email);
   return sessions[0].user;
 }
 
@@ -331,13 +350,20 @@ exports.handler = async (event, context) => {
 
     // Global authentication check for all admin routes
     if (apiRoute.startsWith('/admin/')) {
+      console.log('Admin route accessed:', apiRoute);
+      console.log('Cookie header:', headers.cookie);
+      
       const user = await verifySession(headers.cookie);
+      console.log('User from session:', user ? user.email : 'null');
       
       // Admin routes that require admin access
       const adminOnlyRoutes = ['/admin/users'];
       const isAdminRoute = adminOnlyRoutes.some(route => apiRoute.includes(route));
       
+      console.log('Is admin route:', isAdminRoute, 'User role:', user?.role);
+      
       if (isAdminRoute && !requireAdmin(user)) {
+        console.log('Admin access denied');
         return {
           statusCode: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -347,12 +373,15 @@ exports.handler = async (event, context) => {
       
       // Other admin routes require at least editor access
       if (!isAdminRoute && !requireEditor(user)) {
+        console.log('Editor access denied');
         return {
           statusCode: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           body: JSON.stringify({ success: false, message: 'Editor access required' }),
         };
       }
+      
+      console.log('Authentication passed for user:', user.email);
     }
 
     // Admin routes with actual database operations
