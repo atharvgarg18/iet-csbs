@@ -100,9 +100,22 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Auth test route (GET)
+    if (httpMethod === 'GET' && path.includes('/auth/test')) {
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: "Auth route redirect is working!",
+          path: path,
+          method: httpMethod
+        }),
+      };
+    }
+
     // Login route (with debug logging)
     console.log('Login route check:', httpMethod === 'POST', path, path.includes('/auth/login'));
-    if (httpMethod === 'POST' && path.includes('/auth/login')) {
+    if (httpMethod === 'POST' && (path.includes('/auth/login') || path.includes('auth/login') || path.endsWith('/login'))) {
       const { email, password } = JSON.parse(body || '{}');
       
       if (!email || !password) {

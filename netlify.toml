@@ -17,8 +17,8 @@
   status = 200
   force = true
 
-# Test redirect for debugging
 [[redirects]]
-  from = "/test/*"
-  to = "/.netlify/functions/test/:splat"
+  from = "/api"
+  to = "/.netlify/functions/api/"
   status = 200
+  force = true
