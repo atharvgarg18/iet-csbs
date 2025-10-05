@@ -18,7 +18,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children, requireAdmin = f
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/auth/check');
+      const response = await fetch('/.netlify/functions/api/auth/check');
       const data = await response.json();
 
       if (data.success && data.data?.user) {
