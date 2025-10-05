@@ -47,7 +47,7 @@ const NoticeCategoriesManagement: React.FC = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/notice-categories');
+      const response = await fetch('/.netlify/functions/api/admin/notice-categories');
       const data = await response.json();
 
       if (data.success) {
@@ -88,7 +88,7 @@ const NoticeCategoriesManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch('/api/admin/notice-categories', {
+      const response = await fetch('/.netlify/functions/api/admin/notice-categories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

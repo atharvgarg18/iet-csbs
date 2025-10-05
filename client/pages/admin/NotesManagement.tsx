@@ -76,7 +76,7 @@ export default function NotesManagement() {
       setLoading(true);
       
       // Load sections first
-      const sectionsResponse = await fetch('/api/admin/sections');
+      const sectionsResponse = await fetch('/.netlify/functions/api/admin/sections');
       const sectionsData = await sectionsResponse.json();
       
       if (sectionsData.error) {
@@ -87,7 +87,7 @@ export default function NotesManagement() {
       setSections(sectionsData.data || []);
       
       // Load notes
-      const notesResponse = await fetch('/api/admin/notes');
+      const notesResponse = await fetch('/.netlify/functions/api/admin/notes');
       const notesData = await notesResponse.json();
       
       if (notesData.error) {
@@ -107,7 +107,7 @@ export default function NotesManagement() {
     if (!formData.section_id || !formData.drive_link.trim()) return;
     
     try {
-      const response = await fetch('/api/admin/notes', {
+      const response = await fetch('/.netlify/functions/api/admin/notes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

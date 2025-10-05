@@ -84,7 +84,7 @@ export default function BatchesManagement() {
     if (!newBatchName.trim()) return;
     
     try {
-      const response = await fetch('/api/admin/batches', {
+      const response = await fetch('/.netlify/functions/api/admin/batches', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newBatchName })
@@ -109,7 +109,7 @@ export default function BatchesManagement() {
     if (!newSectionName.trim() || !selectedBatchId) return;
     
     try {
-      const response = await fetch('/api/admin/sections', {
+      const response = await fetch('/.netlify/functions/api/admin/sections', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

@@ -40,7 +40,7 @@ const NoticeManagement: React.FC = () => {
 
   const fetchNotices = async () => {
     try {
-      const response = await fetch('/api/admin/notices');
+      const response = await fetch('/.netlify/functions/api/admin/notices');
       const data = await response.json();
 
       if (data.success) {
@@ -61,7 +61,7 @@ const NoticeManagement: React.FC = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/admin/notice-categories');
+      const response = await fetch('/.netlify/functions/api/admin/notice-categories');
       const data = await response.json();
 
       if (data.success) {
@@ -100,7 +100,7 @@ const NoticeManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch('/api/admin/notices', {
+      const response = await fetch('/.netlify/functions/api/admin/notices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -39,7 +39,7 @@ const GalleryImagesManagement: React.FC = () => {
 
   const fetchImages = async () => {
     try {
-      const response = await fetch('/api/admin/gallery-images');
+      const response = await fetch('/.netlify/functions/api/admin/gallery-images');
       const data = await response.json();
 
       if (data.success) {
@@ -60,7 +60,7 @@ const GalleryImagesManagement: React.FC = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/admin/gallery-categories');
+      const response = await fetch('/.netlify/functions/api/admin/gallery-categories');
       const data = await response.json();
 
       if (data.success) {
@@ -126,7 +126,7 @@ const GalleryImagesManagement: React.FC = () => {
       console.log('Creating image with data:', cleanFormData);
       console.log('JSON body:', JSON.stringify(cleanFormData));
       
-      const response = await fetch('/api/admin/gallery-images', {
+      const response = await fetch('/.netlify/functions/api/admin/gallery-images', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
