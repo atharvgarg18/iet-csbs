@@ -90,7 +90,10 @@ export function createServer() {
     res.json({ 
       message: "API is working",
       timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development',
+      hasSupabaseUrl: !!process.env.VITE_SUPABASE_URL,
+      hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+      supabaseUrl: process.env.VITE_SUPABASE_URL || 'missing'
     });
   });
 
@@ -156,6 +159,24 @@ export function createServer() {
   app.post("/api/admin/notices", requireAuth, requireEditor, createNotice);
   app.put("/api/admin/notices/:id", requireAuth, requireEditor, updateNotice);
   app.delete("/api/admin/notices/:id", requireAuth, requireEditor, deleteNotice);
+
+  // Catch-all route for API debugging only
+  app.use("/api/*", (req, res) => {
+    console.log("Unmatched API route:", req.method, req.originalUrl, req.url);
+    res.status(404).json({
+      error: "API route not found",
+      method: req.method,
+      originalUrl: req.originalUrl,
+      url: req.url,
+      availableRoutes: [
+        "GET /api/ping",
+        "GET /api/debug", 
+        "POST /api/auth/login",
+        "GET /api/auth/check",
+        "POST /api/auth/logout"
+      ]
+    });
+  });
 
   return app;
 }
