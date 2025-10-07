@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/      const response = await fetch(`/.netlify/functions/api/admin/batches/${batch.id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });nput';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
@@ -125,7 +128,7 @@ export default function BatchesManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/admin/batches', {
+      const response = await fetch('/.netlify/functions/api/admin/batches', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -206,8 +209,8 @@ export default function BatchesManagement() {
       setActionLoading('save');
       
       const url = editingBatch 
-        ? `/api/admin/batches/${editingBatch.id}`
-        : '/api/admin/batches';
+        ? `/.netlify/functions/api/admin/batches/${editingBatch.id}`
+        : '/.netlify/functions/api/admin/batches';
       
       const method = editingBatch ? 'PUT' : 'POST';
       

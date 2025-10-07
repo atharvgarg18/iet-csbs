@@ -113,7 +113,7 @@ export default function GalleryManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/admin/gallery-images', {
+      const response = await fetch('/.netlify/functions/api/admin/gallery-images', {
         method: 'GET',
         credentials: 'include',
         headers: {

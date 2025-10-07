@@ -154,12 +154,12 @@ export default function GalleryImagesManagement() {
       setError(null);
       
       const [imagesResponse, categoriesResponse] = await Promise.all([
-        fetch('/api/admin/gallery-images', {
+        fetch('/.netlify/functions/api/admin/gallery-images', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' }
         }),
-        fetch('/api/admin/gallery-categories', {
+        fetch('/.netlify/functions/api/admin/gallery-categories', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' }
@@ -283,8 +283,8 @@ export default function GalleryImagesManagement() {
       submitData.append('is_active', formData.is_active.toString());
 
       const url = editingImage 
-        ? `/api/admin/gallery-images/${editingImage.id}`
-        : '/api/admin/gallery-images';
+        ? `/.netlify/functions/api/admin/gallery-images/${editingImage.id}`
+        : '/.netlify/functions/api/admin/gallery-images';
       
       const method = editingImage ? 'PUT' : 'POST';
       
@@ -322,7 +322,7 @@ export default function GalleryImagesManagement() {
     try {
       setActionLoading(`delete-${imageId}`);
       
-      const response = await fetch(`/api/admin/gallery-images/${imageId}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-images/${imageId}`, {
         method: 'DELETE',
         credentials: 'include'
       });

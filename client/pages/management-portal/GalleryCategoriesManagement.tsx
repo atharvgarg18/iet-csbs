@@ -114,7 +114,7 @@ export default function GalleryCategoriesManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/admin/gallery-categories', {
+      const response = await fetch('/.netlify/functions/api/admin/gallery-categories', {
         method: 'GET',
         credentials: 'include',
         headers: {

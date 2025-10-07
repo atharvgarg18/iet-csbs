@@ -131,7 +131,7 @@ export default function NoticesManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/admin/notices', {
+      const response = await fetch('/.netlify/functions/api/admin/notices', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -213,8 +213,8 @@ export default function NoticesManagement() {
       };
 
       const url = editingNotice 
-        ? `/api/admin/notices/${editingNotice.id}`
-        : '/api/admin/notices';
+        ? `/.netlify/functions/api/admin/notices/${editingNotice.id}`
+        : '/.netlify/functions/api/admin/notices';
       
       const method = editingNotice ? 'PUT' : 'POST';
       
@@ -255,7 +255,7 @@ export default function NoticesManagement() {
     try {
       setActionLoading(`delete-${noticeId}`);
       
-      const response = await fetch(`/api/admin/notices/${noticeId}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notices/${noticeId}`, {
         method: 'DELETE',
         credentials: 'include'
       });

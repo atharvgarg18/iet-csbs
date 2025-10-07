@@ -99,7 +99,7 @@ export default function UsersManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/admin/users', {
+      const response = await fetch('/.netlify/functions/api/admin/users', {
         method: 'GET',
         credentials: 'include',
         headers: {
