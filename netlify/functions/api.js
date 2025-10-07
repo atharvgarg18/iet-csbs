@@ -49,6 +49,7 @@ async function verifySession(cookies) {
   
   const sessionToken = sessionMatch[1];
   console.log('Found session token:', sessionToken.substring(0, 10) + '...');
+  console.log('About to query user_sessions table');
   
   const supabase = getSupabaseClient();
   
@@ -65,7 +66,13 @@ async function verifySession(cookies) {
 
   if (error) {
     console.log('Database error in verifySession:', error);
+    console.log('Error details:', JSON.stringify(error, null, 2));
     return null;
+  }
+  
+  console.log('Query result - sessions count:', sessions?.length || 0);
+  if (sessions && sessions.length > 0) {
+    console.log('Session data:', JSON.stringify(sessions[0], null, 2));
   }
   
   if (!sessions || sessions.length === 0) {
@@ -328,13 +335,27 @@ exports.handler = async (event, context) => {
 
     // Authentication check for all admin and dashboard routes
     if (apiRoute.startsWith('/admin/') || apiRoute.includes('/dashboard/')) {
+      console.log('Auth check triggered for route:', apiRoute);
+      console.log('Headers cookie:', headers.cookie ? 'present' : 'missing');
+      
       const user = await verifySession(headers.cookie);
+      console.log('User from verifySession:', user ? `${user.email} (${user.role})` : 'null');
       
       if (!user || !user.is_active) {
+        console.log('Authentication failed - user:', !!user, 'active:', user?.is_active);
         return {
           statusCode: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ success: false, message: 'Authentication required' }),
+          body: JSON.stringify({ 
+            success: false, 
+            message: 'Authentication required',
+            debug: {
+              hasUser: !!user,
+              isActive: user?.is_active,
+              route: apiRoute,
+              hasCookie: !!headers.cookie
+            }
+          }),
         };
       }
       
