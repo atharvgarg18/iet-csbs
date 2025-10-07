@@ -111,7 +111,8 @@ export default function UsersManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Users fetch error:', err);

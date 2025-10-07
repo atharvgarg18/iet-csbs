@@ -139,7 +139,8 @@ export default function NotesManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setNotes(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Notes fetch error:', err);
@@ -161,7 +162,8 @@ export default function NotesManagement() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const result = await response.json();
+        const data = result.success ? result.data : result;
         setBatches(Array.isArray(data) ? data : []);
       }
     } catch (err) {
@@ -180,7 +182,8 @@ export default function NotesManagement() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const result = await response.json();
+        const data = result.success ? result.data : result;
         setSections(Array.isArray(data) ? data : []);
       }
     } catch (err) {
