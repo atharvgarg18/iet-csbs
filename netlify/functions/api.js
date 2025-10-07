@@ -160,43 +160,7 @@ exports.handler = async (event, context) => {
     
     console.log('Parsed route:', { originalPath: path, apiRoute, pathSegments });
     
-    // Debug route
-    if (httpMethod === 'GET' && apiRoute.includes('/debug')) {
-      // Show first few characters of env vars for debugging (safely)
-      const supabaseUrl = process.env.VITE_SUPABASE_URL;
-      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-      
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: "API is working on Netlify",
-          timestamp: new Date().toISOString(),
-          environment: process.env.NODE_ENV || 'production',
-          hasSupabaseUrl: !!supabaseUrl,
-          hasServiceKey: !!serviceKey,
-          supabaseUrlPreview: supabaseUrl ? supabaseUrl.substring(0, 20) + '...' : 'missing',
-          serviceKeyPreview: serviceKey ? serviceKey.substring(0, 20) + '...' : 'missing',
-          allEnvKeys: Object.keys(process.env).filter(key => 
-            key.includes('SUPABASE') || key.includes('VITE')
-          ),
-          path: path,
-          apiRoute: apiRoute,
-          method: httpMethod
-        }),
-      };
-    }
-
-    // Ping route
-    if (httpMethod === 'GET' && apiRoute.includes('/ping')) {
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: "Hello from Netlify Functions!" }),
-      };
-    }
-
-    // Comprehensive debug endpoint
+    // Comprehensive debug endpoint (check FIRST before general debug)
     if (httpMethod === 'GET' && apiRoute.includes('/debug-auth')) {
       const cookies = headers.cookie;
       const sessionMatch = cookies ? cookies.match(/session=([^;]+)/) : null;
@@ -273,6 +237,42 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify(debugInfo, null, 2),
+      };
+    }
+    
+    // General debug route
+    if (httpMethod === 'GET' && apiRoute.includes('/debug')) {
+      // Show first few characters of env vars for debugging (safely)
+      const supabaseUrl = process.env.VITE_SUPABASE_URL;
+      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: "API is working on Netlify",
+          timestamp: new Date().toISOString(),
+          environment: process.env.NODE_ENV || 'production',
+          hasSupabaseUrl: !!supabaseUrl,
+          hasServiceKey: !!serviceKey,
+          supabaseUrlPreview: supabaseUrl ? supabaseUrl.substring(0, 20) + '...' : 'missing',
+          serviceKeyPreview: serviceKey ? serviceKey.substring(0, 20) + '...' : 'missing',
+          allEnvKeys: Object.keys(process.env).filter(key => 
+            key.includes('SUPABASE') || key.includes('VITE')
+          ),
+          path: path,
+          apiRoute: apiRoute,
+          method: httpMethod
+        }),
+      };
+    }
+
+    // Ping route
+    if (httpMethod === 'GET' && apiRoute.includes('/ping')) {
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: "Hello from Netlify Functions!" }),
       };
     }
 
