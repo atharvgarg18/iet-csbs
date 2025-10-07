@@ -145,7 +145,8 @@ export default function PapersManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setPapers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Papers fetch error:', err);
@@ -170,7 +171,8 @@ export default function PapersManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setBatches(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Batches fetch error:', err);
@@ -192,7 +194,8 @@ export default function PapersManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setSections(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Sections fetch error:', err);

@@ -143,7 +143,8 @@ export default function NoticesManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setNotices(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Notices fetch error:', err);

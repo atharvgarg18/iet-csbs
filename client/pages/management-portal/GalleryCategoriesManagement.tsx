@@ -126,7 +126,8 @@ export default function GalleryCategoriesManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setCategories(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Categories fetch error:', err);

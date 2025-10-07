@@ -137,7 +137,8 @@ export default function BatchesManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setBatches(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Batches fetch error:', err);

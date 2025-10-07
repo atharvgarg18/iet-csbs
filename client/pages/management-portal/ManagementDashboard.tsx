@@ -69,14 +69,23 @@ export default function ManagementDashboard() {
         fetch('/api/admin/gallery-images', { method: 'GET', credentials: 'include' }).catch(() => null)
       ]);
 
-      // Parse responses safely
-      const users = usersResponse?.ok ? await usersResponse.json().catch(() => []) : [];
-      const notes = notesResponse?.ok ? await notesResponse.json().catch(() => []) : [];
-      const papers = papersResponse?.ok ? await papersResponse.json().catch(() => []) : [];
-      const notices = noticesResponse?.ok ? await noticesResponse.json().catch(() => []) : [];
-      const batches = batchesResponse?.ok ? await batchesResponse.json().catch(() => []) : [];
-      const sections = sectionsResponse?.ok ? await sectionsResponse.json().catch(() => []) : [];
-      const gallery = galleryResponse?.ok ? await galleryResponse.json().catch(() => []) : [];
+      // Parse responses safely and handle API response format
+      const usersResult = usersResponse?.ok ? await usersResponse.json().catch(() => ({})) : {};
+      const notesResult = notesResponse?.ok ? await notesResponse.json().catch(() => ({})) : {};
+      const papersResult = papersResponse?.ok ? await papersResponse.json().catch(() => ({})) : {};
+      const noticesResult = noticesResponse?.ok ? await noticesResponse.json().catch(() => ({})) : {};
+      const batchesResult = batchesResponse?.ok ? await batchesResponse.json().catch(() => ({})) : {};
+      const sectionsResult = sectionsResponse?.ok ? await sectionsResponse.json().catch(() => ({})) : {};
+      const galleryResult = galleryResponse?.ok ? await galleryResponse.json().catch(() => ({})) : {};
+
+      // Extract data from API response format {success: true, data: [...]}
+      const users = usersResult.success ? usersResult.data : usersResult;
+      const notes = notesResult.success ? notesResult.data : notesResult;
+      const papers = papersResult.success ? papersResult.data : papersResult;
+      const notices = noticesResult.success ? noticesResult.data : noticesResult;
+      const batches = batchesResult.success ? batchesResult.data : batchesResult;
+      const sections = sectionsResult.success ? sectionsResult.data : sectionsResult;
+      const gallery = galleryResult.success ? galleryResult.data : galleryResult;
 
       // Build stats object matching expected format
       setStats({

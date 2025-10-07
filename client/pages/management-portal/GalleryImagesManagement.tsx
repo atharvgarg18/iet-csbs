@@ -170,8 +170,11 @@ export default function GalleryImagesManagement() {
         throw new Error('Failed to fetch data');
       }
 
-      const imagesData = await imagesResponse.json();
-      const categoriesData = await categoriesResponse.json();
+      const imagesResult = await imagesResponse.json();
+      const categoriesResult = await categoriesResponse.json();
+      
+      const imagesData = imagesResult.success ? imagesResult.data : imagesResult;
+      const categoriesData = categoriesResult.success ? categoriesResult.data : categoriesResult;
       
       setImages(Array.isArray(imagesData) ? imagesData : []);
       setCategories(Array.isArray(categoriesData) ? categoriesData : []);

@@ -125,7 +125,8 @@ export default function GalleryManagement() {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      const data = result.success ? result.data : result;
       setGalleryItems(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Gallery fetch error:', err);
