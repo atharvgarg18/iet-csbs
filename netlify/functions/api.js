@@ -70,7 +70,6 @@ async function verifySession(cookies) {
     .from('user_sessions')
     .select('*')
     .eq('session_token', sessionToken)
-    .eq('is_active', true)
     .gte('expires_at', new Date().toISOString())
     .limit(1);
 
@@ -190,7 +189,6 @@ exports.handler = async (event, context) => {
             .from('user_sessions')
             .select('*')
             .eq('session_token', sessionToken)
-            .eq('is_active', true)
             .gte('expires_at', new Date().toISOString())
             .limit(1);
 
@@ -404,7 +402,6 @@ exports.handler = async (event, context) => {
         .from('user_sessions')
         .select('*')
         .eq('session_token', sessionToken)
-        .eq('is_active', true)
         .gte('expires_at', new Date().toISOString())
         .limit(1);
 
