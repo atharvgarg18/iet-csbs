@@ -517,6 +517,145 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // GET /dashboard/stats - Management dashboard statistics
+    if (httpMethod === 'GET' && apiRoute.includes('/dashboard/stats')) {
+      const user = await verifySession(headers.cookie);
+      if (!user) {
+        return {
+          statusCode: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: 'Authentication required' }),
+        };
+      }
+
+      if (!['admin', 'editor', 'viewer'].includes(user.role)) {
+        return {
+          statusCode: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: 'Access denied' }),
+        };
+      }
+
+      try {
+        const supabase = getSupabaseClient();
+        
+        // Get basic counts
+        const [
+          batchesResult,
+          sectionsResult,
+          notesResult,
+          papersResult,
+          galleryImagesResult,
+          noticesResult,
+          usersResult
+        ] = await Promise.all([
+          supabase.from('batches').select('id', { count: 'exact', head: true }),
+          supabase.from('sections').select('id', { count: 'exact', head: true }),
+          supabase.from('notes').select('id', { count: 'exact', head: true }),
+          supabase.from('papers').select('id', { count: 'exact', head: true }),
+          supabase.from('gallery_images').select('id', { count: 'exact', head: true }),
+          supabase.from('notices').select('id', { count: 'exact', head: true }),
+          supabase.from('users').select('id', { count: 'exact', head: true })
+        ]);
+
+        // Get user statistics (admin only)
+        let userStats = null;
+        if (user.role === 'admin') {
+          const { data: userData } = await supabase
+            .from('users')
+            .select('role, is_active');
+          
+          if (userData) {
+            userStats = {
+              active_users: userData.filter(u => u.is_active).length,
+              admin_count: userData.filter(u => u.role === 'admin').length,
+              editor_count: userData.filter(u => u.role === 'editor').length,
+              viewer_count: userData.filter(u => u.role === 'viewer').length
+            };
+          }
+        }
+
+        // Get recent activity (simplified version)
+        const recentActivity = [];
+        try {
+          // Get recent notes
+          const { data: recentNotes } = await supabase
+            .from('notes')
+            .select(`
+              id, created_at, description,
+              sections!inner(name),
+              users!inner(full_name)
+            `)
+            .order('created_at', { ascending: false })
+            .limit(3);
+
+          if (recentNotes) {
+            recentNotes.forEach(note => {
+              recentActivity.push({
+                type: 'create',
+                description: `Added note: ${note.description || 'Untitled'} in ${note.sections.name}`,
+                timestamp: note.created_at,
+                user_name: note.users?.full_name || 'Unknown'
+              });
+            });
+          }
+
+          // Get recent papers
+          const { data: recentPapers } = await supabase
+            .from('papers')
+            .select(`
+              id, created_at, description,
+              sections!inner(name),
+              users!inner(full_name)
+            `)
+            .order('created_at', { ascending: false })
+            .limit(2);
+
+          if (recentPapers) {
+            recentPapers.forEach(paper => {
+              recentActivity.push({
+                type: 'create',
+                description: `Added paper: ${paper.description || 'Untitled'} in ${paper.sections.name}`,
+                timestamp: paper.created_at,
+                user_name: paper.users?.full_name || 'Unknown'
+              });
+            });
+          }
+        } catch (activityError) {
+          console.error('Error fetching recent activity:', activityError);
+        }
+
+        // Sort activity by timestamp
+        recentActivity.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        const stats = {
+          batches: batchesResult.count || 0,
+          sections: sectionsResult.count || 0,
+          notes: notesResult.count || 0,
+          papers: papersResult.count || 0,
+          gallery_images: galleryImagesResult.count || 0,
+          notices: noticesResult.count || 0,
+          users: usersResult.count || 0,
+          recent_activity: recentActivity.slice(0, 5),
+          user_stats: userStats
+        };
+
+        return {
+          statusCode: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify(stats),
+        };
+
+      } catch (error) {
+        console.error('Dashboard stats error:', error);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: 'Failed to fetch dashboard statistics' }),
+        };
+      }
+    }
+
     // GET /admin/notes
     if (httpMethod === 'GET' && apiRoute.includes('/admin/notes')) {
       const { data, error } = await supabase.from('notes').select(`

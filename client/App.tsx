@@ -19,10 +19,17 @@ import AtAGlance from "./pages/AtAGlance";
 import Gallery from "./pages/Gallery";
 import Syllabus from "./pages/Syllabus";
 import NotFound from "./pages/NotFound";
-import CMSAdminLayout from "./pages/cms-admin/CMSAdminLayout";
-import CMSAdminDashboard from "./pages/cms-admin/CMSAdminDashboard";
-import CMSNotesManagement from "./pages/cms-admin/CMSNotesManagement";
-import CMSAdminLogin from "./pages/cms-admin/CMSAdminLogin";
+import ManagementLogin from "./pages/management-portal/ManagementLogin";
+import ManagementLayout from "./pages/management-portal/ManagementLayout";
+import ManagementDashboard from "./pages/management-portal/ManagementDashboard";
+import BatchesManagement from "./pages/management-portal/BatchesManagement";
+import NotesManagement from "./pages/management-portal/NotesManagement";
+import PapersManagement from "./pages/management-portal/PapersManagement";
+import UsersManagement from "./pages/management-portal/UsersManagement";
+import GalleryCategoriesManagement from "./pages/management-portal/GalleryCategoriesManagement";
+import GalleryImagesManagement from "./pages/management-portal/GalleryImagesManagement";
+import NoticeCategoriesManagement from "./pages/management-portal/NoticeCategoriesManagement";
+import NoticesManagement from "./pages/management-portal/NoticesManagement";
 import { AuthProvider } from "./components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
@@ -50,11 +57,18 @@ const App = () => (
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/syllabus" element={<Syllabus />} />
             
-            {/* CMS Admin Routes */}
-            <Route path="/cms-admin/login" element={<CMSAdminLogin />} />
-            <Route path="/cms-admin" element={<CMSAdminLayout />}>
-              <Route index element={<CMSAdminDashboard />} />
-              <Route path="notes" element={<CMSNotesManagement />} />
+            {/* Management Portal Routes */}
+            <Route path="/management-portal/login" element={<ManagementLogin />} />
+            <Route path="/management-portal" element={<ManagementLayout />}>
+              <Route index element={<ManagementDashboard />} />
+              <Route path="batches" element={<BatchesManagement />} />
+              <Route path="notes" element={<NotesManagement />} />
+              <Route path="papers" element={<PapersManagement />} />
+              <Route path="users" element={<UsersManagement />} />
+              <Route path="gallery-categories" element={<GalleryCategoriesManagement />} />
+              <Route path="gallery-images" element={<GalleryImagesManagement />} />
+              <Route path="notice-categories" element={<NoticeCategoriesManagement />} />
+              <Route path="notices" element={<NoticesManagement />} />
             </Route>
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
