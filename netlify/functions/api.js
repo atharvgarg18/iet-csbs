@@ -170,6 +170,24 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Test auth route (no auth required)
+    if (httpMethod === 'GET' && apiRoute.includes('/test-auth')) {
+      const cookies = headers.cookie;
+      const sessionMatch = cookies ? cookies.match(/session=([^;]+)/) : null;
+      
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message: "Test auth endpoint",
+          hasCookies: !!cookies,
+          cookieValue: cookies ? cookies.substring(0, 50) + '...' : 'none',
+          hasSessionToken: !!sessionMatch,
+          timestamp: new Date().toISOString()
+        }),
+      };
+    }
+
     // Auth test route (GET)
     if (httpMethod === 'GET' && apiRoute.includes('/auth/test')) {
       return {
@@ -362,6 +380,7 @@ exports.handler = async (event, context) => {
       // Admin-only routes
       if ((apiRoute.includes('/admin/users') || 
            apiRoute.includes('/admin/batches') ||
+           apiRoute.includes('/admin/sections') ||
            apiRoute.includes('/admin/gallery-categories') ||
            apiRoute.includes('/admin/notice-categories')) && 
           user.role !== 'admin') {
