@@ -246,7 +246,7 @@ exports.handler = async (event, context) => {
         .eq('id', user.id);
 
       // Return success with session cookie
-      const sessionCookie = `session=${sessionToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}; Path=/`;
+      const sessionCookie = `session=${sessionToken}; HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}; Path=/`;
       
       return {
         statusCode: 200,

@@ -23,6 +23,7 @@ import ManagementLogin from "./pages/management-portal/ManagementLogin";
 import ManagementLayout from "./pages/management-portal/ManagementLayout";
 import ManagementDashboard from "./pages/management-portal/ManagementDashboard";
 import BatchesManagement from "./pages/management-portal/BatchesManagement";
+import SectionsManagement from "./pages/management-portal/SectionsManagement";
 import NotesManagement from "./pages/management-portal/NotesManagement";
 import PapersManagement from "./pages/management-portal/PapersManagement";
 import UsersManagement from "./pages/management-portal/UsersManagement";
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/management-portal" element={<ManagementLayout />}>
               <Route index element={<ManagementDashboard />} />
               <Route path="batches" element={<BatchesManagement />} />
+              <Route path="sections" element={<SectionsManagement />} />
               <Route path="notes" element={<NotesManagement />} />
               <Route path="papers" element={<PapersManagement />} />
               <Route path="users" element={<UsersManagement />} />
