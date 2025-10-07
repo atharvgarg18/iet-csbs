@@ -60,13 +60,13 @@ export default function ManagementDashboard() {
         sectionsResponse,
         galleryResponse
       ] = await Promise.all([
-        fetch('/api/admin/users', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/api/admin/notes', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/api/admin/papers', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/api/admin/notices', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/api/admin/batches', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/api/admin/sections', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/api/admin/gallery-images', { method: 'GET', credentials: 'include' }).catch(() => null)
+        fetch('/.netlify/functions/api/admin/users', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/.netlify/functions/api/admin/notes', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/.netlify/functions/api/admin/papers', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/.netlify/functions/api/admin/notices', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/.netlify/functions/api/admin/batches', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/.netlify/functions/api/admin/sections', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/.netlify/functions/api/admin/gallery-images', { method: 'GET', credentials: 'include' }).catch(() => null)
       ]);
 
       // Parse responses safely and handle API response format
