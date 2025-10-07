@@ -101,10 +101,11 @@ function requireEditor(user) {
 exports.handler = async (event, context) => {
   const { httpMethod, path, body, headers } = event;
   
-  // Set CORS headers
+  // Set CORS headers - must specify exact origin when using credentials
+  const origin = headers.origin || headers.referer || 'https://ietcsbs.tech';
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Credentials': 'true',
   };
