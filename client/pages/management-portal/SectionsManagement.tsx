@@ -128,7 +128,7 @@ export default function SectionsManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/sections', {
+      const response = await fetch('/api/admin/sections', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -153,7 +153,7 @@ export default function SectionsManagement() {
 
   const fetchBatches = async () => {
     try {
-      const response = await fetch('/.netlify/functions/api/batches', {
+      const response = await fetch('/api/admin/batches', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -217,8 +217,8 @@ export default function SectionsManagement() {
       setActionLoading('save');
       
       const url = editingSection 
-        ? `/.netlify/functions/api/sections/${editingSection.id}`
-        : '/.netlify/functions/api/sections';
+        ? `/api/admin/sections/${editingSection.id}`
+        : '/api/admin/sections';
       
       const method = editingSection ? 'PUT' : 'POST';
       
@@ -259,7 +259,7 @@ export default function SectionsManagement() {
     try {
       setActionLoading(`delete-${sectionId}`);
       
-      const response = await fetch(`/.netlify/functions/api/sections/${sectionId}`, {
+      const response = await fetch(`/api/admin/sections/${sectionId}`, {
         method: 'DELETE',
         credentials: 'include'
       });

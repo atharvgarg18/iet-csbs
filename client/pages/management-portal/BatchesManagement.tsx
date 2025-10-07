@@ -125,7 +125,7 @@ export default function BatchesManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/batches', {
+      const response = await fetch('/api/admin/batches', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -205,8 +205,8 @@ export default function BatchesManagement() {
       setActionLoading('save');
       
       const url = editingBatch 
-        ? `/.netlify/functions/api/batches/${editingBatch.id}`
-        : '/.netlify/functions/api/batches';
+        ? `/api/admin/batches/${editingBatch.id}`
+        : '/api/admin/batches';
       
       const method = editingBatch ? 'PUT' : 'POST';
       
@@ -247,7 +247,7 @@ export default function BatchesManagement() {
     try {
       setActionLoading(`delete-${batchId}`);
       
-      const response = await fetch(`/.netlify/functions/api/batches/${batchId}`, {
+      const response = await fetch(`/api/admin/batches/${batchId}`, {
         method: 'DELETE',
         credentials: 'include'
       });

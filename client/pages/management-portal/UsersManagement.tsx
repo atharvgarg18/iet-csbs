@@ -99,7 +99,7 @@ export default function UsersManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/users', {
+      const response = await fetch('/api/admin/users', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -162,8 +162,8 @@ export default function UsersManagement() {
       setActionLoading('save');
       
       const url = editingUser 
-        ? `/.netlify/functions/api/users/${editingUser.id}`
-        : '/.netlify/functions/api/users';
+        ? `/api/admin/users/${editingUser.id}`
+        : '/api/admin/users';
       
       const method = editingUser ? 'PUT' : 'POST';
       
@@ -204,7 +204,7 @@ export default function UsersManagement() {
     try {
       setActionLoading(`delete-${userId}`);
       
-      const response = await fetch(`/.netlify/functions/api/users/${userId}`, {
+      const response = await fetch(`/api/admin/users/${userId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -236,7 +236,7 @@ export default function UsersManagement() {
     try {
       setActionLoading(`toggle-${userId}`);
       
-      const response = await fetch(`/.netlify/functions/api/users/${userId}`, {
+      const response = await fetch(`/api/admin/users/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
