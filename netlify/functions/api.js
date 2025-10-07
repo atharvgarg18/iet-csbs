@@ -56,7 +56,7 @@ async function verifySession(cookies) {
     .from('user_sessions')
     .select(`
       *,
-      user:users(*)
+      users(*)
     `)
     .eq('session_token', sessionToken)
     .eq('is_active', true)
@@ -73,8 +73,8 @@ async function verifySession(cookies) {
     return null;
   }
   
-  console.log('Session found for user:', sessions[0].user?.email);
-  return sessions[0].user;
+  console.log('Session found for user:', sessions[0].users?.email);
+  return sessions[0].users;
 }
 
 // Authorization helpers
@@ -326,7 +326,52 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // User management routes (admin only)
+    // Authentication check for all admin and dashboard routes
+    if (apiRoute.startsWith('/admin/') || apiRoute.includes('/dashboard/')) {
+      const user = await verifySession(headers.cookie);
+      
+      if (!user || !user.is_active) {
+        return {
+          statusCode: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'Authentication required' }),
+        };
+      }
+      
+      // Admin-only routes
+      if ((apiRoute.includes('/admin/users') || 
+           apiRoute.includes('/admin/batches') ||
+           apiRoute.includes('/admin/gallery-categories') ||
+           apiRoute.includes('/admin/notice-categories')) && 
+          user.role !== 'admin') {
+        return {
+          statusCode: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'Admin access required' }),
+        };
+      }
+
+      // Editor+ routes (admin and editor)
+      if ((apiRoute.includes('/admin/notes') ||
+           apiRoute.includes('/admin/papers') ||
+           apiRoute.includes('/admin/gallery-images') ||
+           apiRoute.includes('/admin/notices')) &&
+          !['admin', 'editor'].includes(user.role)) {
+        return {
+          statusCode: 403,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'Editor access required' }),
+        };
+      }
+
+      // Store authenticated user for use in route handlers
+      event.user = user;
+    }
+
+    // Admin routes with actual database operations
+    const supabase = getSupabaseClient();
+
+    // GET /admin/users
     if (httpMethod === 'GET' && apiRoute.includes('/admin/users')) {
       const { data: users, error } = await supabase
         .from('users')
@@ -347,32 +392,6 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ success: true, data: users }),
       };
     }
-
-    // Simplified authentication for admin routes
-    if (apiRoute.startsWith('/admin/')) {
-      const user = await verifySession(headers.cookie);
-      
-      // For now, just check if user exists and is active
-      if (!user || !user.is_active) {
-        return {
-          statusCode: 401,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ success: false, message: 'Authentication required' }),
-        };
-      }
-      
-      // Admin-only routes
-      if (apiRoute.includes('/admin/users') && user.role !== 'admin') {
-        return {
-          statusCode: 403,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ success: false, message: 'Admin access required' }),
-        };
-      }
-    }
-
-    // Admin routes with actual database operations
-    const supabase = getSupabaseClient();
 
     // GET /admin/batches
     if (httpMethod === 'GET' && apiRoute.includes('/admin/batches')) {
