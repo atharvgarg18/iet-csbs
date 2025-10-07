@@ -196,21 +196,83 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Test auth route (no auth required)
-    if (httpMethod === 'GET' && apiRoute.includes('/test-auth')) {
+    // Comprehensive debug endpoint
+    if (httpMethod === 'GET' && apiRoute.includes('/debug-auth')) {
       const cookies = headers.cookie;
       const sessionMatch = cookies ? cookies.match(/session=([^;]+)/) : null;
+      
+      let debugInfo = {
+        step1_cookies: {
+          hasCookies: !!cookies,
+          cookieValue: cookies || 'none',
+          hasSessionToken: !!sessionMatch,
+          sessionToken: sessionMatch ? sessionMatch[1].substring(0, 20) + '...' : 'none'
+        },
+        step2_headers: {
+          allHeaders: Object.keys(headers),
+          origin: headers.origin,
+          referer: headers.referer,
+          userAgent: headers['user-agent']
+        }
+      };
+
+      if (sessionMatch) {
+        try {
+          const supabase = getSupabaseClient();
+          const sessionToken = sessionMatch[1];
+          
+          // Test session query
+          const { data: sessions, error: sessionError } = await supabase
+            .from('user_sessions')
+            .select('*')
+            .eq('session_token', sessionToken)
+            .eq('is_active', true)
+            .gte('expires_at', new Date().toISOString())
+            .limit(1);
+
+          debugInfo.step3_sessionQuery = {
+            hasError: !!sessionError,
+            error: sessionError?.message || 'none',
+            sessionCount: sessions?.length || 0,
+            sessionData: sessions?.[0] ? {
+              user_id: sessions[0].user_id,
+              expires_at: sessions[0].expires_at,
+              is_active: sessions[0].is_active
+            } : 'none'
+          };
+
+          if (sessions && sessions.length > 0) {
+            // Test user query
+            const { data: users, error: userError } = await supabase
+              .from('users')
+              .select('*')
+              .eq('id', sessions[0].user_id)
+              .limit(1);
+
+            debugInfo.step4_userQuery = {
+              hasError: !!userError,
+              error: userError?.message || 'none',
+              userCount: users?.length || 0,
+              userData: users?.[0] ? {
+                id: users[0].id,
+                email: users[0].email,
+                role: users[0].role,
+                is_active: users[0].is_active
+              } : 'none'
+            };
+          }
+        } catch (error) {
+          debugInfo.step3_error = {
+            message: error.message,
+            stack: error.stack
+          };
+        }
+      }
       
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          message: "Test auth endpoint",
-          hasCookies: !!cookies,
-          cookieValue: cookies ? cookies.substring(0, 50) + '...' : 'none',
-          hasSessionToken: !!sessionMatch,
-          timestamp: new Date().toISOString()
-        }),
+        body: JSON.stringify(debugInfo, null, 2),
       };
     }
 
