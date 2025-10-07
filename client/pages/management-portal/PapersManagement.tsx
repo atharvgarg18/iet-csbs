@@ -133,7 +133,7 @@ export default function PapersManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/admin/papers', {
+      const response = await fetch('/.netlify/functions/api/admin/papers', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -159,7 +159,7 @@ export default function PapersManagement() {
 
   const fetchBatches = async () => {
     try {
-      const response = await fetch('/api/admin/batches', {
+      const response = await fetch('/.netlify/functions/api/admin/batches', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -182,7 +182,7 @@ export default function PapersManagement() {
 
   const fetchSections = async () => {
     try {
-      const response = await fetch('/api/admin/sections', {
+      const response = await fetch('/.netlify/functions/api/admin/sections', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -302,8 +302,8 @@ export default function PapersManagement() {
       submitData.append('is_active', formData.is_active.toString());
 
       const url = editingPaper 
-        ? `/api/admin/papers/${editingPaper.id}`
-        : '/api/admin/papers';
+        ? `/.netlify/functions/api/admin/papers/${editingPaper.id}`
+        : '/.netlify/functions/api/admin/papers';
       
       const method = editingPaper ? 'PUT' : 'POST';
       
@@ -341,7 +341,7 @@ export default function PapersManagement() {
     try {
       setActionLoading(`delete-${paperId}`);
       
-      const response = await fetch(`/api/admin/papers/${paperId}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/papers/${paperId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
