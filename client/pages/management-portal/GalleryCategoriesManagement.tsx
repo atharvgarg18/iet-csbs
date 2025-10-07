@@ -180,8 +180,8 @@ export default function GalleryCategoriesManagement() {
       setActionLoading('save');
       
       const url = editingCategory 
-        ? `/api/admin/gallery-categories/${editingCategory.id}`
-        : '/api/admin/gallery-categories';
+        ? `/.netlify/functions/api/admin/gallery-categories/${editingCategory.id}`
+        : '/.netlify/functions/api/admin/gallery-categories';
       
       const method = editingCategory ? 'PUT' : 'POST';
       
@@ -222,7 +222,7 @@ export default function GalleryCategoriesManagement() {
     try {
       setActionLoading(`delete-${categoryId}`);
       
-      const response = await fetch(`/api/admin/gallery-categories/${categoryId}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-categories/${categoryId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
