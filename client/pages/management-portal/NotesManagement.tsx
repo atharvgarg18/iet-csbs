@@ -127,7 +127,7 @@ export default function NotesManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/admin/notes', {
+      const response = await fetch('/.netlify/functions/api/admin/notes', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -153,7 +153,7 @@ export default function NotesManagement() {
 
   const fetchBatches = async () => {
     try {
-      const response = await fetch('/api/admin/batches', {
+      const response = await fetch('/.netlify/functions/api/admin/batches', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -173,7 +173,7 @@ export default function NotesManagement() {
 
   const fetchSections = async () => {
     try {
-      const response = await fetch('/api/admin/sections', {
+      const response = await fetch('/.netlify/functions/api/admin/sections', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -260,8 +260,8 @@ export default function NotesManagement() {
       }
 
       const url = editingNote 
-        ? `/api/admin/notes/${editingNote.id}`
-        : '/api/admin/notes';
+        ? `/.netlify/functions/api/admin/notes/${editingNote.id}`
+        : '/.netlify/functions/api/admin/notes';
       
       const method = editingNote ? 'PUT' : 'POST';
       
@@ -299,7 +299,7 @@ export default function NotesManagement() {
     try {
       setActionLoading(`delete-${noteId}`);
       
-      const response = await fetch(`/api/admin/notes/${noteId}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/notes/${noteId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
