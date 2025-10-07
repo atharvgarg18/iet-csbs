@@ -7,16 +7,28 @@ function getSupabaseClient() {
   const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://jcdciqwvtmgtdxsjyyab.supabase.co';
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   
+  console.log('Supabase config check:', {
+    hasUrl: !!supabaseUrl,
+    hasServiceKey: !!supabaseServiceKey,
+    urlPreview: supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'missing'
+  });
+  
   if (!supabaseServiceKey) {
+    console.error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
     throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
   }
   
-  return createClient(supabaseUrl, supabaseServiceKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  });
+  try {
+    return createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    });
+  } catch (error) {
+    console.error('Failed to create Supabase client:', error);
+    throw error;
+  }
 }
 
 // Helper functions
@@ -53,35 +65,48 @@ async function verifySession(cookies) {
   
   const supabase = getSupabaseClient();
   
-  const { data: sessions, error } = await supabase
+  // First get the session
+  const { data: sessions, error: sessionError } = await supabase
     .from('user_sessions')
-    .select(`
-      *,
-      users(*)
-    `)
+    .select('*')
     .eq('session_token', sessionToken)
     .eq('is_active', true)
     .gte('expires_at', new Date().toISOString())
     .limit(1);
 
-  if (error) {
-    console.log('Database error in verifySession:', error);
-    console.log('Error details:', JSON.stringify(error, null, 2));
+  if (sessionError) {
+    console.log('Session query error:', sessionError);
     return null;
   }
-  
-  console.log('Query result - sessions count:', sessions?.length || 0);
-  if (sessions && sessions.length > 0) {
-    console.log('Session data:', JSON.stringify(sessions[0], null, 2));
-  }
-  
+
   if (!sessions || sessions.length === 0) {
     console.log('No valid sessions found for token');
     return null;
   }
+
+  // Then get the user separately
+  const { data: users, error: userError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', sessions[0].user_id)
+    .limit(1);
+
+  const error = userError;
+
+  if (error) {
+    console.log('User query error:', error);
+    console.log('Error details:', JSON.stringify(error, null, 2));
+    return null;
+  }
   
-  console.log('Session found for user:', sessions[0].users?.email);
-  return sessions[0].users;
+  if (!users || users.length === 0) {
+    console.log('No user found for session');
+    return null;
+  }
+
+  const user = users[0];
+  console.log('Session verified for user:', user.email, 'role:', user.role);
+  return user;
 }
 
 // Authorization helpers
@@ -315,12 +340,10 @@ exports.handler = async (event, context) => {
       // Check session
       const { data: sessions, error: sessionError } = await supabase
         .from('user_sessions')
-        .select(`
-          *,
-          users (*)
-        `)
+        .select('*')
         .eq('session_token', sessionToken)
-        .gt('expires_at', new Date().toISOString())
+        .eq('is_active', true)
+        .gte('expires_at', new Date().toISOString())
         .limit(1);
 
       if (sessionError || !sessions || sessions.length === 0) {
@@ -331,8 +354,22 @@ exports.handler = async (event, context) => {
         };
       }
 
-      const session = sessions[0];
-      const user = session.users;
+      // Get user separately
+      const { data: users, error: userError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', sessions[0].user_id)
+        .limit(1);
+
+      if (userError || !users || users.length === 0) {
+        return {
+          statusCode: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, message: 'User not found' }),
+        };
+      }
+
+      const user = users[0];
 
       return {
         statusCode: 200,
