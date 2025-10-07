@@ -132,7 +132,7 @@ export default function NoticeCategoriesManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/notice-categories', {
+      const response = await fetch('/api/admin/notice-categories', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -199,8 +199,8 @@ export default function NoticeCategoriesManagement() {
       setActionLoading('save');
       
       const url = editingCategory 
-        ? `/.netlify/functions/api/notice-categories/${editingCategory.id}`
-        : '/.netlify/functions/api/notice-categories';
+        ? `/api/admin/notice-categories/${editingCategory.id}`
+        : '/api/admin/notice-categories';
       
       const method = editingCategory ? 'PUT' : 'POST';
       
@@ -241,7 +241,7 @@ export default function NoticeCategoriesManagement() {
     try {
       setActionLoading(`delete-${categoryId}`);
       
-      const response = await fetch(`/.netlify/functions/api/notice-categories/${categoryId}`, {
+      const response = await fetch(`/api/admin/notice-categories/${categoryId}`, {
         method: 'DELETE',
         credentials: 'include'
       });

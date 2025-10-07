@@ -50,20 +50,44 @@ export default function ManagementDashboard() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/dashboard/stats', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+      // Fetch data from multiple endpoints to build dashboard stats
+      const [
+        usersResponse,
+        notesResponse,
+        papersResponse,
+        noticesResponse,
+        batchesResponse,
+        sectionsResponse,
+        galleryResponse
+      ] = await Promise.all([
+        fetch('/api/admin/users', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/api/admin/notes', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/api/admin/papers', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/api/admin/notices', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/api/admin/batches', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/api/admin/sections', { method: 'GET', credentials: 'include' }).catch(() => null),
+        fetch('/api/admin/gallery-images', { method: 'GET', credentials: 'include' }).catch(() => null)
+      ]);
+
+      // Parse responses safely
+      const users = usersResponse?.ok ? await usersResponse.json().catch(() => []) : [];
+      const notes = notesResponse?.ok ? await notesResponse.json().catch(() => []) : [];
+      const papers = papersResponse?.ok ? await papersResponse.json().catch(() => []) : [];
+      const notices = noticesResponse?.ok ? await noticesResponse.json().catch(() => []) : [];
+      const batches = batchesResponse?.ok ? await batchesResponse.json().catch(() => []) : [];
+      const sections = sectionsResponse?.ok ? await sectionsResponse.json().catch(() => []) : [];
+      const gallery = galleryResponse?.ok ? await galleryResponse.json().catch(() => []) : [];
+
+      // Build stats object matching expected format
+      setStats({
+        users: Array.isArray(users) ? users.length : 0,
+        notes: Array.isArray(notes) ? notes.length : 0,
+        papers: Array.isArray(papers) ? papers.length : 0,
+        notices: Array.isArray(notices) ? notices.length : 0,
+        batches: Array.isArray(batches) ? batches.length : 0,
+        sections: Array.isArray(sections) ? sections.length : 0,
+        gallery_images: Array.isArray(gallery) ? gallery.length : 0,
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const data = await response.json();
-      setStats(data);
     } catch (err) {
       console.error('Dashboard error:', err);
       setError('Failed to load dashboard data');

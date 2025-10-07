@@ -113,7 +113,7 @@ export default function GalleryManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/gallery', {
+      const response = await fetch('/api/admin/gallery-images', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -202,8 +202,8 @@ export default function GalleryManagement() {
       }
 
       const url = editingItem 
-        ? `/.netlify/functions/api/gallery/${editingItem.id}`
-        : '/.netlify/functions/api/gallery';
+        ? `/api/admin/gallery-images/${editingItem.id}`
+        : '/api/admin/gallery-images';
       
       const method = editingItem ? 'PUT' : 'POST';
       
@@ -241,7 +241,7 @@ export default function GalleryManagement() {
     try {
       setActionLoading(`delete-${itemId}`);
       
-      const response = await fetch(`/.netlify/functions/api/gallery/${itemId}`, {
+      const response = await fetch(`/api/admin/gallery-images/${itemId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
