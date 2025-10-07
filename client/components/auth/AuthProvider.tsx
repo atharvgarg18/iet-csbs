@@ -17,7 +17,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/.netlify/functions/api/auth/check');
+      const response = await fetch('/.netlify/functions/api/auth/check', {
+        credentials: 'include'
+      });
       const data = await response.json();
       
       if (data.success && data.data?.user) {
@@ -40,6 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
@@ -71,7 +74,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await fetch('/.netlify/functions/api/auth/logout', { method: 'POST' });
+      await fetch('/.netlify/functions/api/auth/logout', { 
+        method: 'POST',
+        credentials: 'include'
+      });
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
