@@ -39,18 +39,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { FileText, Plus, Edit, Trash2, ExternalLink, Loader2 } from 'lucide-react';
+import { BookOpen, Plus, Edit, Trash2, ExternalLink, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-interface Paper {
+interface Note {
   id: number;
   title: string;
   description: string;
   drive_link: string;
   batch_id: number;
   subject_name: string;
-  year: number;
-  exam_type: string;
   created_at: string;
   updated_at: string;
   batch?: {
@@ -65,13 +63,13 @@ interface Batch {
   semester: number;
 }
 
-export default function PapersManagementNew() {
-  const [papers, setPapers] = useState<Paper[]>([]);
+export default function CMSNotesManagement() {
+  const [notes, setNotes] = useState<Note[]>([]);
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingPaper, setEditingPaper] = useState<Paper | null>(null);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -79,9 +77,7 @@ export default function PapersManagementNew() {
     description: '',
     drive_link: '',
     batch_id: '',
-    subject_name: '',
-    year: '',
-    exam_type: ''
+    subject_name: ''
   });
 
   // API Base URL that works for both localhost and Netlify
@@ -89,27 +85,27 @@ export default function PapersManagementNew() {
     return `/.netlify/functions/api${endpoint}`;
   };
 
-  // Fetch papers from API
-  const fetchPapers = async () => {
+  // Fetch notes from API
+  const fetchNotes = async () => {
     try {
       setLoading(true);
-      const response = await fetch(getApiUrl('/admin/papers'));
+      const response = await fetch(getApiUrl('/admin/notes'));
       const data = await response.json();
       
       if (data.success) {
-        setPapers(data.data || []);
+        setNotes(data.data || []);
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to fetch papers",
+          description: data.message || "Failed to fetch notes",
           variant: "destructive"
         });
       }
     } catch (error) {
-      console.error('Error fetching papers:', error);
+      console.error('Error fetching notes:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch papers",
+        description: "Failed to fetch notes",
         variant: "destructive"
       });
     } finally {
@@ -131,11 +127,11 @@ export default function PapersManagementNew() {
     }
   };
 
-  // Create or Update paper
+  // Create or Update note
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.drive_link || !formData.batch_id || !formData.subject_name || !formData.year || !formData.exam_type) {
+    if (!formData.title || !formData.drive_link || !formData.batch_id || !formData.subject_name) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -146,11 +142,11 @@ export default function PapersManagementNew() {
 
     setSubmitting(true);
     try {
-      const url = editingPaper 
-        ? getApiUrl(`/admin/papers/${editingPaper.id}`)
-        : getApiUrl('/admin/papers');
+      const url = editingNote 
+        ? getApiUrl(`/admin/notes/${editingNote.id}`)
+        : getApiUrl('/admin/notes');
       
-      const method = editingPaper ? 'PUT' : 'POST';
+      const method = editingNote ? 'PUT' : 'POST';
       
       const response = await fetch(url, {
         method,
@@ -159,8 +155,7 @@ export default function PapersManagementNew() {
         },
         body: JSON.stringify({
           ...formData,
-          batch_id: parseInt(formData.batch_id),
-          year: parseInt(formData.year)
+          batch_id: parseInt(formData.batch_id)
         }),
       });
 
@@ -169,24 +164,24 @@ export default function PapersManagementNew() {
       if (data.success) {
         toast({
           title: "Success",
-          description: editingPaper ? "Paper updated successfully" : "Paper created successfully"
+          description: editingNote ? "Note updated successfully" : "Note created successfully"
         });
         
         setDialogOpen(false);
         resetForm();
-        fetchPapers();
+        fetchNotes();
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to save paper",
+          description: data.message || "Failed to save note",
           variant: "destructive"
         });
       }
     } catch (error) {
-      console.error('Error saving paper:', error);
+      console.error('Error saving note:', error);
       toast({
         title: "Error",
-        description: "Failed to save paper",
+        description: "Failed to save note",
         variant: "destructive"
       });
     } finally {
@@ -194,10 +189,10 @@ export default function PapersManagementNew() {
     }
   };
 
-  // Delete paper
+  // Delete note
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(getApiUrl(`/admin/papers/${id}`), {
+      const response = await fetch(getApiUrl(`/admin/notes/${id}`), {
         method: 'DELETE',
       });
 
@@ -206,21 +201,21 @@ export default function PapersManagementNew() {
       if (data.success) {
         toast({
           title: "Success",
-          description: "Paper deleted successfully"
+          description: "Note deleted successfully"
         });
-        fetchPapers();
+        fetchNotes();
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to delete paper",
+          description: data.message || "Failed to delete note",
           variant: "destructive"
         });
       }
     } catch (error) {
-      console.error('Error deleting paper:', error);
+      console.error('Error deleting note:', error);
       toast({
         title: "Error",
-        description: "Failed to delete paper",
+        description: "Failed to delete note",
         variant: "destructive"
       });
     }
@@ -233,24 +228,20 @@ export default function PapersManagementNew() {
       description: '',
       drive_link: '',
       batch_id: '',
-      subject_name: '',
-      year: '',
-      exam_type: ''
+      subject_name: ''
     });
-    setEditingPaper(null);
+    setEditingNote(null);
   };
 
   // Open edit dialog
-  const openEditDialog = (paper: Paper) => {
-    setEditingPaper(paper);
+  const openEditDialog = (note: Note) => {
+    setEditingNote(note);
     setFormData({
-      title: paper.title,
-      description: paper.description || '',
-      drive_link: paper.drive_link,
-      batch_id: paper.batch_id.toString(),
-      subject_name: paper.subject_name,
-      year: paper.year.toString(),
-      exam_type: paper.exam_type
+      title: note.title,
+      description: note.description || '',
+      drive_link: note.drive_link,
+      batch_id: note.batch_id.toString(),
+      subject_name: note.subject_name
     });
     setDialogOpen(true);
   };
@@ -262,7 +253,7 @@ export default function PapersManagementNew() {
   };
 
   useEffect(() => {
-    fetchPapers();
+    fetchNotes();
     fetchBatches();
   }, []);
 
@@ -271,23 +262,23 @@ export default function PapersManagementNew() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Papers Management</h1>
-          <p className="text-muted-foreground">Manage previous year papers and exam materials</p>
+          <h1 className="text-3xl font-bold">Notes Management</h1>
+          <p className="text-muted-foreground">Manage course notes and study materials</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={openCreateDialog}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Paper
+              Add Note
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
               <DialogTitle>
-                {editingPaper ? 'Edit Paper' : 'Add New Paper'}
+                {editingNote ? 'Edit Note' : 'Add New Note'}
               </DialogTitle>
               <DialogDescription>
-                {editingPaper ? 'Update paper information' : 'Create a new paper entry'}
+                {editingNote ? 'Update note information' : 'Create a new note entry'}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -297,7 +288,7 @@ export default function PapersManagementNew() {
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="Enter paper title"
+                  placeholder="Enter note title"
                   required
                 />
               </div>
@@ -311,38 +302,6 @@ export default function PapersManagementNew() {
                   placeholder="Enter subject name"
                   required
                 />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="year">Year *</Label>
-                  <Input
-                    id="year"
-                    type="number"
-                    value={formData.year}
-                    onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
-                    placeholder="2024"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="exam_type">Exam Type *</Label>
-                  <Select
-                    value={formData.exam_type}
-                    onValueChange={(value) => setFormData(prev => ({ ...prev, exam_type: value }))}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mid-sem">Mid Semester</SelectItem>
-                      <SelectItem value="end-sem">End Semester</SelectItem>
-                      <SelectItem value="quiz">Quiz</SelectItem>
-                      <SelectItem value="assignment">Assignment</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
               </div>
 
               <div>
@@ -399,7 +358,7 @@ export default function PapersManagementNew() {
                 </Button>
                 <Button type="submit" disabled={submitting}>
                   {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                  {editingPaper ? 'Update' : 'Create'}
+                  {editingNote ? 'Update' : 'Create'}
                 </Button>
               </DialogFooter>
             </form>
@@ -407,24 +366,24 @@ export default function PapersManagementNew() {
         </Dialog>
       </div>
 
-      {/* Papers Table */}
+      {/* Notes Table */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5" />
-            All Papers ({papers.length})
+            <BookOpen className="w-5 h-5" />
+            All Notes ({notes.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex justify-center items-center py-8">
               <Loader2 className="w-6 h-6 animate-spin" />
-              <span className="ml-2">Loading papers...</span>
+              <span className="ml-2">Loading notes...</span>
             </div>
-          ) : papers.length === 0 ? (
+          ) : notes.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No papers found. Create your first paper!</p>
+              <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <p>No notes found. Create your first note!</p>
             </div>
           ) : (
             <Table>
@@ -432,36 +391,36 @@ export default function PapersManagementNew() {
                 <TableRow>
                   <TableHead>Title</TableHead>
                   <TableHead>Subject</TableHead>
-                  <TableHead>Year</TableHead>
-                  <TableHead>Type</TableHead>
                   <TableHead>Batch</TableHead>
                   <TableHead>Drive Link</TableHead>
+                  <TableHead>Created</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {papers.map((paper) => (
-                  <TableRow key={paper.id}>
-                    <TableCell className="font-medium">{paper.title}</TableCell>
-                    <TableCell>{paper.subject_name}</TableCell>
-                    <TableCell>{paper.year}</TableCell>
-                    <TableCell className="capitalize">{paper.exam_type.replace('-', ' ')}</TableCell>
-                    <TableCell>{paper.batch?.name || `Batch ${paper.batch_id}`}</TableCell>
+                {notes.map((note) => (
+                  <TableRow key={note.id}>
+                    <TableCell className="font-medium">{note.title}</TableCell>
+                    <TableCell>{note.subject_name}</TableCell>
+                    <TableCell>{note.batch?.name || `Batch ${note.batch_id}`}</TableCell>
                     <TableCell>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => window.open(paper.drive_link, '_blank')}
+                        onClick={() => window.open(note.drive_link, '_blank')}
                       >
                         <ExternalLink className="w-4 h-4" />
                       </Button>
+                    </TableCell>
+                    <TableCell>
+                      {new Date(note.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => openEditDialog(paper)}
+                          onClick={() => openEditDialog(note)}
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -473,15 +432,15 @@ export default function PapersManagementNew() {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Paper</AlertDialogTitle>
+                              <AlertDialogTitle>Delete Note</AlertDialogTitle>
                               <AlertDialogDescription>
-                                Are you sure you want to delete "{paper.title}"? This action cannot be undone.
+                                Are you sure you want to delete "{note.title}"? This action cannot be undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
-                                onClick={() => handleDelete(paper.id)}
+                                onClick={() => handleDelete(note.id)}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                               >
                                 Delete
