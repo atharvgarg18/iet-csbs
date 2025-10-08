@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { apiGet, apiPost, apiPut, apiDelete } from '@/lib/api';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -131,19 +132,7 @@ export default function NoticesManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/admin/notices', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const result = await response.json();
+      const result = await apiGet('/.netlify/functions/api/admin/notices');
       const data = result.success ? result.data : result;
       setNotices(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -212,24 +201,10 @@ export default function NoticesManagement() {
         expiry_date: formData.expiry_date || null
       };
 
-      const url = editingNotice 
-        ? `/.netlify/functions/api/admin/notices/${editingNotice.id}`
-        : '/.netlify/functions/api/admin/notices';
-      
-      const method = editingNotice ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Failed to ${editingNotice ? 'update' : 'create'} notice`);
+      if (editingNotice) {
+        await apiPut(`/.netlify/functions/api/admin/notices/${editingNotice.id}`, payload);
+      } else {
+        await apiPost('/.netlify/functions/api/admin/notices', payload);
       }
 
       toast({
@@ -255,15 +230,7 @@ export default function NoticesManagement() {
     try {
       setActionLoading(`delete-${noticeId}`);
       
-      const response = await fetch(`/.netlify/functions/api/admin/notices/${noticeId}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to delete notice');
-      }
+      await apiDelete(`/.netlify/functions/api/admin/notices/${noticeId}`);
 
       toast({
         title: "Success!",
@@ -287,24 +254,12 @@ export default function NoticesManagement() {
     try {
       setActionLoading(`pin-${notice.id}`);
       
-      const response = await fetch(`/api/admin/notices/${notice.id}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...notice,
-          is_pinned: !notice.is_pinned,
-          publish_date: notice.publish_date.split('T')[0],
-          expiry_date: notice.expiry_date ? notice.expiry_date.split('T')[0] : null
-        })
+      await apiPut(`/.netlify/functions/api/admin/notices/${notice.id}`, {
+        ...notice,
+        is_pinned: !notice.is_pinned,
+        publish_date: notice.publish_date.split('T')[0],
+        expiry_date: notice.expiry_date ? notice.expiry_date.split('T')[0] : null
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to update notice');
-      }
 
       toast({
         title: "Success!",
