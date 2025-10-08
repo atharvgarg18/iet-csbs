@@ -530,6 +530,86 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // POST /admin/users
+    if (httpMethod === 'POST' && apiRoute.includes('/admin/users')) {
+      const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
+      
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
+      const { data, error } = await supabase.from('users').insert({ 
+        email, 
+        full_name, 
+        role: role || 'student', 
+        password_hash: hashedPassword,
+        is_active: is_active !== undefined ? is_active : true
+      }).select('id, email, full_name, role, is_active, created_at').single();
+      
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // PUT /admin/users/:id
+    if (httpMethod === 'PUT' && apiRoute.includes('/admin/users/')) {
+      const userId = apiRoute.split('/admin/users/')[1];
+      const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
+      
+      const updateData = { email, full_name, role, is_active };
+      
+      // Only hash and update password if provided
+      if (password && password.trim() !== '') {
+        updateData.password_hash = await bcrypt.hash(password, 10);
+      }
+      
+      const { data, error } = await supabase
+        .from('users')
+        .update(updateData)
+        .eq('id', userId)
+        .select('id, email, full_name, role, is_active, last_login, created_at')
+        .single();
+        
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, data }),
+      };
+    }
+
+    // DELETE /admin/users/:id
+    if (httpMethod === 'DELETE' && apiRoute.includes('/admin/users/')) {
+      const userId = apiRoute.split('/admin/users/')[1];
+      const { error } = await supabase.from('users').delete().eq('id', userId);
+      if (error) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: error.message }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: true, message: 'User deleted successfully' }),
+      };
+    }
+
     // GET /admin/batches
     if (httpMethod === 'GET' && apiRoute.includes('/admin/batches')) {
       const { data, error } = await supabase.from('batches').select('*').order('created_at', { ascending: false });
@@ -970,8 +1050,13 @@ exports.handler = async (event, context) => {
 
     // POST /admin/gallery-categories
     if (httpMethod === 'POST' && apiRoute.includes('/admin/gallery-categories')) {
-      const { name, description } = JSON.parse(body || '{}');
-      const { data, error } = await supabase.from('gallery_categories').insert({ name, description }).select().single();
+      const { name, description, color, is_active } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('gallery_categories').insert({ 
+        name, 
+        description, 
+        color: color || '#3b82f6', 
+        is_active: is_active !== undefined ? is_active : true 
+      }).select().single();
       if (error) {
         return {
           statusCode: 400,
@@ -989,10 +1074,10 @@ exports.handler = async (event, context) => {
     // PUT /admin/gallery-categories/:id  
     if (httpMethod === 'PUT' && apiRoute.includes('/admin/gallery-categories/')) {
       const categoryId = apiRoute.split('/admin/gallery-categories/')[1];
-      const { name, description } = JSON.parse(body || '{}');
+      const { name, description, color, is_active } = JSON.parse(body || '{}');
       const { data, error } = await supabase
         .from('gallery_categories')
-        .update({ name, description })
+        .update({ name, description, color, is_active })
         .eq('id', categoryId)
         .select()
         .single();
@@ -1113,8 +1198,13 @@ exports.handler = async (event, context) => {
 
     // POST /admin/notice-categories
     if (httpMethod === 'POST' && apiRoute.includes('/admin/notice-categories')) {
-      const { name, description } = JSON.parse(body || '{}');
-      const { data, error } = await supabase.from('notice_categories').insert({ name, description }).select().single();
+      const { name, description, color, is_active } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('notice_categories').insert({ 
+        name, 
+        description, 
+        color: color || '#3b82f6', 
+        is_active: is_active !== undefined ? is_active : true 
+      }).select().single();
       if (error) {
         return {
           statusCode: 400,
@@ -1132,10 +1222,10 @@ exports.handler = async (event, context) => {
     // PUT /admin/notice-categories/:id
     if (httpMethod === 'PUT' && apiRoute.includes('/admin/notice-categories/')) {
       const categoryId = apiRoute.split('/admin/notice-categories/')[1];
-      const { name, description } = JSON.parse(body || '{}');
+      const { name, description, color, is_active } = JSON.parse(body || '{}');
       const { data, error } = await supabase
         .from('notice_categories')
-        .update({ name, description })
+        .update({ name, description, color, is_active })
         .eq('id', categoryId)
         .select()
         .single();
