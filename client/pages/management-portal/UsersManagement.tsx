@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { apiGet, apiPost, apiPut, apiDelete } from '@/lib/api';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,6 +74,7 @@ export default function UsersManagement() {
   const [formData, setFormData] = useState({
     email: '',
     full_name: '',
+    password: '',
     role: '' as 'admin' | 'editor' | 'viewer' | '',
     is_active: true
   });
@@ -99,19 +101,7 @@ export default function UsersManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/admin/users', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const result = await response.json();
+      const result = await apiGet('/.netlify/functions/api/admin/users');
       const data = result.success ? result.data : result;
       setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -132,6 +122,7 @@ export default function UsersManagement() {
     setFormData({
       email: '',
       full_name: '',
+      password: '',
       role: '',
       is_active: true
     });
@@ -143,6 +134,7 @@ export default function UsersManagement() {
     setFormData({
       email: user.email,
       full_name: user.full_name,
+      password: '', // Leave empty for edit - only fill if changing password
       role: user.role,
       is_active: user.is_active
     });
@@ -154,6 +146,16 @@ export default function UsersManagement() {
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // For new users, password is required
+    if (!editingUser && !formData.password) {
+      toast({
+        title: "Validation Error",
+        description: "Password is required for new users",
         variant: "destructive"
       });
       return;
@@ -594,6 +596,20 @@ export default function UsersManagement() {
                 value={formData.full_name}
                 onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                 placeholder="Enter full name"
+                className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="password" className="text-sm font-semibold text-slate-700">
+                Password {!editingUser && <span className="text-red-500">*</span>}
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                placeholder={editingUser ? "Leave empty to keep current password" : "Enter password"}
                 className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
               />
             </div>
