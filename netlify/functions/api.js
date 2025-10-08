@@ -532,82 +532,150 @@ exports.handler = async (event, context) => {
 
     // POST /admin/users
     if (httpMethod === 'POST' && apiRoute.includes('/admin/users')) {
-      const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
-      
-      // Hash password
-      const hashedPassword = await bcrypt.hash(password, 10);
-      
-      const { data, error } = await supabase.from('users').insert({ 
-        email, 
-        full_name, 
-        role: role || 'student', 
-        password_hash: hashedPassword,
-        is_active: is_active !== undefined ? is_active : true
-      }).select('id, email, full_name, role, is_active, created_at').single();
-      
-      if (error) {
+      try {
+        const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
+        
+        console.log('Creating user with data:', { email, full_name, role, hasPassword: !!password, is_active });
+        
+        // Validate required fields
+        if (!email || !full_name || !role || !password) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              success: false, 
+              error: 'Missing required fields: email, full_name, role, password' 
+            }),
+          };
+        }
+        
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Password hashed successfully');
+        
+        const { data, error } = await supabase.from('users').insert({ 
+          email, 
+          full_name, 
+          role: role, // Don't default to 'student', use the provided role
+          password_hash: hashedPassword,
+          is_active: is_active !== undefined ? is_active : true
+        }).select('id, email, full_name, role, is_active, created_at').single();
+        
+        if (error) {
+          console.error('Supabase error creating user:', error);
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: error.message }),
+          };
+        }
+        
+        console.log('User created successfully:', data);
         return {
-          statusCode: 400,
+          statusCode: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ success: false, error: error.message }),
+          body: JSON.stringify({ success: true, data }),
+        };
+      } catch (err) {
+        console.error('Error in POST /admin/users:', err);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: err.message }),
         };
       }
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ success: true, data }),
-      };
     }
 
     // PUT /admin/users/:id
     if (httpMethod === 'PUT' && apiRoute.includes('/admin/users/')) {
-      const userId = apiRoute.split('/admin/users/')[1];
-      const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
-      
-      const updateData = { email, full_name, role, is_active };
-      
-      // Only hash and update password if provided
-      if (password && password.trim() !== '') {
-        updateData.password_hash = await bcrypt.hash(password, 10);
-      }
-      
-      const { data, error } = await supabase
-        .from('users')
-        .update(updateData)
-        .eq('id', userId)
-        .select('id, email, full_name, role, is_active, last_login, created_at')
-        .single();
+      try {
+        const userId = apiRoute.split('/admin/users/')[1];
+        const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
         
-      if (error) {
+        console.log('Updating user:', userId, 'with data:', { email, full_name, role, hasPassword: !!password, is_active });
+        
+        // Validate required fields
+        if (!email || !full_name || !role) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              success: false, 
+              error: 'Missing required fields: email, full_name, role' 
+            }),
+          };
+        }
+        
+        const updateData = { email, full_name, role, is_active };
+        
+        // Only hash and update password if provided
+        if (password && password.trim() !== '') {
+          updateData.password_hash = await bcrypt.hash(password, 10);
+          console.log('Password updated for user');
+        }
+        
+        const { data, error } = await supabase
+          .from('users')
+          .update(updateData)
+          .eq('id', userId)
+          .select('id, email, full_name, role, is_active, last_login, created_at')
+          .single();
+        
+        if (error) {
+          console.error('Supabase error updating user:', error);
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: error.message }),
+          };
+        }
+        
+        console.log('User updated successfully:', data);
         return {
-          statusCode: 400,
+          statusCode: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ success: false, error: error.message }),
+          body: JSON.stringify({ success: true, data }),
+        };
+      } catch (err) {
+        console.error('Error in PUT /admin/users:', err);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: err.message }),
         };
       }
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ success: true, data }),
-      };
     }
 
     // DELETE /admin/users/:id
     if (httpMethod === 'DELETE' && apiRoute.includes('/admin/users/')) {
-      const userId = apiRoute.split('/admin/users/')[1];
-      const { error } = await supabase.from('users').delete().eq('id', userId);
-      if (error) {
+      try {
+        const userId = apiRoute.split('/admin/users/')[1];
+        console.log('Deleting user:', userId);
+        
+        const { error } = await supabase.from('users').delete().eq('id', userId);
+        if (error) {
+          console.error('Supabase error deleting user:', error);
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: error.message }),
+          };
+        }
+        
+        console.log('User deleted successfully');
         return {
-          statusCode: 400,
+          statusCode: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ success: false, error: error.message }),
+          body: JSON.stringify({ success: true, message: 'User deleted successfully' }),
+        };
+      } catch (err) {
+        console.error('Error in DELETE /admin/users:', err);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: err.message }),
         };
       }
-      return {
-        statusCode: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ success: true, message: 'User deleted successfully' }),
-      };
     }
 
     // GET /admin/batches

@@ -164,24 +164,19 @@ export default function UsersManagement() {
     try {
       setActionLoading('save');
       
-      const url = editingUser 
-        ? `/api/admin/users/${editingUser.id}`
-        : '/api/admin/users';
-      
-      const method = editingUser ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData)
-      });
+      // Use the proper API utility functions and correct endpoint
+      const payload = {
+        email: formData.email,
+        full_name: formData.full_name,
+        role: formData.role,
+        password: formData.password,
+        is_active: formData.is_active
+      };
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Failed to ${editingUser ? 'update' : 'create'} user`);
+      if (editingUser) {
+        await apiPut(`/.netlify/functions/api/admin/users/${editingUser.id}`, payload);
+      } else {
+        await apiPost('/.netlify/functions/api/admin/users', payload);
       }
 
       toast({
@@ -207,15 +202,7 @@ export default function UsersManagement() {
     try {
       setActionLoading(`delete-${userId}`);
       
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to delete user');
-      }
+      await apiDelete(`/.netlify/functions/api/admin/users/${userId}`);
 
       toast({
         title: "Success!",
@@ -239,21 +226,19 @@ export default function UsersManagement() {
     try {
       setActionLoading(`toggle-${userId}`);
       
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          is_active: !currentStatus
-        })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to update user status');
+      // Find the user to get their current data
+      const user = users.find(u => u.id === userId);
+      if (!user) {
+        throw new Error('User not found');
       }
+
+      await apiPut(`/.netlify/functions/api/admin/users/${userId}`, {
+        email: user.email,
+        full_name: user.full_name,
+        role: user.role,
+        is_active: !currentStatus
+        // Don't include password - it's optional for updates
+      });
 
       toast({
         title: "Success!",
