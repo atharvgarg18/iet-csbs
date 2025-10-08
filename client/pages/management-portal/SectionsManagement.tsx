@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { apiGet, apiPost, apiPut, apiDelete } from '@/lib/api';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -128,19 +129,7 @@ export default function SectionsManagement() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/admin/sections', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const result = await response.json();
+      const result = await apiGet('/.netlify/functions/api/admin/sections');
       const data = result.success ? result.data : result;
       setSections(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -154,19 +143,9 @@ export default function SectionsManagement() {
 
   const fetchBatches = async () => {
     try {
-      const response = await fetch('/.netlify/functions/api/admin/batches', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        const data = result.success ? result.data : result;
-        setBatches(Array.isArray(data) ? data : []);
-      }
+      const result = await apiGet('/.netlify/functions/api/admin/batches');
+      const data = result.success ? result.data : result;
+      setBatches(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Batches fetch error:', err);
     }
