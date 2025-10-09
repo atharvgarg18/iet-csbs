@@ -16,6 +16,9 @@ export interface DemoResponse {
 export interface Batch {
   id: string;
   name: string; // "2024-28", "2025-29"
+  description?: string;
+  start_year?: number;
+  end_year?: number;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -65,11 +68,15 @@ export interface GalleryImage {
   id: string;
   category_id: string;
   title: string;
+  description?: string;
   image_url: string;
   photographer?: string;
   event_date?: string;
   is_featured: boolean;
+  is_published: boolean;
   is_active: boolean;
+  views?: number;
+  likes?: number;
   created_at: string;
   updated_at: string;
   category?: GalleryCategory; // Related category data

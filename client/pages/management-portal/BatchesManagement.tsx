@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
-import { Card, CardContent } from '@/components/ui/card';
+import { apiGet, apiPost, apiPut, apiDelete } from '@/lib/api';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
@@ -40,37 +42,21 @@ import {
   Search, 
   Users,
   Calendar,
-  User,
-  Sparkles,
   RefreshCw,
   BookOpen,
-  Clock,
   Award,
   Target,
+  Activity,
+  CheckCircle,
+  AlertCircle,
+  Filter,
+  BarChart3,
   TrendingUp,
-  UserCheck,
-  Settings,
-  Eye,
-  Building,
-  MapPin
+  Clock
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-interface Batch {
-  id: string;
-  name: string;
-  description: string;
-  start_year: string;
-  end_year: string;
-  department: string;
-  course_type: string;
-  max_students: number;
-  current_students: number;
-  is_active: boolean;
-  created_at: string;
-  created_by: string;
-  creator_name: string;
-}
+import { Batch } from '@shared/api';
+import { COLORS } from '@/lib/management-design-system';
 
 export default function BatchesManagement() {
   const { user } = useAuth();
@@ -80,67 +66,39 @@ export default function BatchesManagement() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   
-  const [showBatchDialog, setShowBatchDialog] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
   const [editingBatch, setEditingBatch] = useState<Batch | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    start_year: '',
-    end_year: '',
-    department: '',
-    course_type: '',
-    max_students: 50,
+    start_year: new Date().getFullYear(),
+    end_year: new Date().getFullYear() + 4,
     is_active: true
   });
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState<string>('all');
-  const [selectedCourseType, setSelectedCourseType] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   const filteredBatches = batches.filter(batch => {
-    const matchesSearch = !searchTerm || 
-      batch.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      batch.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      batch.department.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesDepartment = selectedDepartment === 'all' || batch.department === selectedDepartment;
-    const matchesCourseType = selectedCourseType === 'all' || batch.course_type === selectedCourseType;
+    const matchesSearch = batch.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (batch.description && batch.description.toLowerCase().includes(searchTerm.toLowerCase()));
     
     let matchesStatus = true;
     if (statusFilter === 'active') matchesStatus = batch.is_active;
     else if (statusFilter === 'inactive') matchesStatus = !batch.is_active;
-    else if (statusFilter === 'full') matchesStatus = batch.current_students >= batch.max_students;
-    else if (statusFilter === 'available') matchesStatus = batch.current_students < batch.max_students;
-
-    return matchesSearch && matchesDepartment && matchesCourseType && matchesStatus;
+    
+    return matchesSearch && matchesStatus;
   });
-
-  // Get unique values for filters
-  const departments = [...new Set(batches.map(batch => batch.department))].filter(Boolean);
-  const courseTypes = [...new Set(batches.map(batch => batch.course_type))].filter(Boolean);
 
   const fetchBatches = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/.netlify/functions/api/admin/batches', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const result = await response.json();
+      const result = await apiGet('/.netlify/functions/api/admin/batches');
       const data = result.success ? result.data : result;
       setBatches(Array.isArray(data) ? data : []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Batches fetch error:', err);
       setError('Failed to load batches');
       setBatches([]);
@@ -158,45 +116,39 @@ export default function BatchesManagement() {
     setFormData({
       name: '',
       description: '',
-      start_year: '',
-      end_year: '',
-      department: '',
-      course_type: '',
-      max_students: 50,
+      start_year: new Date().getFullYear(),
+      end_year: new Date().getFullYear() + 4,
       is_active: true
     });
-    setShowBatchDialog(true);
+    setShowDialog(true);
   };
 
   const openEditDialog = (batch: Batch) => {
     setEditingBatch(batch);
     setFormData({
       name: batch.name,
-      description: batch.description,
-      start_year: batch.start_year,
-      end_year: batch.end_year,
-      department: batch.department,
-      course_type: batch.course_type,
-      max_students: batch.max_students,
+      description: batch.description || '',
+      start_year: batch.start_year || new Date().getFullYear(),
+      end_year: batch.end_year || new Date().getFullYear() + 4,
       is_active: batch.is_active
     });
-    setShowBatchDialog(true);
+    setShowDialog(true);
   };
 
   const handleSaveBatch = async () => {
-    if (!formData.name || !formData.start_year || !formData.end_year || !formData.department) {
+    if (!formData.name.trim()) {
       toast({
         title: "Validation Error",
-        description: "Name, start year, end year, and department are required",
+        description: "Batch name is required",
         variant: "destructive"
       });
       return;
     }
 
-    if (parseInt(formData.end_year) <= parseInt(formData.start_year)) {
+    if (formData.end_year <= formData.start_year) {
       toast({
         title: "Validation Error",
-        description: "End year must be greater than start year",
+        description: "End year must be after start year",
         variant: "destructive"
       });
       return;
@@ -230,9 +182,9 @@ export default function BatchesManagement() {
         description: `Batch ${editingBatch ? 'updated' : 'created'} successfully`
       });
 
-      setShowBatchDialog(false);
+      setShowDialog(false);
       fetchBatches();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Save batch error:', error);
       toast({
         title: "Error",
@@ -248,7 +200,7 @@ export default function BatchesManagement() {
     try {
       setActionLoading(`delete-${batchId}`);
       
-      const response = await fetch(`/api/admin/batches/${batchId}`, {
+      const response = await fetch(`/.netlify/functions/api/admin/batches/${batchId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -264,7 +216,7 @@ export default function BatchesManagement() {
       });
 
       fetchBatches();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Delete batch error:', error);
       toast({
         title: "Error",
@@ -276,68 +228,74 @@ export default function BatchesManagement() {
     }
   };
 
-  const getDepartmentBadgeColor = (department: string) => {
-    const colors = {
-      'Computer Science': 'bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-700',
-      'Electronics': 'bg-gradient-to-br from-purple-50 to-violet-50 text-purple-700',
-      'Mechanical': 'bg-gradient-to-br from-orange-50 to-red-50 text-orange-700',
-      'Civil': 'bg-gradient-to-br from-green-50 to-emerald-50 text-green-700',
-      'Electrical': 'bg-gradient-to-br from-yellow-50 to-amber-50 text-yellow-700',
-      'Information Technology': 'bg-gradient-to-br from-indigo-50 to-blue-50 text-indigo-700',
-      'Biotechnology': 'bg-gradient-to-br from-teal-50 to-cyan-50 text-teal-700',
-      'Chemical': 'bg-gradient-to-br from-pink-50 to-rose-50 text-pink-700'
-    };
-    return colors[department] || 'bg-gradient-to-br from-slate-50 to-gray-50 text-slate-700';
+  const getBatchYearRange = (batch: Batch) => {
+    if (batch.start_year && batch.end_year) {
+      return `${batch.start_year}-${batch.end_year}`;
+    }
+    return 'Year not set';
   };
 
-  const getCourseTypeBadgeColor = (courseType: string) => {
-    const colors = {
-      'B.Tech': 'bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-700',
-      'M.Tech': 'bg-gradient-to-br from-purple-50 to-pink-50 text-purple-700',
-      'Diploma': 'bg-gradient-to-br from-green-50 to-teal-50 text-green-700',
-      'Ph.D': 'bg-gradient-to-br from-red-50 to-orange-50 text-red-700',
-      'Certificate': 'bg-gradient-to-br from-yellow-50 to-amber-50 text-yellow-700'
-    };
-    return colors[courseType] || 'bg-gradient-to-br from-slate-50 to-gray-50 text-slate-700';
+  const getBatchStatus = (batch: Batch) => {
+    const currentYear = new Date().getFullYear();
+    if (!batch.start_year || !batch.end_year) return 'pending';
+    if (currentYear < batch.start_year) return 'upcoming';
+    if (currentYear >= batch.start_year && currentYear <= batch.end_year) return 'active';
+    return 'completed';
   };
 
-  const getCapacityColor = (current: number, max: number) => {
-    const percentage = (current / max) * 100;
-    if (percentage >= 90) return 'text-red-600';
-    if (percentage >= 75) return 'text-orange-600';
-    if (percentage >= 50) return 'text-yellow-600';
-    return 'text-green-600';
+  const getStatusBadgeStyle = (status: string) => {
+    switch (status) {
+      case 'active':
+        return { backgroundColor: COLORS.success[100], color: COLORS.success[700], borderColor: COLORS.success[200] };
+      case 'upcoming':
+        return { backgroundColor: COLORS.primary[100], color: COLORS.primary[700], borderColor: COLORS.primary[200] };
+      case 'completed':
+        return { backgroundColor: COLORS.neutral[100], color: COLORS.neutral[700], borderColor: COLORS.neutral[200] };
+      default:
+        return { backgroundColor: COLORS.warning[100], color: COLORS.warning[700], borderColor: COLORS.warning[200] };
+    }
   };
 
   if (loading) {
     return (
-      <div className="min-h-96 flex items-center justify-center">
+      <div className="min-h-96 flex items-center justify-center" style={{ backgroundColor: COLORS.neutral[50] }}>
         <div className="text-center">
           <div className="relative mb-6">
-            <div className="w-16 h-16 border-4 border-emerald-200/30 border-t-emerald-500 rounded-full animate-spin"></div>
+            <div 
+              className="w-16 h-16 border-4 rounded-full animate-spin"
+              style={{ 
+                borderColor: COLORS.neutral[200],
+                borderTopColor: COLORS.primary[600]
+              }}
+            ></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <GraduationCap className="h-6 w-6 text-emerald-500 animate-pulse" />
+              <GraduationCap className="h-6 w-6 animate-pulse" style={{ color: COLORS.primary[600] }} />
             </div>
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">Loading Batches</h3>
-          <p className="text-slate-500">Fetching academic batches...</p>
+          <h3 className="text-lg font-bold mb-2" style={{ color: COLORS.neutral[900] }}>Loading Batches</h3>
+          <p style={{ color: COLORS.neutral[600] }}>Fetching batch information...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6" style={{ backgroundColor: COLORS.neutral[50] }}>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Batches Management</h1>
-          <p className="text-slate-500 mt-1">Manage academic batches and student enrollment</p>
+          <h1 className="text-3xl font-bold" style={{ color: COLORS.neutral[900] }}>Batch Management</h1>
+          <p className="mt-2" style={{ color: COLORS.neutral[600] }}>Organize and manage student batches and academic years</p>
         </div>
-        {(['admin', 'editor'].includes(user?.role || '')) && (
+        {user?.role === 'admin' && (
           <Button 
             onClick={openCreateDialog}
-            className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            className="px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-lg"
+            style={{ 
+              backgroundColor: COLORS.primary[600], 
+              color: 'white',
+              border: 'none'
+            }}
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Batch
@@ -347,16 +305,29 @@ export default function BatchesManagement() {
 
       {/* Error Alert */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+        <div 
+          className="rounded-lg p-6 border"
+          style={{ 
+            backgroundColor: COLORS.error[50], 
+            borderColor: COLORS.error[200] 
+          }}
+        >
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-red-800 font-bold mb-1">Connection Issue</h3>
-              <p className="text-red-600">{error}</p>
+            <div className="flex items-center">
+              <AlertCircle className="h-5 w-5 mr-3" style={{ color: COLORS.error[600] }} />
+              <div>
+                <h3 className="font-semibold mb-1" style={{ color: COLORS.error[800] }}>Connection Issue</h3>
+                <p style={{ color: COLORS.error[600] }}>{error}</p>
+              </div>
             </div>
             <Button
               onClick={fetchBatches}
               variant="outline"
-              className="text-red-600 border-red-200 hover:bg-red-50"
+              className="transition-colors duration-200"
+              style={{ 
+                color: COLORS.error[600], 
+                borderColor: COLORS.error[200] 
+              }}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               Retry
@@ -366,122 +337,130 @@ export default function BatchesManagement() {
       )}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-blue-50 to-cyan-50">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-600 font-medium text-sm">Total Batches</p>
-                <p className="text-2xl font-black text-blue-900">{batches.length}</p>
+                <p className="font-medium text-sm" style={{ color: COLORS.primary[600] }}>Total Batches</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>{batches.length}</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center">
-                <GraduationCap className="h-6 w-6 text-blue-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.primary[100] }}
+              >
+                <GraduationCap className="h-6 w-6" style={{ color: COLORS.primary[600] }} />
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-emerald-50 to-teal-50">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-emerald-600 font-medium text-sm">Active Batches</p>
-                <p className="text-2xl font-black text-emerald-900">
+                <p className="font-medium text-sm" style={{ color: COLORS.success[600] }}>Active Batches</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>
                   {batches.filter(b => b.is_active).length}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center">
-                <UserCheck className="h-6 w-6 text-emerald-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.success[100] }}
+              >
+                <CheckCircle className="h-6 w-6" style={{ color: COLORS.success[600] }} />
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-orange-50 to-red-50">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-600 font-medium text-sm">Total Students</p>
-                <p className="text-2xl font-black text-orange-900">
-                  {batches.reduce((sum, batch) => sum + batch.current_students, 0)}
+                <p className="font-medium text-sm" style={{ color: COLORS.warning[600] }}>Current Year</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>
+                  {batches.filter(b => getBatchStatus(b) === 'active').length}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center">
-                <Users className="h-6 w-6 text-orange-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.warning[100] }}
+              >
+                <Clock className="h-6 w-6" style={{ color: COLORS.warning[600] }} />
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-purple-50 to-pink-50">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-600 font-medium text-sm">Departments</p>
-                <p className="text-2xl font-black text-purple-900">{departments.length}</p>
+                <p className="font-medium text-sm" style={{ color: COLORS.accent[600] }}>Upcoming</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>
+                  {batches.filter(b => getBatchStatus(b) === 'upcoming').length}
+                </p>
               </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center">
-                <Building className="h-6 w-6 text-purple-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.accent[100] }}
+              >
+                <Calendar className="h-6 w-6" style={{ color: COLORS.accent[600] }} />
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Filters */}
-      <Card className="shadow-xl border-0">
+      {/* Search and Filters */}
+      <Card 
+        className="shadow-sm border-0"
+        style={{ backgroundColor: 'white' }}
+      >
         <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div className="lg:col-span-1">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="md:col-span-2">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5" style={{ color: COLORS.neutral[400] }} />
                 <Input
-                  placeholder="Search batches..."
+                  placeholder="Search batches by name or description..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 h-12 text-lg border-0 bg-slate-50 focus:bg-white transition-colors"
+                  className="pl-12 border transition-colors duration-200"
+                  style={{ borderColor: COLORS.neutral[200] }}
                 />
               </div>
             </div>
-            <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-              <SelectTrigger className="h-12 border-0 bg-slate-50">
-                <SelectValue placeholder="All Departments" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Departments</SelectItem>
-                {departments.map(department => (
-                  <SelectItem key={department} value={department}>{department}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={selectedCourseType} onValueChange={setSelectedCourseType}>
-              <SelectTrigger className="h-12 border-0 bg-slate-50">
-                <SelectValue placeholder="All Course Types" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Course Types</SelectItem>
-                {courseTypes.map(courseType => (
-                  <SelectItem key={courseType} value={courseType}>{courseType}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="h-12 border-0 bg-slate-50">
-                <SelectValue placeholder="All Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active Only</SelectItem>
-                <SelectItem value="inactive">Inactive Only</SelectItem>
-                <SelectItem value="full">Full Capacity</SelectItem>
-                <SelectItem value="available">Available Seats</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="flex items-center gap-2">
-              <GraduationCap className="h-5 w-5 text-slate-400" />
-              <span className="text-sm text-slate-600">
-                {filteredBatches.length} of {batches.length} batches
-              </span>
+            <div className="flex items-center gap-4">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="border transition-colors duration-200" style={{ borderColor: COLORS.neutral[200] }}>
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-2" style={{ color: COLORS.neutral[600] }}>
+                <Filter className="h-5 w-5" />
+                <span className="text-sm font-medium">
+                  {filteredBatches.length} of {batches.length}
+                </span>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -489,19 +468,29 @@ export default function BatchesManagement() {
 
       {/* Batches Grid */}
       {filteredBatches.length === 0 ? (
-        <Card className="shadow-xl border-0">
+        <Card 
+          className="shadow-sm border-0"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-12 text-center">
-            <GraduationCap className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-slate-900 mb-2">No Batches Found</h3>
-            <p className="text-slate-500 mb-6">
-              {searchTerm || selectedDepartment !== 'all' || selectedCourseType !== 'all' || statusFilter !== 'all'
-                ? 'Try adjusting your filters'
+            <GraduationCap className="h-16 w-16 mx-auto mb-4" style={{ color: COLORS.neutral[300] }} />
+            <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.neutral[900] }}>No Batches Found</h3>
+            <p className="mb-6" style={{ color: COLORS.neutral[600] }}>
+              {searchTerm || statusFilter !== 'all'
+                ? 'Try adjusting your search or filter criteria'
                 : 'Get started by creating your first batch'
               }
             </p>
-            {!searchTerm && selectedDepartment === 'all' && selectedCourseType === 'all' && statusFilter === 'all' && 
-             ['admin', 'editor'].includes(user?.role || '') && (
-              <Button onClick={openCreateDialog} className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
+            {!searchTerm && statusFilter === 'all' && user?.role === 'admin' && (
+              <Button 
+                onClick={openCreateDialog} 
+                className="px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                style={{ 
+                  backgroundColor: COLORS.primary[600], 
+                  color: 'white',
+                  border: 'none'
+                }}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Create First Batch
               </Button>
@@ -510,292 +499,226 @@ export default function BatchesManagement() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBatches.map((batch) => (
-            <Card key={batch.id} className="group hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 hover:scale-105 border-0 shadow-lg overflow-hidden">
-              <CardContent className="p-0">
-                <div className="h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-                <div className="p-6">
-                  {/* Batch Header */}
+          {filteredBatches.map((batch) => {
+            const status = getBatchStatus(batch);
+            const statusStyle = getStatusBadgeStyle(status);
+            return (
+              <Card 
+                key={batch.id} 
+                className="shadow-sm border-0 hover:shadow-md transition-all duration-200"
+                style={{ backgroundColor: 'white' }}
+              >
+                <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
-                        <GraduationCap className="h-6 w-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-slate-900 line-clamp-2 leading-tight">{batch.name}</h3>
-                        <p className="text-sm text-slate-500 font-medium">{batch.start_year} - {batch.end_year}</p>
-                      </div>
-                    </div>
-                    {!batch.is_active && (
-                      <Badge className="bg-gradient-to-br from-slate-100 to-gray-100 text-slate-600 border-slate-200 shadow-sm">
-                        Inactive
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Badges */}
-                  <div className="flex items-center gap-2 mb-4 flex-wrap">
-                    <Badge className={`${getDepartmentBadgeColor(batch.department)} border-0 shadow-sm font-medium`}>
-                      <Building className="h-3 w-3 mr-1" />
-                      {batch.department}
-                    </Badge>
-                    {batch.course_type && (
-                      <Badge className={`${getCourseTypeBadgeColor(batch.course_type)} border-0 shadow-sm font-medium`}>
-                        <Award className="h-3 w-3 mr-1" />
-                        {batch.course_type}
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Description */}
-                  {batch.description && (
-                    <p className="text-sm text-slate-600 mb-4 line-clamp-3">{batch.description}</p>
-                  )}
-
-                  {/* Capacity Info */}
-                  <div className="mb-4 p-3 bg-slate-50 rounded-xl">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-slate-700">Student Capacity</span>
-                      <span className={`text-sm font-bold ${getCapacityColor(batch.current_students, batch.max_students)}`}>
-                        {batch.current_students} / {batch.max_students}
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-200 rounded-full h-2">
                       <div 
-                        className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${Math.min((batch.current_students / batch.max_students) * 100, 100)}%` }}
-                      ></div>
+                        className="w-12 h-12 rounded-lg flex items-center justify-center"
+                        style={{ backgroundColor: COLORS.primary[100] }}
+                      >
+                        <GraduationCap className="h-6 w-6" style={{ color: COLORS.primary[600] }} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg" style={{ color: COLORS.neutral[900] }}>
+                          {batch.name}
+                        </h3>
+                        <p className="text-sm" style={{ color: COLORS.neutral[500] }}>
+                          {getBatchYearRange(batch)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Created Info */}
-                  <div className="flex items-center justify-between text-xs text-slate-400 mb-6">
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      <span>{batch.creator_name}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      <span>{new Date(batch.created_at).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="flex-1 hover:bg-emerald-50 hover:text-emerald-600"
-                    >
-                      <Eye className="h-4 w-4 mr-2" />
-                      View Details
-                    </Button>
                     
-                    {(['admin', 'editor'].includes(user?.role || '')) && (
-                      <>
-                        <Button
+                    {user?.role === 'admin' && (
+                      <div className="flex items-center gap-1">
+                        <Button 
+                          size="sm" 
                           variant="ghost"
-                          size="sm"
                           onClick={() => openEditDialog(batch)}
-                          disabled={actionLoading !== null}
-                          className="hover:bg-blue-50 hover:text-blue-600"
+                          className="h-8 w-8 p-0 transition-colors duration-200"
+                          style={{ 
+                            color: COLORS.primary[600]
+                          }}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button
+                            <Button 
+                              size="sm" 
                               variant="ghost"
-                              size="sm"
-                              disabled={actionLoading !== null}
-                              className="hover:bg-red-50 hover:text-red-600"
+                              className="h-8 w-8 p-0 transition-colors duration-200"
+                              style={{ 
+                                color: COLORS.error[600]
+                              }}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent className="border-0 shadow-2xl">
+                          <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle className="flex items-center gap-2">
-                                <Trash2 className="h-5 w-5 text-red-600" />
-                                Delete Batch
-                              </AlertDialogTitle>
-                              <AlertDialogDescription className="text-base">
-                                Are you sure you want to delete <strong>{batch.name}</strong>? This action cannot be undone and will affect all associated sections and students.
+                              <AlertDialogTitle>Delete Batch</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{batch.name}"? This action cannot be undone and may affect related sections and students.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDeleteBatch(batch.id)}
-                                className="bg-red-600 hover:bg-red-700"
-                                disabled={actionLoading === `delete-${batch.id}`}
+                                style={{ backgroundColor: COLORS.error[600] }}
                               >
-                                {actionLoading === `delete-${batch.id}` ? (
-                                  <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                                ) : null}
-                                Delete Batch
+                                Delete
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                      </>
+                      </div>
                     )}
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  
+                  {batch.description && (
+                    <p className="text-sm mb-4" style={{ color: COLORS.neutral[600] }}>
+                      {batch.description}
+                    </p>
+                  )}
+                  
+                  <div className="flex items-center justify-between mb-4">
+                    <Badge 
+                      className="text-xs border capitalize"
+                      style={statusStyle}
+                    >
+                      <Activity className="h-3 w-3 mr-1" />
+                      {status}
+                    </Badge>
+                    <div className="flex items-center">
+                      {batch.is_active ? (
+                        <>
+                          <CheckCircle className="h-3 w-3 mr-1" style={{ color: COLORS.success[600] }} />
+                          <span className="text-xs" style={{ color: COLORS.success[600] }}>Active</span>
+                        </>
+                      ) : (
+                        <>
+                          <AlertCircle className="h-3 w-3 mr-1" style={{ color: COLORS.neutral[400] }} />
+                          <span className="text-xs" style={{ color: COLORS.neutral[500] }}>Inactive</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="pt-4 border-t" style={{ borderColor: COLORS.neutral[100] }}>
+                    <div className="text-xs" style={{ color: COLORS.neutral[500] }}>
+                      Created {new Date(batch.created_at).toLocaleDateString()}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
 
-      {/* Create/Edit Batch Dialog */}
-      <Dialog open={showBatchDialog} onOpenChange={setShowBatchDialog}>
-        <DialogContent className="sm:max-w-2xl border-0 shadow-2xl">
+      {/* Create/Edit Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl">
-              <Sparkles className="h-5 w-5 text-emerald-600" />
+            <DialogTitle>
               {editingBatch ? 'Edit Batch' : 'Create New Batch'}
             </DialogTitle>
-            <DialogDescription className="text-base">
-              {editingBatch ? 'Update batch information and settings' : 'Create a new academic batch for student enrollment'}
+            <DialogDescription>
+              {editingBatch ? 'Update batch information and settings' : 'Create a new batch for managing students'}
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-6 py-4 max-h-96 overflow-y-auto">
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="name" className="text-sm font-semibold text-slate-700">Batch Name *</Label>
+              <Label htmlFor="name">Batch Name</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Enter batch name (e.g., CSE 2020-2024)"
-                className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
+                placeholder="e.g., CSE Batch 2024-28"
               />
             </div>
 
             <div>
-              <Label htmlFor="description" className="text-sm font-semibold text-slate-700">Description</Label>
+              <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Enter batch description (optional)"
-                className="mt-2 border-0 bg-slate-50 focus:bg-white transition-colors"
+                placeholder="Optional description of this batch"
                 rows={3}
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="start_year" className="text-sm font-semibold text-slate-700">Start Year *</Label>
+                <Label htmlFor="start_year">Start Year</Label>
                 <Input
                   id="start_year"
+                  type="number"
+                  min="2020"
+                  max="2050"
                   value={formData.start_year}
-                  onChange={(e) => setFormData({ ...formData, start_year: e.target.value })}
-                  placeholder="e.g., 2024"
-                  className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
+                  onChange={(e) => setFormData({ ...formData, start_year: parseInt(e.target.value) || new Date().getFullYear() })}
                 />
               </div>
-              
               <div>
-                <Label htmlFor="end_year" className="text-sm font-semibold text-slate-700">End Year *</Label>
+                <Label htmlFor="end_year">End Year</Label>
                 <Input
                   id="end_year"
+                  type="number"
+                  min="2020"
+                  max="2050"
                   value={formData.end_year}
-                  onChange={(e) => setFormData({ ...formData, end_year: e.target.value })}
-                  placeholder="e.g., 2028"
-                  className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
+                  onChange={(e) => setFormData({ ...formData, end_year: parseInt(e.target.value) || new Date().getFullYear() + 4 })}
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="department" className="text-sm font-semibold text-slate-700">Department *</Label>
-                <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
-                  <SelectTrigger className="mt-2 h-12 border-0 bg-slate-50">
-                    <SelectValue placeholder="Select department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Computer Science">Computer Science</SelectItem>
-                    <SelectItem value="Electronics">Electronics</SelectItem>
-                    <SelectItem value="Mechanical">Mechanical</SelectItem>
-                    <SelectItem value="Civil">Civil</SelectItem>
-                    <SelectItem value="Electrical">Electrical</SelectItem>
-                    <SelectItem value="Information Technology">Information Technology</SelectItem>
-                    <SelectItem value="Biotechnology">Biotechnology</SelectItem>
-                    <SelectItem value="Chemical">Chemical</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <Label htmlFor="course_type" className="text-sm font-semibold text-slate-700">Course Type</Label>
-                <Select value={formData.course_type} onValueChange={(value) => setFormData({ ...formData, course_type: value })}>
-                  <SelectTrigger className="mt-2 h-12 border-0 bg-slate-50">
-                    <SelectValue placeholder="Select course type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="B.Tech">B.Tech</SelectItem>
-                    <SelectItem value="M.Tech">M.Tech</SelectItem>
-                    <SelectItem value="Diploma">Diploma</SelectItem>
-                    <SelectItem value="Ph.D">Ph.D</SelectItem>
-                    <SelectItem value="Certificate">Certificate</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="max_students" className="text-sm font-semibold text-slate-700">Maximum Students</Label>
-              <Input
-                id="max_students"
-                type="number"
-                value={formData.max_students}
-                onChange={(e) => setFormData({ ...formData, max_students: parseInt(e.target.value) || 0 })}
-                placeholder="Enter maximum student capacity"
-                className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
-                min="1"
-                max="500"
-              />
-            </div>
-
-            <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-xl">
-              <input
-                type="checkbox"
+            <div className="flex items-center space-x-2">
+              <Switch
                 id="is_active"
                 checked={formData.is_active}
-                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                className="rounded border-slate-300"
+                onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
               />
-              <Label htmlFor="is_active" className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                <UserCheck className="h-4 w-4" />
-                Active Batch (Available for enrollment)
-              </Label>
+              <Label htmlFor="is_active">Active batch</Label>
+            </div>
+
+            <div className="p-4 rounded-lg border" style={{ backgroundColor: COLORS.neutral[50], borderColor: COLORS.neutral[200] }}>
+              <h4 className="font-medium mb-2" style={{ color: COLORS.neutral[800] }}>Preview</h4>
+              <div className="flex items-center gap-3">
+                <div 
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ backgroundColor: COLORS.primary[100] }}
+                >
+                  <GraduationCap className="h-4 w-4" style={{ color: COLORS.primary[600] }} />
+                </div>
+                <div>
+                  <p className="font-medium" style={{ color: COLORS.neutral[900] }}>
+                    {formData.name || 'Batch Name'}
+                  </p>
+                  <p className="text-sm" style={{ color: COLORS.neutral[500] }}>
+                    {formData.start_year}-{formData.end_year}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <DialogFooter className="gap-3">
-            <Button
-              variant="outline"
-              onClick={() => setShowBatchDialog(false)}
+
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowDialog(false)}
               disabled={actionLoading === 'save'}
-              className="border-slate-200"
             >
               Cancel
             </Button>
-            <Button
+            <Button 
               onClick={handleSaveBatch}
               disabled={actionLoading === 'save'}
-              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
+              style={{ backgroundColor: COLORS.primary[600] }}
             >
-              {actionLoading === 'save' ? (
-                <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <Sparkles className="h-4 w-4 mr-2" />
-              )}
-              {editingBatch ? 'Update' : 'Create'} Batch
+              {actionLoading === 'save' ? 'Saving...' : editingBatch ? 'Update Batch' : 'Create Batch'}
             </Button>
           </DialogFooter>
         </DialogContent>

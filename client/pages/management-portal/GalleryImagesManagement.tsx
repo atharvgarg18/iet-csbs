@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { apiGet, apiPost, apiPut, apiDelete } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,31 +61,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { COLORS } from '@/lib/management-design-system';
-
-interface GalleryImage {
-  id: string;
-  category_id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  is_featured: boolean;
-  is_published: boolean;
-  created_at: string;
-  updated_at: string;
-  category?: {
-    id: string;
-    name: string;
-  };
-  views?: number;
-  likes?: number;
-}
-
-interface GalleryCategory {
-  id: string;
-  name: string;
-  description: string;
-  is_active: boolean;
-}
+import { GalleryImage, GalleryCategory } from '@shared/api';
 
 export default function GalleryImagesManagement() {
   const { user } = useAuth();
@@ -132,53 +109,9 @@ export default function GalleryImagesManagement() {
       setLoading(true);
       setError(null);
       
-      // Mock data for now - replace with actual API call
-      const mockImages: GalleryImage[] = [
-        {
-          id: '1',
-          category_id: '1',
-          title: 'Annual Tech Fest 2024',
-          description: 'Students showcasing their innovative projects',
-          image_url: '/placeholder.svg',
-          is_featured: true,
-          is_published: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          category: { id: '1', name: 'Campus Events' },
-          views: 1250,
-          likes: 89
-        },
-        {
-          id: '2',
-          category_id: '2',  
-          title: 'Computer Science Workshop',
-          description: 'Hands-on programming workshop for first-year students',
-          image_url: '/placeholder.svg',
-          is_featured: false,
-          is_published: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          category: { id: '2', name: 'Academic Activities' },
-          views: 856,
-          likes: 45
-        },
-        {
-          id: '3',
-          category_id: '3',
-          title: 'Football Championship Finals',
-          description: 'Inter-college football tournament final match',
-          image_url: '/placeholder.svg',
-          is_featured: false,
-          is_published: false,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          category: { id: '3', name: 'Sports & Recreation' },
-          views: 623,
-          likes: 31
-        }
-      ];
-      
-      setImages(mockImages);
+      const result = await apiGet('/.netlify/functions/api/admin/gallery-images');
+      const data = result.success ? result.data : result;
+      setImages(Array.isArray(data) ? data : []);
     } catch (err: any) {
       console.error('Images fetch error:', err);
       setError('Failed to load gallery images');
@@ -190,16 +123,12 @@ export default function GalleryImagesManagement() {
 
   const fetchCategories = async () => {
     try {
-      // Mock data for now - replace with actual API call
-      const mockCategories: GalleryCategory[] = [
-        { id: '1', name: 'Campus Events', description: 'Events and activities', is_active: true },
-        { id: '2', name: 'Academic Activities', description: 'Academic programs', is_active: true },
-        { id: '3', name: 'Sports & Recreation', description: 'Sports events', is_active: true }
-      ];
-      
-      setCategories(mockCategories);
+      const result = await apiGet('/.netlify/functions/api/admin/gallery-categories');
+      const data = result.success ? result.data : result;
+      setCategories(Array.isArray(data) ? data : []);
     } catch (err: any) {
       console.error('Categories fetch error:', err);
+      setCategories([]);
     }
   };
 
@@ -247,8 +176,25 @@ export default function GalleryImagesManagement() {
     try {
       setActionLoading('save');
       
-      // Mock save operation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const url = editingImage 
+        ? `/.netlify/functions/api/admin/gallery-images/${editingImage.id}`
+        : '/.netlify/functions/api/admin/gallery-images';
+      
+      const method = editingImage ? 'PUT' : 'POST';
+      
+      const response = await fetch(url, {
+        method,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Failed to ${editingImage ? 'update' : 'upload'} image`);
+      }
       
       toast({
         title: "Success!",
@@ -273,8 +219,15 @@ export default function GalleryImagesManagement() {
     try {
       setActionLoading(`delete-${imageId}`);
       
-      // Mock delete operation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-images/${imageId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to delete image');
+      }
 
       toast({
         title: "Success!",
