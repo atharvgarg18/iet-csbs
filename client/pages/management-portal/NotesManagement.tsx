@@ -40,9 +40,12 @@ import {
   ExternalLink,
   RefreshCw,
   GraduationCap,
-  FolderOpen
+  FolderOpen,
+  Search,
+  Filter
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { COLORS } from './management-design-system';
 
 interface Note {
   id: string;
@@ -238,34 +241,59 @@ export default function NotesManagement() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="space-y-6" style={{ backgroundColor: COLORS.neutral[50] }}>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <BookOpen className="w-8 h-8 text-blue-600" />
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <div 
+              className="w-12 h-12 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: COLORS.primary[100] }}
+            >
+              <BookOpen className="w-6 h-6" style={{ color: COLORS.primary[600] }} />
+            </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Notes Management</h1>
-              <p className="text-gray-600">Manage Google Drive links for study notes by section</p>
+              <h1 className="text-3xl font-bold" style={{ color: COLORS.neutral[900] }}>Notes Management</h1>
+              <p className="mt-2" style={{ color: COLORS.neutral[600] }}>Manage Google Drive links for study notes by section</p>
             </div>
           </div>
-          <Button onClick={openCreateDialog} className="bg-blue-600 hover:bg-blue-700">
+          <Button 
+            onClick={openCreateDialog} 
+            className="px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-lg"
+            style={{ 
+              backgroundColor: COLORS.primary[600], 
+              color: 'white',
+              border: 'none'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.primary[700];
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.primary[600];
+            }}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Add Notes Link
           </Button>
         </div>
 
         {/* Filters */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <FolderOpen className="w-5 h-5" />
+        <Card 
+          className="shadow-sm border-0"
+          style={{ backgroundColor: 'white' }}
+        >
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg flex items-center gap-3" style={{ color: COLORS.neutral[800] }}>
+              <Filter className="w-5 h-5" style={{ color: COLORS.primary[600] }} />
               Filter by Batch
             </CardTitle>
           </CardHeader>
           <CardContent>
             <Select value={selectedBatch} onValueChange={setSelectedBatch}>
-              <SelectTrigger className="w-64">
+              <SelectTrigger 
+                className="w-64 border transition-colors duration-200"
+                style={{ borderColor: COLORS.neutral[200] }}
+              >
                 <SelectValue placeholder="Select batch" />
               </SelectTrigger>
               <SelectContent>
@@ -283,38 +311,57 @@ export default function NotesManagement() {
         {/* Notes List */}
         <div className="grid gap-4">
           {error ? (
-            <Card className="border-red-200 bg-red-50">
+            <Card 
+              className="border"
+              style={{ 
+                backgroundColor: COLORS.error[50], 
+                borderColor: COLORS.error[200] 
+              }}
+            >
               <CardContent className="p-6">
-                <div className="text-center text-red-700">{error}</div>
+                <div className="text-center" style={{ color: COLORS.error[700] }}>{error}</div>
               </CardContent>
             </Card>
           ) : notes.length === 0 ? (
-            <Card>
+            <Card 
+              className="shadow-sm border-0"
+              style={{ backgroundColor: 'white' }}
+            >
               <CardContent className="p-12">
-                <div className="text-center text-gray-500">
-                  <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg font-medium mb-2">No notes configured</p>
-                  <p>Add Google Drive links for study notes by section</p>
+                <div className="text-center">
+                  <BookOpen 
+                    className="w-12 h-12 mx-auto mb-4 opacity-50" 
+                    style={{ color: COLORS.neutral[400] }} 
+                  />
+                  <p className="text-lg font-medium mb-2" style={{ color: COLORS.neutral[900] }}>No notes configured</p>
+                  <p style={{ color: COLORS.neutral[600] }}>Add Google Drive links for study notes by section</p>
                 </div>
               </CardContent>
             </Card>
           ) : (
             notes.map((note) => (
-              <Card key={note.id} className="hover:shadow-md transition-shadow">
+              <Card 
+                key={note.id} 
+                className="shadow-sm border-0 hover:shadow-md transition-all duration-200"
+                style={{ backgroundColor: 'white' }}
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <GraduationCap className="w-6 h-6 text-blue-600" />
+                      <div 
+                        className="w-12 h-12 rounded-lg flex items-center justify-center"
+                        style={{ backgroundColor: COLORS.primary[100] }}
+                      >
+                        <GraduationCap className="w-6 h-6" style={{ color: COLORS.primary[600] }} />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900">
+                        <h3 className="font-semibold" style={{ color: COLORS.neutral[900] }}>
                           {note.section.batch.name} - Section {note.section.name}
                         </h3>
-                        <p className="text-gray-600 text-sm">
+                        <p className="text-sm mt-1" style={{ color: COLORS.neutral[600] }}>
                           {note.description || 'Study notes for this section'}
                         </p>
-                        <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-4 mt-2 text-xs" style={{ color: COLORS.neutral[500] }}>
                           <span>Updated: {new Date(note.updated_at).toLocaleDateString()}</span>
                         </div>
                       </div>

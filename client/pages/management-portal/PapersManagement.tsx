@@ -40,9 +40,12 @@ import {
   ExternalLink,
   RefreshCw,
   GraduationCap,
-  FolderOpen
+  FolderOpen,
+  Filter,
+  Search
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { COLORS } from './management-design-system';
 
 interface Paper {
   id: string;
@@ -238,34 +241,59 @@ export default function PapersManagement() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="space-y-6" style={{ backgroundColor: COLORS.neutral[50] }}>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <FileText className="w-8 h-8 text-blue-600" />
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <div 
+              className="w-12 h-12 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: COLORS.accent[100] }}
+            >
+              <FileText className="w-6 h-6" style={{ color: COLORS.accent[600] }} />
+            </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Papers Management</h1>
-              <p className="text-gray-600">Manage Google Drive links for question papers by section</p>
+              <h1 className="text-3xl font-bold" style={{ color: COLORS.neutral[900] }}>Papers Management</h1>
+              <p className="mt-2" style={{ color: COLORS.neutral[600] }}>Manage Google Drive links for question papers by section</p>
             </div>
           </div>
-          <Button onClick={openCreateDialog} className="bg-blue-600 hover:bg-blue-700">
+          <Button 
+            onClick={openCreateDialog} 
+            className="px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-lg"
+            style={{ 
+              backgroundColor: COLORS.accent[600], 
+              color: 'white',
+              border: 'none'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.accent[700];
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.accent[600];
+            }}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Add Papers Link
           </Button>
         </div>
 
         {/* Filters */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <FolderOpen className="w-5 h-5" />
+        <Card 
+          className="shadow-sm border-0"
+          style={{ backgroundColor: 'white' }}
+        >
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg flex items-center gap-3" style={{ color: COLORS.neutral[800] }}>
+              <Filter className="w-5 h-5" style={{ color: COLORS.accent[600] }} />
               Filter by Batch
             </CardTitle>
           </CardHeader>
           <CardContent>
             <Select value={selectedBatch} onValueChange={setSelectedBatch}>
-              <SelectTrigger className="w-64">
+              <SelectTrigger 
+                className="w-64 border transition-colors duration-200"
+                style={{ borderColor: COLORS.neutral[200] }}
+              >
                 <SelectValue placeholder="Select batch" />
               </SelectTrigger>
               <SelectContent>
