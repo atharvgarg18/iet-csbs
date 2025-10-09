@@ -63,6 +63,9 @@ import {
   updateNotice,
   deleteNotice
 } from "./routes/admin/notices";
+import {
+  getDashboardStats
+} from "./routes/admin/dashboard";
 
 export function createServer() {
   const app = express();
@@ -159,6 +162,9 @@ export function createServer() {
   app.post("/api/admin/notices", requireAuth, requireEditor, createNotice);
   app.put("/api/admin/notices/:id", requireAuth, requireEditor, updateNotice);
   app.delete("/api/admin/notices/:id", requireAuth, requireEditor, deleteNotice);
+
+  // Admin API routes - Dashboard
+  app.get("/api/admin/dashboard/stats", requireAuth, requireEditor, getDashboardStats);
 
   // Catch-all route for API debugging only
   app.use("/api/*", (req, res) => {

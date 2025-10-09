@@ -272,6 +272,21 @@ export interface NoticesResponse {
   message?: string;
 }
 
+export interface DashboardStats {
+  totalUsers: number;
+  activeUsers: number;
+  totalBatches: number;
+  totalNotes: number;
+  totalPapers: number;
+  totalNotices: number;
+}
+
+export interface DashboardStatsResponse {
+  success: boolean;
+  data: DashboardStats;
+  message?: string;
+}
+
 // Authentication Types
 
 export type UserRole = 'admin' | 'editor' | 'viewer';
