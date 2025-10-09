@@ -13,7 +13,7 @@ import {
   BookOpen, 
   Image, 
   Bell,
-  TrendingUp,
+
   ArrowRight,
   Eye,
   Plus,
@@ -52,7 +52,7 @@ export default function ManagementDashboard() {
     try {
       setLoading(true);
       setError(null);
-      const result = await apiGet('/.netlify/functions/api/dashboard/stats');
+      const result = await apiGet('/.netlify/functions/api/admin/dashboard/stats');
       const data = result.success ? result.data : result;
       setStats(data);
     } catch (err) {
@@ -76,7 +76,6 @@ export default function ManagementDashboard() {
       color: COLORS.primary[600],
       bgColor: COLORS.primary[50],
       href: user?.role === 'admin' ? '/management-portal/users' : null,
-      trend: '+12%'
     },
     {
       title: 'Batches',
@@ -86,7 +85,6 @@ export default function ManagementDashboard() {
       color: COLORS.accent[600],
       bgColor: COLORS.accent[50],
       href: user?.role === 'admin' ? '/management-portal/batches' : null,
-      trend: '+5%'
     },
     {
       title: 'Sections',
@@ -96,7 +94,6 @@ export default function ManagementDashboard() {
       color: COLORS.success[600],
       bgColor: COLORS.success[50],
       href: user?.role === 'admin' ? '/management-portal/sections' : null,
-      trend: '+8%'
     },
     {
       title: 'Study Notes',
@@ -106,7 +103,6 @@ export default function ManagementDashboard() {
       color: COLORS.warning[600],
       bgColor: COLORS.warning[50],
       href: '/management-portal/notes',
-      trend: '+23%'
     },
     {
       title: 'Question Papers',
@@ -116,7 +112,6 @@ export default function ManagementDashboard() {
       color: COLORS.error[600],
       bgColor: COLORS.error[50],
       href: '/management-portal/papers',
-      trend: '+15%'
     },
     {
       title: 'Notices',
@@ -126,7 +121,6 @@ export default function ManagementDashboard() {
       color: COLORS.primary[500],
       bgColor: COLORS.primary[50],
       href: '/management-portal/notices',
-      trend: '+7%'
     },
     {
       title: 'Gallery Images',
@@ -136,7 +130,6 @@ export default function ManagementDashboard() {
       color: COLORS.accent[500],
       bgColor: COLORS.accent[50],
       href: '/management-portal/gallery-images',
-      trend: '+18%'
     }
   ];
 
@@ -302,16 +295,6 @@ export default function ManagementDashboard() {
                     >
                       <Icon className="h-6 w-6" style={{ color: stat.color }} />
                     </div>
-                  </div>
-                  
-                  <div className="flex items-center mt-4 pt-4 border-t" style={{ borderTopColor: COLORS.neutral[200] }}>
-                    <TrendingUp className="h-3 w-3 mr-1" style={{ color: COLORS.success[500] }} />
-                    <span className="text-sm font-medium" style={{ color: COLORS.success[600] }}>
-                      {stat.trend}
-                    </span>
-                    <span className="text-sm ml-1" style={{ color: COLORS.neutral[500] }}>
-                      vs last month
-                    </span>
                   </div>
                 </CardContent>
               </Card>

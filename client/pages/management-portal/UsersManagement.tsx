@@ -62,14 +62,15 @@ export default function UsersManagement() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const result = await apiGet('/.netlify/functions/api/users');
+      const result = await apiGet('/.netlify/functions/api/admin/users');
+      console.log('Users API result:', result);
       const data = result.success ? result.data : result;
       setUsers(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch users:', error);
       toast({
         title: 'Error',
-        description: 'Failed to load users',
+        description: `Failed to load users: ${error.message || 'Unknown error'}`,
         variant: 'destructive',
       });
     } finally {
@@ -104,13 +105,13 @@ export default function UsersManagement() {
           is_active: formData.is_active
         };
         
-        await apiPut(`/.netlify/functions/api/users/${editingUser.id}`, updateData);
+        await apiPut(`/.netlify/functions/api/admin/users/${editingUser.id}`, updateData);
         toast({
           title: 'Success',
           description: 'User updated successfully',
         });
       } else {
-        await apiPost('/.netlify/functions/api/users', formData);
+        await apiPost('/.netlify/functions/api/admin/users', formData);
         toast({
           title: 'Success',
           description: 'User created successfully',
@@ -135,7 +136,7 @@ export default function UsersManagement() {
 
   const handleDelete = async (userId: string) => {
     try {
-      await apiDelete(`/.netlify/functions/api/users/${userId}`);
+      await apiDelete(`/.netlify/functions/api/admin/users/${userId}`);
       toast({
         title: 'Success',
         description: 'User deleted successfully',
@@ -153,7 +154,7 @@ export default function UsersManagement() {
 
   const toggleUserStatus = async (user: User) => {
     try {
-      await apiPut(`/.netlify/functions/api/users/${user.id}`, {
+      await apiPut(`/.netlify/functions/api/admin/users/${user.id}`, {
         ...user,
         is_active: !user.is_active
       });

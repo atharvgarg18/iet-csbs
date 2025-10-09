@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { apiGet, apiPost, apiPut, apiDelete } from '@/lib/api';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -34,29 +34,20 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { 
-  FolderOpen, 
   Plus, 
   Edit, 
   Trash2, 
   Search, 
   Users,
-  Calendar,
-  User,
-  Sparkles,
   RefreshCw,
   BookOpen,
-  GraduationCap,
-  UserCheck,
-  Settings,
-  Eye,
-  Building,
-  Target,
-  Activity,
   MapPin,
-  Layers,
-  Hash
+  Clock,
+  Check,
+  X
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { COLORS } from './management-design-system';
 
 interface Section {
   id: string;

@@ -167,13 +167,13 @@ export default function ManagementLayout() {
           ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}
           w-72
         `}
-        style={{ backgroundColor: COLORS.primary[800] }}
+        style={{ backgroundColor: COLORS.neutral[900] }}
       >
         <div className="flex h-full flex-col">
           {/* Logo section */}
           <div 
             className="flex items-center justify-between px-6 py-6 border-b"
-            style={{ borderBottomColor: COLORS.primary[700] }}
+            style={{ borderBottomColor: COLORS.neutral[700] }}
           >
             {!sidebarCollapsed && (
               <div className="flex items-center space-x-3">
