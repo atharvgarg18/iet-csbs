@@ -59,7 +59,7 @@ import {
   Tag
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { COLORS } from './management-design-system';
+import { COLORS } from '@/lib/management-design-system';
 
 interface GalleryImage {
   id: string;

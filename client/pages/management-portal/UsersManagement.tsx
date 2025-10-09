@@ -246,11 +246,10 @@ export default function UsersManagement() {
                   placeholder="Search users by name or email..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-10 border-0 shadow-sm focus:ring-2"
+                  className="pl-10 h-10 border-0 shadow-sm focus:ring-2 focus:ring-blue-500"
                   style={{ 
                     backgroundColor: COLORS.neutral[50],
-                    borderColor: COLORS.neutral[300],
-                    focusRingColor: COLORS.primary[500]
+                    borderColor: COLORS.neutral[300]
                   }}
                 />
               </div>

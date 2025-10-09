@@ -56,7 +56,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Notice, NoticeCategory } from '@shared/api';
-import { COLORS } from './management-design-system';
+import { COLORS } from '@/lib/management-design-system';
 
 export default function NoticesManagement() {
   const { user } = useAuth();

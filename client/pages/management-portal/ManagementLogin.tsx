@@ -271,8 +271,7 @@ export default function ManagementLogin() {
                 disabled={isLoading}
                 className="w-full h-12 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
-                  backgroundColor: COLORS.primary[600],
-                  '&:hover': { backgroundColor: COLORS.primary[700] }
+                  backgroundColor: COLORS.primary[600]
                 }}
               >
                 {isLoading ? (
