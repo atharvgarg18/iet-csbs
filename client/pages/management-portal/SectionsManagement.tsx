@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { apiGet, apiPost, apiPut, apiDelete } from '@/lib/api';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -48,12 +48,7 @@ import {
   FolderOpen,
   UserCheck,
   Target,
-  Layers,
-  Building,
-  Calendar,
-  User,
-  Eye,
-  Sparkles
+  Filter
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { COLORS } from './management-design-system';
@@ -132,7 +127,7 @@ export default function SectionsManagement() {
       const result = await apiGet('/.netlify/functions/api/admin/sections');
       const data = result.success ? result.data : result;
       setSections(Array.isArray(data) ? data : []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Sections fetch error:', err);
       setError('Failed to load sections');
       setSections([]);
@@ -146,7 +141,7 @@ export default function SectionsManagement() {
       const result = await apiGet('/.netlify/functions/api/admin/batches');
       const data = result.success ? result.data : result;
       setBatches(Array.isArray(data) ? data : []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Batches fetch error:', err);
     }
   };
@@ -224,7 +219,7 @@ export default function SectionsManagement() {
 
       setShowSectionDialog(false);
       fetchSections();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Save section error:', error);
       toast({
         title: "Error",
@@ -256,7 +251,7 @@ export default function SectionsManagement() {
       });
 
       fetchSections();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Delete section error:', error);
       toast({
         title: "Error",
@@ -268,44 +263,24 @@ export default function SectionsManagement() {
     }
   };
 
-  const getSectionBadgeColor = (index: number) => {
-    const colors = [
-      'bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-700',
-      'bg-gradient-to-br from-purple-50 to-violet-50 text-purple-700',
-      'bg-gradient-to-br from-green-50 to-emerald-50 text-green-700',
-      'bg-gradient-to-br from-orange-50 to-red-50 text-orange-700',
-      'bg-gradient-to-br from-pink-50 to-rose-50 text-pink-700',
-      'bg-gradient-to-br from-indigo-50 to-blue-50 text-indigo-700',
-      'bg-gradient-to-br from-teal-50 to-cyan-50 text-teal-700',
-      'bg-gradient-to-br from-yellow-50 to-amber-50 text-yellow-700'
-    ];
-    return colors[index % colors.length];
-  };
-
-  const getCapacityColor = (current: number, max: number) => {
-    const percentage = (current / max) * 100;
-    if (percentage >= 90) return 'text-red-600';
-    if (percentage >= 75) return 'text-orange-600';
-    if (percentage >= 50) return 'text-yellow-600';
-    return 'text-green-600';
-  };
-
-  const getBatchInfo = (batchId: string) => {
-    return batches.find(batch => batch.id === batchId);
-  };
-
   if (loading) {
     return (
-      <div className="min-h-96 flex items-center justify-center">
+      <div className="min-h-96 flex items-center justify-center" style={{ backgroundColor: COLORS.neutral[50] }}>
         <div className="text-center">
           <div className="relative mb-6">
-            <div className="w-16 h-16 border-4 border-indigo-200/30 border-t-indigo-500 rounded-full animate-spin"></div>
+            <div 
+              className="w-16 h-16 border-4 rounded-full animate-spin"
+              style={{ 
+                borderColor: COLORS.neutral[200],
+                borderTopColor: COLORS.primary[600]
+              }}
+            ></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <FolderOpen className="h-6 w-6 text-indigo-500 animate-pulse" />
+              <FolderOpen className="h-6 w-6 animate-pulse" style={{ color: COLORS.primary[600] }} />
             </div>
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">Loading Sections</h3>
-          <p className="text-slate-500">Fetching class sections...</p>
+          <h3 className="text-lg font-bold mb-2" style={{ color: COLORS.neutral[900] }}>Loading Sections</h3>
+          <p style={{ color: COLORS.neutral[600] }}>Fetching class sections...</p>
         </div>
       </div>
     );
@@ -327,12 +302,6 @@ export default function SectionsManagement() {
               backgroundColor: COLORS.primary[600], 
               color: 'white',
               border: 'none'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = COLORS.primary[700];
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = COLORS.primary[600];
             }}
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -476,36 +445,43 @@ export default function SectionsManagement() {
                   placeholder="Search sections..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 h-12 text-lg border-0 bg-slate-50 focus:bg-white transition-colors"
+                  className="pl-12 border transition-colors duration-200"
+                  style={{ borderColor: COLORS.neutral[200] }}
                 />
               </div>
             </div>
-            <Select value={selectedBatch} onValueChange={setSelectedBatch}>
-              <SelectTrigger className="h-12 border-0 bg-slate-50">
-                <SelectValue placeholder="All Batches" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Batches</SelectItem>
-                {batches.filter(batch => batch.is_active).map(batch => (
-                  <SelectItem key={batch.id} value={batch.id}>{batch.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="h-12 border-0 bg-slate-50">
-                <SelectValue placeholder="All Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active Only</SelectItem>
-                <SelectItem value="inactive">Inactive Only</SelectItem>
-                <SelectItem value="full">Full Capacity</SelectItem>
-                <SelectItem value="available">Available Seats</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="flex items-center gap-2">
-              <FolderOpen className="h-5 w-5 text-slate-400" />
-              <span className="text-sm text-slate-600">
+            <div>
+              <Select value={selectedBatch} onValueChange={setSelectedBatch}>
+                <SelectTrigger style={{ borderColor: COLORS.neutral[200] }}>
+                  <SelectValue placeholder="All Batches" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Batches</SelectItem>
+                  {batches.map((batch) => (
+                    <SelectItem key={batch.id} value={batch.id}>
+                      {batch.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger style={{ borderColor: COLORS.neutral[200] }}>
+                  <SelectValue placeholder="All Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="active">Active Only</SelectItem>
+                  <SelectItem value="inactive">Inactive Only</SelectItem>
+                  <SelectItem value="full">Full Capacity</SelectItem>
+                  <SelectItem value="available">Available Seats</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-2" style={{ color: COLORS.neutral[600] }}>
+              <Filter className="h-5 w-5" />
+              <span className="text-sm font-medium">
                 {filteredSections.length} of {sections.length} sections
               </span>
             </div>
@@ -513,13 +489,16 @@ export default function SectionsManagement() {
         </CardContent>
       </Card>
 
-      {/* Sections Grid */}
+      {/* Sections List */}
       {filteredSections.length === 0 ? (
-        <Card className="shadow-xl border-0">
+        <Card 
+          className="shadow-sm border-0"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-12 text-center">
-            <FolderOpen className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-slate-900 mb-2">No Sections Found</h3>
-            <p className="text-slate-500 mb-6">
+            <FolderOpen className="h-16 w-16 mx-auto mb-4" style={{ color: COLORS.neutral[300] }} />
+            <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.neutral[900] }}>No Sections Found</h3>
+            <p className="mb-6" style={{ color: COLORS.neutral[600] }}>
               {searchTerm || selectedBatch !== 'all' || statusFilter !== 'all'
                 ? 'Try adjusting your filters'
                 : 'Get started by creating your first section'
@@ -527,7 +506,15 @@ export default function SectionsManagement() {
             </p>
             {!searchTerm && selectedBatch === 'all' && statusFilter === 'all' && 
              ['admin', 'editor'].includes(user?.role || '') && (
-              <Button onClick={openCreateDialog} className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+              <Button 
+                onClick={openCreateDialog} 
+                className="px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                style={{ 
+                  backgroundColor: COLORS.primary[600], 
+                  color: 'white',
+                  border: 'none'
+                }}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Create First Section
               </Button>
@@ -535,153 +522,100 @@ export default function SectionsManagement() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSections.map((section, index) => (
-            <Card key={section.id} className="group hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 hover:scale-105 border-0 shadow-lg overflow-hidden">
-              <CardContent className="p-0">
-                <div className="h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                <div className="p-6">
-                  {/* Section Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-                        <FolderOpen className="h-6 w-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-slate-900 line-clamp-2 leading-tight">{section.name}</h3>
-                        <p className="text-sm text-slate-500 font-medium">{section.batch_name}</p>
-                      </div>
-                    </div>
-                    {!section.is_active && (
-                      <Badge className="bg-gradient-to-br from-slate-100 to-gray-100 text-slate-600 border-slate-200 shadow-sm">
-                        Inactive
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Section Badge */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <Badge className={`${getSectionBadgeColor(index)} border-0 shadow-sm font-medium`}>
-                      <Layers className="h-3 w-3 mr-1" />
-                      Section {section.name.split(' ').pop() || section.name}
-                    </Badge>
-                    {getBatchInfo(section.batch_id) && (
-                      <Badge className="bg-gradient-to-br from-slate-50 to-gray-50 text-slate-700 border-0 shadow-sm">
-                        <Building className="h-3 w-3 mr-1" />
-                        {getBatchInfo(section.batch_id)?.department}
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Room and Timing Info */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {section.room_number && (
-                      <div className="flex items-center gap-2 text-sm text-slate-600 p-2 bg-slate-50 rounded-lg">
-                        <MapPin className="h-4 w-4" />
-                        <span className="font-medium">Room {section.room_number}</span>
-                      </div>
-                    )}
-                    {section.class_timing && (
-                      <div className="flex items-center gap-2 text-sm text-slate-600 p-2 bg-slate-50 rounded-lg">
-                        <Calendar className="h-4 w-4" />
-                        <span className="font-medium">{section.class_timing}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Description */}
-                  {section.description && (
-                    <p className="text-sm text-slate-600 mb-4 line-clamp-3">{section.description}</p>
-                  )}
-
-                  {/* Capacity Info */}
-                  <div className="mb-4 p-3 bg-slate-50 rounded-xl">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-slate-700">Student Capacity</span>
-                      <span className={`text-sm font-bold ${getCapacityColor(section.current_students, section.max_students)}`}>
-                        {section.current_students} / {section.max_students}
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-200 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${Math.min((section.current_students / section.max_students) * 100, 100)}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  {/* Created Info */}
-                  <div className="flex items-center justify-between text-xs text-slate-400 mb-6">
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      <span>{section.creator_name}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      <span>{new Date(section.created_at).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="flex-1 hover:bg-indigo-50 hover:text-indigo-600"
+        <div className="grid gap-4">
+          {filteredSections.map((section) => (
+            <Card 
+              key={section.id} 
+              className="shadow-sm border-0 hover:shadow-md transition-all duration-200"
+              style={{ backgroundColor: 'white' }}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div 
+                      className="w-12 h-12 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: COLORS.primary[100] }}
                     >
-                      <Eye className="h-4 w-4 mr-2" />
-                      View Students
-                    </Button>
+                      <FolderOpen className="h-6 w-6" style={{ color: COLORS.primary[600] }} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold" style={{ color: COLORS.neutral[900] }}>
+                        {section.name}
+                      </h3>
+                      <p className="text-sm" style={{ color: COLORS.neutral[600] }}>
+                        {section.batch_name} • {section.current_students}/{section.max_students} students
+                      </p>
+                      {section.room_number && (
+                        <p className="text-xs mt-1" style={{ color: COLORS.neutral[500] }}>
+                          Room {section.room_number} {section.class_timing && `• ${section.class_timing}`}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <Badge 
+                      className="border"
+                      style={section.is_active ? { 
+                        backgroundColor: COLORS.success[100], 
+                        color: COLORS.success[700],
+                        borderColor: COLORS.success[200]
+                      } : { 
+                        backgroundColor: COLORS.neutral[100], 
+                        color: COLORS.neutral[600],
+                        borderColor: COLORS.neutral[200]
+                      }}
+                    >
+                      {section.is_active ? 'Active' : 'Inactive'}
+                    </Badge>
                     
                     {(['admin', 'editor'].includes(user?.role || '')) && (
-                      <>
-                        <Button
-                          variant="ghost"
-                          size="sm"
+                      <div className="flex items-center gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline"
                           onClick={() => openEditDialog(section)}
-                          disabled={actionLoading !== null}
-                          className="hover:bg-blue-50 hover:text-blue-600"
+                          className="transition-colors duration-200"
+                          style={{ 
+                            color: COLORS.primary[600],
+                            borderColor: COLORS.primary[200]
+                          }}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              disabled={actionLoading !== null}
-                              className="hover:bg-red-50 hover:text-red-600"
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              className="transition-colors duration-200"
+                              style={{ 
+                                color: COLORS.error[600],
+                                borderColor: COLORS.error[200]
+                              }}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent className="border-0 shadow-2xl">
+                          <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle className="flex items-center gap-2">
-                                <Trash2 className="h-5 w-5 text-red-600" />
-                                Delete Section
-                              </AlertDialogTitle>
-                              <AlertDialogDescription className="text-base">
-                                Are you sure you want to delete <strong>{section.name}</strong>? This action cannot be undone and will affect all assigned students.
+                              <AlertDialogTitle>Delete Section</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{section.name}"? This action cannot be undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDeleteSection(section.id)}
-                                className="bg-red-600 hover:bg-red-700"
-                                disabled={actionLoading === `delete-${section.id}`}
+                                style={{ backgroundColor: COLORS.error[600] }}
                               >
-                                {actionLoading === `delete-${section.id}` ? (
-                                  <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                                ) : null}
-                                Delete Section
+                                Delete
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                      </>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -691,134 +625,115 @@ export default function SectionsManagement() {
         </div>
       )}
 
-      {/* Create/Edit Section Dialog */}
+      {/* Create/Edit Dialog */}
       <Dialog open={showSectionDialog} onOpenChange={setShowSectionDialog}>
-        <DialogContent className="sm:max-w-2xl border-0 shadow-2xl">
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl">
-              <Sparkles className="h-5 w-5 text-indigo-600" />
+            <DialogTitle>
               {editingSection ? 'Edit Section' : 'Create New Section'}
             </DialogTitle>
-            <DialogDescription className="text-base">
+            <DialogDescription>
               {editingSection ? 'Update section information and settings' : 'Create a new class section within a batch'}
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-6 py-4 max-h-96 overflow-y-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name" className="text-sm font-semibold text-slate-700">Section Name *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Enter section name (e.g., Section A)"
-                  className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="batch" className="text-sm font-semibold text-slate-700">Batch *</Label>
-                <Select value={formData.batch_id} onValueChange={(value) => setFormData({ ...formData, batch_id: value })}>
-                  <SelectTrigger className="mt-2 h-12 border-0 bg-slate-50">
-                    <SelectValue placeholder="Select batch" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {batches.filter(batch => batch.is_active).map(batch => (
-                      <SelectItem key={batch.id} value={batch.id}>
-                        {batch.name} - {batch.department}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="description" className="text-sm font-semibold text-slate-700">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Enter section description (optional)"
-                className="mt-2 border-0 bg-slate-50 focus:bg-white transition-colors"
-                rows={3}
+              <Label htmlFor="name">Section Name</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="e.g., Section A, Morning Batch"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Label htmlFor="batch">Batch</Label>
+              <Select value={formData.batch_id} onValueChange={(value) => setFormData({ ...formData, batch_id: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a batch" />
+                </SelectTrigger>
+                <SelectContent>
+                  {batches.map((batch) => (
+                    <SelectItem key={batch.id} value={batch.id}>
+                      {batch.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="max_students" className="text-sm font-semibold text-slate-700">Max Students</Label>
+                <Label htmlFor="room">Room Number</Label>
+                <Input
+                  id="room"
+                  value={formData.room_number}
+                  onChange={(e) => setFormData({ ...formData, room_number: e.target.value })}
+                  placeholder="e.g., 101, Lab-A"
+                />
+              </div>
+              <div>
+                <Label htmlFor="max_students">Max Students</Label>
                 <Input
                   id="max_students"
                   type="number"
                   value={formData.max_students}
-                  onChange={(e) => setFormData({ ...formData, max_students: parseInt(e.target.value) || 0 })}
-                  placeholder="Enter max capacity"
-                  className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
+                  onChange={(e) => setFormData({ ...formData, max_students: parseInt(e.target.value) || 30 })}
                   min="1"
-                  max="100"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="room_number" className="text-sm font-semibold text-slate-700">Room Number</Label>
-                <Input
-                  id="room_number"
-                  value={formData.room_number}
-                  onChange={(e) => setFormData({ ...formData, room_number: e.target.value })}
-                  placeholder="e.g., 101, A-201"
-                  className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="class_timing" className="text-sm font-semibold text-slate-700">Class Timing</Label>
-                <Input
-                  id="class_timing"
-                  value={formData.class_timing}
-                  onChange={(e) => setFormData({ ...formData, class_timing: e.target.value })}
-                  placeholder="e.g., 9:00 AM - 10:00 AM"
-                  className="mt-2 h-12 border-0 bg-slate-50 focus:bg-white transition-colors"
+                  max="200"
                 />
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-xl">
+            <div>
+              <Label htmlFor="timing">Class Timing</Label>
+              <Input
+                id="timing"
+                value={formData.class_timing}
+                onChange={(e) => setFormData({ ...formData, class_timing: e.target.value })}
+                placeholder="e.g., 9:00 AM - 12:00 PM"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                placeholder="Optional description of the section"
+                rows={3}
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
               <input
                 type="checkbox"
                 id="is_active"
                 checked={formData.is_active}
                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                className="rounded border-slate-300"
+                className="rounded"
               />
-              <Label htmlFor="is_active" className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                <UserCheck className="h-4 w-4" />
-                Active Section (Available for student assignment)
-              </Label>
+              <Label htmlFor="is_active">Active section</Label>
             </div>
           </div>
-          
-          <DialogFooter className="gap-3">
-            <Button
-              variant="outline"
+
+          <DialogFooter>
+            <Button 
+              variant="outline" 
               onClick={() => setShowSectionDialog(false)}
               disabled={actionLoading === 'save'}
-              className="border-slate-200"
             >
               Cancel
             </Button>
-            <Button
+            <Button 
               onClick={handleSaveSection}
               disabled={actionLoading === 'save'}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
+              style={{ backgroundColor: COLORS.primary[600] }}
             >
-              {actionLoading === 'save' ? (
-                <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <Sparkles className="h-4 w-4 mr-2" />
-              )}
-              {editingSection ? 'Update' : 'Create'} Section
+              {actionLoading === 'save' ? 'Saving...' : editingSection ? 'Update Section' : 'Create Section'}
             </Button>
           </DialogFooter>
         </DialogContent>
