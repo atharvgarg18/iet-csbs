@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { COLORS, COMPONENTS, ROLE_COLORS } from '@/lib/management-design-system';
 import { 
   LayoutDashboard,
   Users, 
@@ -14,17 +15,19 @@ import {
   LogOut,
   Menu,
   X,
-  Settings2,
+  Settings,
   FolderOpen,
-  ChevronRight,
-  Sparkles,
-  Crown,
-  Zap
+  ChevronLeft,
+  User,
+  Shield,
+  Clock,
+  Home
 } from 'lucide-react';
 
 export default function ManagementLayout() {
   const { user, logout, loading } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -42,318 +45,294 @@ export default function ManagementLayout() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <div className="text-center">
-          <div className="relative mb-8">
-            <div className="w-20 h-20 border-4 border-purple-200/30 border-t-purple-400 rounded-full animate-spin mx-auto"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
-                <Sparkles className="h-6 w-6 text-white animate-pulse" />
-              </div>
-            </div>
-          </div>
-          <h3 className="text-xl font-bold text-white mb-2">Initializing Portal</h3>
-          <p className="text-purple-200">Preparing your management experience...</p>
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: COLORS.neutral[50] }}
+      >
+        <div className="text-center space-y-4">
+          <div 
+            className="w-12 h-12 rounded-full animate-spin mx-auto border-4 border-t-transparent"
+            style={{ 
+              borderColor: COLORS.neutral[300],
+              borderTopColor: COLORS.primary[600]
+            }}
+          />
+          <p style={{ color: COLORS.neutral[600] }}>Loading management portal...</p>
         </div>
       </div>
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   const navigationItems = [
-    { 
-      name: 'Dashboard', 
-      href: '/management-portal', 
-      icon: LayoutDashboard, 
-      roles: ['admin', 'editor', 'viewer'],
-      description: 'Overview & Analytics',
-      gradient: 'from-blue-500 to-cyan-500'
+    {
+      name: 'Dashboard',
+      href: '/management-portal',
+      icon: LayoutDashboard,
+      active: location.pathname === '/management-portal',
     },
-    { 
-      name: 'Batches', 
-      href: '/management-portal/batches', 
-      icon: GraduationCap, 
-      roles: ['admin'],
-      description: 'Academic Batches',
-      gradient: 'from-emerald-500 to-teal-500'
+    {
+      name: 'Users',
+      href: '/management-portal/users',
+      icon: Users,
+      active: location.pathname === '/management-portal/users',
+      adminOnly: true,
     },
-    { 
-      name: 'Sections', 
-      href: '/management-portal/sections', 
-      icon: FolderOpen, 
-      roles: ['admin'],
-      description: 'Class Sections',
-      gradient: 'from-orange-500 to-red-500'
+    {
+      name: 'Batches',
+      href: '/management-portal/batches',
+      icon: GraduationCap,
+      active: location.pathname === '/management-portal/batches',
+      adminOnly: true,
     },
-    { 
-      name: 'Notes', 
-      href: '/management-portal/notes', 
-      icon: BookOpen, 
-      roles: ['admin', 'editor'],
-      description: 'Study Materials',
-      gradient: 'from-violet-500 to-purple-500'
+    {
+      name: 'Sections',
+      href: '/management-portal/sections',
+      icon: FolderOpen,
+      active: location.pathname === '/management-portal/sections',
+      adminOnly: true,
     },
-    { 
-      name: 'Papers', 
-      href: '/management-portal/papers', 
-      icon: FileText, 
-      roles: ['admin', 'editor'],
-      description: 'Question Papers',
-      gradient: 'from-indigo-500 to-blue-500'
+    {
+      name: 'Notes',
+      href: '/management-portal/notes',
+      icon: FileText,
+      active: location.pathname === '/management-portal/notes',
     },
-    { 
-      name: 'Gallery', 
-      href: '/management-portal/gallery-images', 
-      icon: Image, 
-      roles: ['admin', 'editor'],
-      description: 'Image Gallery',
-      gradient: 'from-pink-500 to-rose-500'
+    {
+      name: 'Papers',
+      href: '/management-portal/papers',
+      icon: BookOpen,
+      active: location.pathname === '/management-portal/papers',
     },
-    { 
-      name: 'Notices', 
-      href: '/management-portal/notices', 
-      icon: Bell, 
-      roles: ['admin', 'editor'],
-      description: 'Announcements',
-      gradient: 'from-yellow-500 to-orange-500'
+    {
+      name: 'Notices',
+      href: '/management-portal/notices',
+      icon: Bell,
+      active: location.pathname === '/management-portal/notices',
     },
-    { 
-      name: 'Users', 
-      href: '/management-portal/users', 
-      icon: Users, 
-      roles: ['admin'],
-      description: 'User Management',
-      gradient: 'from-slate-500 to-gray-500'
+    {
+      name: 'Gallery Categories',
+      href: '/management-portal/gallery-categories',
+      icon: FolderOpen,
+      active: location.pathname === '/management-portal/gallery-categories',
+      adminOnly: true,
+    },
+    {
+      name: 'Gallery Images',
+      href: '/management-portal/gallery-images',
+      icon: Image,
+      active: location.pathname === '/management-portal/gallery-images',
+    },
+    {
+      name: 'Notice Categories',
+      href: '/management-portal/notice-categories',
+      icon: Settings,
+      active: location.pathname === '/management-portal/notice-categories',
+      adminOnly: true,
     },
   ];
 
-  const filteredNavigation = navigationItems.filter(item => 
-    item.roles.includes(user.role)
+  const filteredNavItems = navigationItems.filter(item => 
+    !item.adminOnly || user.role === 'admin'
   );
+
+  const userRoleConfig = ROLE_COLORS[user.role] || ROLE_COLORS.viewer;
 
   const handleLogout = async () => {
     try {
       await logout();
-    } finally {
       navigate('/management-portal/login');
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
-
-  const getRoleConfig = (role: string) => {
-    switch (role) {
-      case 'admin': return {
-        gradient: 'from-red-500 to-pink-500',
-        icon: Crown,
-        bgClass: 'bg-gradient-to-br from-red-50 to-pink-50',
-        textClass: 'text-red-700'
-      };
-      case 'editor': return {
-        gradient: 'from-blue-500 to-cyan-500',
-        icon: Zap,
-        bgClass: 'bg-gradient-to-br from-blue-50 to-cyan-50',
-        textClass: 'text-blue-700'
-      };
-      case 'viewer': return {
-        gradient: 'from-green-500 to-emerald-500',
-        icon: Settings2,
-        bgClass: 'bg-gradient-to-br from-green-50 to-emerald-50',
-        textClass: 'text-green-700'
-      };
-      default: return {
-        gradient: 'from-gray-500 to-slate-500',
-        icon: Settings2,
-        bgClass: 'bg-gradient-to-br from-gray-50 to-slate-50',
-        textClass: 'text-gray-700'
-      };
-    }
-  };
-
-  const getCurrentPageName = () => {
-    const currentItem = filteredNavigation.find(item => item.href === location.pathname);
-    return currentItem?.name || 'Portal';
-  };
-
-  const roleConfig = getRoleConfig(user.role);
-  const RoleIcon = roleConfig.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
-      {/* Mobile Overlay */}
-      {sidebarOpen && (
+    <div className="min-h-screen" style={{ backgroundColor: COLORS.neutral[50] }}>
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
-          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-80 bg-white/95 backdrop-blur-xl shadow-2xl border-r border-slate-200/50 transform transition-all duration-500 ease-out lg:translate-x-0 lg:static ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
-        
-        {/* Header */}
-        <div className="relative h-24 px-6 flex items-center bg-gradient-to-r from-slate-900 via-purple-900 to-indigo-900 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20"></div>
-          <div className="relative flex items-center gap-4 z-10">
-            <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center shadow-xl">
-                <Settings2 className="h-6 w-6 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center shadow-lg">
-                <Sparkles className="h-3 w-3 text-white" />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-xl font-black text-white tracking-tight">Management</h1>
-              <p className="text-purple-200 text-sm font-medium">Control Center</p>
-            </div>
-          </div>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            className="lg:hidden ml-auto relative z-10 text-white hover:bg-white/10 rounded-xl"
-            onClick={() => setSidebarOpen(false)}
+      <aside 
+        className={`
+          fixed left-0 top-0 z-50 h-full transition-all duration-300 ease-in-out
+          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0
+          ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}
+          w-72
+        `}
+        style={{ backgroundColor: COLORS.primary[800] }}
+      >
+        <div className="flex h-full flex-col">
+          {/* Logo section */}
+          <div 
+            className="flex items-center justify-between px-6 py-6 border-b"
+            style={{ borderBottomColor: COLORS.primary[700] }}
           >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
-        {/* User Profile */}
-        <div className="p-6 border-b border-slate-200/50">
-          <div className="flex items-center gap-4">
-            <div className={`relative w-14 h-14 bg-gradient-to-br ${roleConfig.gradient} rounded-2xl flex items-center justify-center shadow-lg`}>
-              <span className="text-white font-bold text-lg">
-                {user.full_name.charAt(0).toUpperCase()}
-              </span>
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-md">
-                <RoleIcon className="h-3 w-3 text-slate-600" />
+            {!sidebarCollapsed && (
+              <div className="flex items-center space-x-3">
+                <div 
+                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{ backgroundColor: COLORS.accent[600] }}
+                >
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-semibold text-white">Management</h1>
+                  <p style={{ color: COLORS.primary[300], fontSize: '0.75rem' }}>Portal</p>
+                </div>
               </div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-slate-900 truncate text-lg">
-                {user.full_name}
-              </p>
-              <p className="text-sm text-slate-500 truncate mb-1">
-                {user.email}
-              </p>
-              <Badge className={`${roleConfig.bgClass} ${roleConfig.textClass} border-0 shadow-sm font-medium`}>
-                {user.role.toUpperCase()}
-              </Badge>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-          {filteredNavigation.map((item) => {
-            const isActive = location.pathname === item.href;
-            const Icon = item.icon;
+            )}
             
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`group relative flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 ${
-                  isActive 
-                    ? `bg-gradient-to-r ${item.gradient} text-white shadow-xl shadow-purple-500/25 scale-105` 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:scale-102'
-                }`}
-                onClick={() => setSidebarOpen(false)}
-              >
-                <div className={`relative p-2.5 rounded-xl transition-all duration-300 ${
-                  isActive 
-                    ? 'bg-white/20 shadow-lg' 
-                    : 'bg-slate-100 group-hover:bg-white group-hover:shadow-md'
-                }`}>
-                  <Icon className="h-5 w-5" />
-                  {isActive && (
-                    <div className="absolute inset-0 bg-white/10 rounded-xl animate-pulse"></div>
-                  )}
-                </div>
-                
-                <div className="flex-1">
-                  <p className="font-bold text-sm">{item.name}</p>
-                  <p className={`text-xs mt-0.5 ${
-                    isActive ? 'text-white/80' : 'text-slate-400 group-hover:text-slate-500'
-                  }`}>
-                    {item.description}
-                  </p>
-                </div>
-                
-                {isActive && (
-                  <ChevronRight className="h-4 w-4 text-white/80 animate-pulse" />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+            {/* Collapse button - desktop only */}
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="hidden lg:flex items-center justify-center w-8 h-8 rounded-md transition-colors hover:bg-white hover:bg-opacity-10"
+              style={{ color: COLORS.primary[300] }}
+            >
+              <ChevronLeft className={`h-5 w-5 transition-transform ${sidebarCollapsed ? 'rotate-180' : ''}`} />
+            </button>
 
-        {/* Logout */}
-        <div className="p-4 border-t border-slate-200/50">
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-slate-600 hover:text-red-600 hover:bg-red-50 transition-all duration-300 rounded-xl py-3"
-            onClick={handleLogout}
+            {/* Close button - mobile only */}
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="lg:hidden text-white hover:bg-white hover:bg-opacity-10 p-1 rounded"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-2">
+            {filteredNavItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`
+                    flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
+                    ${item.active 
+                      ? 'text-white shadow-md' 
+                      : 'text-gray-300 hover:text-white hover:bg-white hover:bg-opacity-10'
+                    }
+                  `}
+                  style={item.active ? { backgroundColor: COLORS.accent[600] } : {}}
+                >
+                  <Icon className={`h-5 w-5 ${sidebarCollapsed ? '' : 'mr-3'}`} />
+                  {!sidebarCollapsed && (
+                    <span className="truncate">{item.name}</span>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* User section */}
+          <div 
+            className="px-4 py-6 border-t"
+            style={{ borderTopColor: COLORS.primary[700] }}
           >
-            <div className="p-2 rounded-lg bg-slate-100 group-hover:bg-red-100 transition-colors">
-              <LogOut className="h-4 w-4" />
+            <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'space-x-3'}`}>
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: userRoleConfig.background }}
+              >
+                <User className="h-5 w-5" style={{ color: userRoleConfig.text }} />
+              </div>
+              
+              {!sidebarCollapsed && (
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate">
+                    {user.full_name}
+                  </p>
+                  <div className="flex items-center mt-1">
+                    <Badge 
+                      className="text-xs capitalize px-2 py-1 border"
+                      style={{
+                        backgroundColor: userRoleConfig.background,
+                        color: userRoleConfig.text,
+                        borderColor: userRoleConfig.border
+                      }}
+                    >
+                      {user.role}
+                    </Badge>
+                  </div>
+                </div>
+              )}
             </div>
-            <span className="font-semibold">Sign Out</span>
-          </Button>
+
+            {!sidebarCollapsed && (
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                size="sm"
+                className="w-full mt-4 text-gray-300 hover:text-white hover:bg-white hover:bg-opacity-10 justify-start"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            )}
+          </div>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="lg:ml-80">
-        {/* Top Bar */}
-        <header className="sticky top-0 z-30 h-18 bg-white/90 backdrop-blur-xl border-b border-slate-200/50 shadow-sm">
-          <div className="flex items-center px-6 py-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="lg:hidden mr-4 text-slate-600 hover:bg-slate-100 rounded-xl"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-            
-            <div className="flex-1">
-              <div className="flex items-center gap-2 text-slate-400 text-sm mb-1">
-                <Settings2 className="h-4 w-4" />
-                <span>Management</span>
-                <ChevronRight className="h-3 w-3" />
-                <span className="text-slate-900 font-semibold">{getCurrentPageName()}</span>
+      {/* Main content */}
+      <div className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-72'}`}>
+        {/* Top header */}
+        <header 
+          className="sticky top-0 z-30 px-6 py-4 border-b backdrop-blur-sm"
+          style={{ 
+            backgroundColor: `${COLORS.neutral[50]}f5`,
+            borderBottomColor: COLORS.neutral[200]
+          }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden p-2 rounded-md hover:bg-gray-100 transition-colors"
+                style={{ color: COLORS.neutral[600] }}
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+
+              {/* Breadcrumb */}
+              <div className="flex items-center space-x-2">
+                <Home className="h-4 w-4" style={{ color: COLORS.neutral[500] }} />
+                <span style={{ color: COLORS.neutral[400] }}>/</span>
+                <span 
+                  className="text-sm font-medium capitalize"
+                  style={{ color: COLORS.neutral[700] }}
+                >
+                  {location.pathname.split('/').pop() || 'dashboard'}
+                </span>
               </div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight">{getCurrentPageName()}</h1>
             </div>
 
-            {/* User Badge */}
-            <div className="flex items-center gap-4">
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-bold text-slate-900">{user.full_name}</p>
-                <p className={`text-xs font-medium ${roleConfig.textClass}`}>{user.role.toUpperCase()}</p>
-              </div>
-              <div className={`relative w-12 h-12 bg-gradient-to-br ${roleConfig.gradient} rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer`}>
-                <span className="text-white font-bold">
-                  {user.full_name.charAt(0).toUpperCase()}
+            {/* Right section */}
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 text-sm">
+                <Clock className="h-4 w-4" style={{ color: COLORS.neutral[500] }} />
+                <span style={{ color: COLORS.neutral[600] }}>
+                  {new Date().toLocaleDateString()}
                 </span>
-                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-md">
-                  <RoleIcon className="h-2.5 w-2.5 text-slate-600" />
-                </div>
               </div>
             </div>
           </div>
         </header>
 
-        {/* Page Content */}
+        {/* Page content */}
         <main className="p-6">
-          <div className="max-w-7xl mx-auto">
-            <Outlet />
-          </div>
+          <Outlet />
         </main>
       </div>
     </div>

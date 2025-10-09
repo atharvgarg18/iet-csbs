@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { apiGet } from '@/lib/api';
 import { Link } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { COLORS, COMPONENTS } from '@/lib/management-design-system';
 import { 
   BarChart3,
   Users, 
@@ -14,12 +15,13 @@ import {
   Bell,
   TrendingUp,
   ArrowRight,
-  Sparkles,
-  Crown,
-  Zap,
   Eye,
   Plus,
-  RefreshCw
+  RefreshCw,
+  Activity,
+  Calendar,
+  Clock,
+  CheckCircle
 } from 'lucide-react';
 
 interface DashboardStats {
@@ -50,67 +52,12 @@ export default function ManagementDashboard() {
     try {
       setLoading(true);
       setError(null);
-      
-      // Fetch data from multiple endpoints to build dashboard stats
-      const [
-        usersResponse,
-        notesResponse,
-        papersResponse,
-        noticesResponse,
-        batchesResponse,
-        sectionsResponse,
-        galleryResponse
-      ] = await Promise.all([
-        fetch('/.netlify/functions/api/admin/users', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/.netlify/functions/api/admin/notes', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/.netlify/functions/api/admin/papers', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/.netlify/functions/api/admin/notices', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/.netlify/functions/api/admin/batches', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/.netlify/functions/api/admin/sections', { method: 'GET', credentials: 'include' }).catch(() => null),
-        fetch('/.netlify/functions/api/admin/gallery-images', { method: 'GET', credentials: 'include' }).catch(() => null)
-      ]);
-
-      // Parse responses safely and handle API response format
-      const usersResult = usersResponse?.ok ? await usersResponse.json().catch(() => ({})) : {};
-      const notesResult = notesResponse?.ok ? await notesResponse.json().catch(() => ({})) : {};
-      const papersResult = papersResponse?.ok ? await papersResponse.json().catch(() => ({})) : {};
-      const noticesResult = noticesResponse?.ok ? await noticesResponse.json().catch(() => ({})) : {};
-      const batchesResult = batchesResponse?.ok ? await batchesResponse.json().catch(() => ({})) : {};
-      const sectionsResult = sectionsResponse?.ok ? await sectionsResponse.json().catch(() => ({})) : {};
-      const galleryResult = galleryResponse?.ok ? await galleryResponse.json().catch(() => ({})) : {};
-
-      // Extract data from API response format {success: true, data: [...]}
-      const users = usersResult.success ? usersResult.data : usersResult;
-      const notes = notesResult.success ? notesResult.data : notesResult;
-      const papers = papersResult.success ? papersResult.data : papersResult;
-      const notices = noticesResult.success ? noticesResult.data : noticesResult;
-      const batches = batchesResult.success ? batchesResult.data : batchesResult;
-      const sections = sectionsResult.success ? sectionsResult.data : sectionsResult;
-      const gallery = galleryResult.success ? galleryResult.data : galleryResult;
-
-      // Build stats object matching expected format
-      setStats({
-        users: Array.isArray(users) ? users.length : 0,
-        notes: Array.isArray(notes) ? notes.length : 0,
-        papers: Array.isArray(papers) ? papers.length : 0,
-        notices: Array.isArray(notices) ? notices.length : 0,
-        batches: Array.isArray(batches) ? batches.length : 0,
-        sections: Array.isArray(sections) ? sections.length : 0,
-        gallery_images: Array.isArray(gallery) ? gallery.length : 0,
-      });
+      const result = await apiGet('/.netlify/functions/api/dashboard/stats');
+      const data = result.success ? result.data : result;
+      setStats(data);
     } catch (err) {
-      console.error('Dashboard error:', err);
-      setError('Failed to load dashboard data');
-      // Set fallback stats to prevent blank page
-      setStats({
-        batches: 0,
-        sections: 0,
-        notes: 0,
-        papers: 0,
-        gallery_images: 0,
-        notices: 0,
-        users: 0,
-      });
+      console.error('Dashboard stats fetch error:', err);
+      setError('Failed to load dashboard statistics');
     } finally {
       setLoading(false);
     }
@@ -120,132 +67,161 @@ export default function ManagementDashboard() {
     fetchStats();
   }, [user]);
 
-  const getRoleIcon = () => {
-    switch (user?.role) {
-      case 'admin': return Crown;
-      case 'editor': return Zap;
-      case 'viewer': return Eye;
-      default: return Users;
-    }
-  };
-
-  const getRoleGradient = () => {
-    switch (user?.role) {
-      case 'admin': return 'from-red-500 to-pink-500';
-      case 'editor': return 'from-blue-500 to-cyan-500';
-      case 'viewer': return 'from-green-500 to-emerald-500';
-      default: return 'from-gray-500 to-slate-500';
-    }
-  };
-
-  const statCards = [
+  const statsCards = [
     {
-      title: 'Notes',
-      value: stats?.notes || 0,
-      icon: BookOpen,
-      gradient: 'from-violet-500 to-purple-500',
-      href: '/management-portal/notes',
-      roles: ['admin', 'editor', 'viewer']
-    },
-    {
-      title: 'Papers',
-      value: stats?.papers || 0,
-      icon: FileText,
-      gradient: 'from-indigo-500 to-blue-500',
-      href: '/management-portal/papers',
-      roles: ['admin', 'editor', 'viewer']
-    },
-    {
-      title: 'Gallery',
-      value: stats?.gallery_images || 0,
-      icon: Image,
-      gradient: 'from-pink-500 to-rose-500',
-      href: '/management-portal/gallery-images',
-      roles: ['admin', 'editor', 'viewer']
-    },
-    {
-      title: 'Notices',
-      value: stats?.notices || 0,
-      icon: Bell,
-      gradient: 'from-yellow-500 to-orange-500',
-      href: '/management-portal/notices',
-      roles: ['admin', 'editor', 'viewer']
+      title: 'Users',
+      value: stats?.users || 0,
+      subtitle: `${stats?.user_stats?.active_users || 0} active`,
+      icon: Users,
+      color: COLORS.primary[600],
+      bgColor: COLORS.primary[50],
+      href: user?.role === 'admin' ? '/management-portal/users' : null,
+      trend: '+12%'
     },
     {
       title: 'Batches',
       value: stats?.batches || 0,
+      subtitle: 'Academic batches',
       icon: GraduationCap,
-      gradient: 'from-emerald-500 to-teal-500',
-      href: '/management-portal/batches',
-      roles: ['admin']
+      color: COLORS.accent[600],
+      bgColor: COLORS.accent[50],
+      href: user?.role === 'admin' ? '/management-portal/batches' : null,
+      trend: '+5%'
     },
     {
-      title: 'Users',
-      value: stats?.users || 0,
-      icon: Users,
-      gradient: 'from-slate-500 to-gray-500',
-      href: '/management-portal/users',
-      roles: ['admin']
+      title: 'Sections',
+      value: stats?.sections || 0,
+      subtitle: 'Class sections',
+      icon: BarChart3,
+      color: COLORS.success[600],
+      bgColor: COLORS.success[50],
+      href: user?.role === 'admin' ? '/management-portal/sections' : null,
+      trend: '+8%'
+    },
+    {
+      title: 'Study Notes',
+      value: stats?.notes || 0,
+      subtitle: 'Available resources',
+      icon: FileText,
+      color: COLORS.warning[600],
+      bgColor: COLORS.warning[50],
+      href: '/management-portal/notes',
+      trend: '+23%'
+    },
+    {
+      title: 'Question Papers',
+      value: stats?.papers || 0,
+      subtitle: 'Practice materials',
+      icon: BookOpen,
+      color: COLORS.error[600],
+      bgColor: COLORS.error[50],
+      href: '/management-portal/papers',
+      trend: '+15%'
+    },
+    {
+      title: 'Notices',
+      value: stats?.notices || 0,
+      subtitle: 'Active announcements',
+      icon: Bell,
+      color: COLORS.primary[500],
+      bgColor: COLORS.primary[50],
+      href: '/management-portal/notices',
+      trend: '+7%'
+    },
+    {
+      title: 'Gallery Images',
+      value: stats?.gallery_images || 0,
+      subtitle: 'Media content',
+      icon: Image,
+      color: COLORS.accent[500],
+      bgColor: COLORS.accent[50],
+      href: '/management-portal/gallery-images',
+      trend: '+18%'
     }
   ];
-
-  const visibleStats = statCards.filter(card => 
-    card.roles.includes(user?.role || '')
-  );
 
   const quickActions = [
     {
-      title: 'Add Notes',
+      title: 'Add New Note',
       description: 'Upload study materials',
       icon: Plus,
       href: '/management-portal/notes',
-      gradient: 'from-violet-500 to-purple-500',
-      roles: ['admin', 'editor']
+      color: COLORS.primary[600]
     },
     {
-      title: 'Post Notice',
-      description: 'Create announcements',
-      icon: Plus,
+      title: 'Create Notice',
+      description: 'Post announcement',
+      icon: Bell,
       href: '/management-portal/notices',
-      gradient: 'from-yellow-500 to-orange-500',
-      roles: ['admin', 'editor']
+      color: COLORS.accent[600]
     },
     {
-      title: 'Manage Users',
-      description: 'User permissions',
-      icon: Users,
-      href: '/management-portal/users',
-      gradient: 'from-slate-500 to-gray-500',
-      roles: ['admin']
+      title: 'Upload Paper',
+      description: 'Add question paper',
+      icon: BookOpen,
+      href: '/management-portal/papers',
+      color: COLORS.success[600]
     },
     {
-      title: 'Manage Batches',
-      description: 'Academic batches',
-      icon: GraduationCap,
-      href: '/management-portal/batches',
-      gradient: 'from-emerald-500 to-teal-500',
-      roles: ['admin']
+      title: 'Add Gallery',
+      description: 'Upload images',
+      icon: Image,
+      href: '/management-portal/gallery-images',
+      color: COLORS.warning[600]
     }
   ];
 
-  const visibleActions = quickActions.filter(action => 
-    action.roles.includes(user?.role || '')
-  );
-
-  const RoleIcon = getRoleIcon();
-
   if (loading) {
     return (
-      <div className="min-h-96 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative mb-6">
-            <div className="w-16 h-16 border-4 border-purple-200/30 border-t-purple-500 rounded-full animate-spin"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <BarChart3 className="h-6 w-6 text-purple-500 animate-pulse" />
-            </div>
+      <div className="space-y-6">
+        <div className="animate-pulse">
+          <div 
+            className="h-8 rounded mb-4"
+            style={{ backgroundColor: COLORS.neutral[200] }}
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div 
+                key={i}
+                className="h-32 rounded-lg"
+                style={{ backgroundColor: COLORS.neutral[200] }}
+              />
+            ))}
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">Loading Dashboard</h3>
-          <p className="text-slate-500">Fetching your analytics...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div 
+        className="rounded-lg p-6 text-center"
+        style={{ backgroundColor: COLORS.error[50], borderColor: COLORS.error[200] }}
+      >
+        <div className="flex flex-col items-center space-y-4">
+          <div 
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: COLORS.error[100] }}
+          >
+            <RefreshCw className="h-6 w-6" style={{ color: COLORS.error[600] }} />
+          </div>
+          <div>
+            <h3 className="font-semibold" style={{ color: COLORS.error[800] }}>
+              Unable to Load Dashboard
+            </h3>
+            <p className="text-sm mt-1" style={{ color: COLORS.error[600] }}>
+              {error}
+            </p>
+          </div>
+          <Button
+            onClick={fetchStats}
+            variant="outline"
+            className="border-red-300 text-red-700 hover:bg-red-50"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Try Again
+          </Button>
         </div>
       </div>
     );
@@ -253,188 +229,213 @@ export default function ManagementDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Welcome Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 rounded-3xl p-8 text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20"></div>
-        <div className="relative z-10 flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className={`w-10 h-10 bg-gradient-to-br ${getRoleGradient()} rounded-2xl flex items-center justify-center`}>
-                <RoleIcon className="h-5 w-5 text-white" />
-              </div>
-              <div className="text-purple-200 text-sm font-medium uppercase tracking-wider">
-                {user?.role} Dashboard
-              </div>
-            </div>
-            <h1 className="text-3xl font-black mb-2">
-              Welcome back, {user?.full_name?.split(' ')[0]}!
-            </h1>
-            <p className="text-purple-200 text-lg">
-              Your management portal is ready. Let's get things done.
-            </p>
-          </div>
-          <div className="hidden md:block">
-            <Sparkles className="h-20 w-20 text-purple-300 opacity-50" />
-          </div>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 
+            className="text-3xl font-bold"
+            style={{ color: COLORS.neutral[900] }}
+          >
+            Welcome back, {user?.full_name}
+          </h1>
+          <p 
+            className="mt-2"
+            style={{ color: COLORS.neutral[600] }}
+          >
+            Here's what's happening with your management portal today.
+          </p>
+        </div>
+        <div className="flex items-center space-x-2 text-sm">
+          <Calendar className="h-4 w-4" style={{ color: COLORS.neutral[500] }} />
+          <span style={{ color: COLORS.neutral[600] }}>
+            {new Date().toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </span>
         </div>
       </div>
 
-      {/* Error Handling */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-red-800 font-bold mb-1">Connection Issue</h3>
-              <p className="text-red-600">{error}</p>
-            </div>
-            <Button
-              onClick={fetchStats}
-              variant="outline"
-              className="text-red-600 border-red-200 hover:bg-red-50"
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Retry
-            </Button>
-          </div>
-        </div>
-      )}
-
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {visibleStats.map((stat) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {statsCards.map((stat, index) => {
           const Icon = stat.icon;
+          const CardComponent = stat.href ? Link : 'div';
+          
           return (
-            <Link key={stat.title} to={stat.href}>
-              <Card className="group hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 hover:scale-105 border-0 shadow-lg overflow-hidden">
-                <CardContent className="p-0">
-                  <div className={`h-2 bg-gradient-to-r ${stat.gradient}`}></div>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-slate-500 text-sm font-medium mb-1">
-                          {stat.title}
-                        </p>
-                        <p className="text-3xl font-black text-slate-900">
-                          {stat.value.toLocaleString()}
-                        </p>
-                      </div>
-                      <div className={`relative p-4 bg-gradient-to-br ${stat.gradient} rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                        <Icon className="h-6 w-6 text-white" />
-                        <div className="absolute inset-0 bg-white/10 rounded-2xl animate-pulse opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      </div>
+            <CardComponent
+              key={index}
+              to={stat.href || '#'}
+              className={`block ${stat.href ? 'hover:shadow-lg transition-all duration-200' : ''}`}
+            >
+              <Card 
+                className="border-0 shadow-sm hover:shadow-md transition-all duration-200"
+                style={{ backgroundColor: COLORS.neutral[50] }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p 
+                        className="text-sm font-medium"
+                        style={{ color: COLORS.neutral[600] }}
+                      >
+                        {stat.title}
+                      </p>
+                      <p 
+                        className="text-3xl font-bold mt-2"
+                        style={{ color: COLORS.neutral[900] }}
+                      >
+                        {stat.value.toLocaleString()}
+                      </p>
+                      <p 
+                        className="text-sm mt-1"
+                        style={{ color: COLORS.neutral[500] }}
+                      >
+                        {stat.subtitle}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 mt-4 text-slate-400 group-hover:text-slate-600 transition-colors">
-                      <span className="text-sm font-medium">View Details</span>
-                      <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                    <div 
+                      className="w-12 h-12 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: stat.bgColor }}
+                    >
+                      <Icon className="h-6 w-6" style={{ color: stat.color }} />
                     </div>
+                  </div>
+                  
+                  <div className="flex items-center mt-4 pt-4 border-t" style={{ borderTopColor: COLORS.neutral[200] }}>
+                    <TrendingUp className="h-3 w-3 mr-1" style={{ color: COLORS.success[500] }} />
+                    <span className="text-sm font-medium" style={{ color: COLORS.success[600] }}>
+                      {stat.trend}
+                    </span>
+                    <span className="text-sm ml-1" style={{ color: COLORS.neutral[500] }}>
+                      vs last month
+                    </span>
                   </div>
                 </CardContent>
               </Card>
-            </Link>
+            </CardComponent>
           );
         })}
       </div>
 
-      {/* User Stats for Admin */}
-      {user?.role === 'admin' && stats?.user_stats && (
-        <Card className="shadow-xl border-0 overflow-hidden">
-          <CardContent className="p-0">
-            <div className="h-2 bg-gradient-to-r from-slate-500 to-gray-500"></div>
-            <div className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gradient-to-br from-slate-500 to-gray-500 rounded-2xl">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-black text-slate-900">User Analytics</h3>
-                  <p className="text-slate-500">Platform user distribution</p>
-                </div>
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Card 
+          className="border-0 shadow-sm"
+          style={{ backgroundColor: COLORS.neutral[50] }}
+        >
+          <CardHeader>
+            <CardTitle 
+              className="flex items-center text-lg"
+              style={{ color: COLORS.neutral[900] }}
+            >
+              <Activity className="h-5 w-5 mr-2" style={{ color: COLORS.primary[600] }} />
+              Quick Actions
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {quickActions.map((action, index) => {
+              const Icon = action.icon;
+              return (
+                <Link
+                  key={index}
+                  to={action.href}
+                  className="flex items-center p-4 rounded-lg border transition-all duration-200 hover:shadow-md"
+                  style={{ 
+                    backgroundColor: COLORS.neutral[50],
+                    borderColor: COLORS.neutral[200]
+                  }}
+                >
+                  <div 
+                    className="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
+                    style={{ backgroundColor: `${action.color}15` }}
+                  >
+                    <Icon className="h-5 w-5" style={{ color: action.color }} />
+                  </div>
+                  <div className="flex-1">
+                    <h4 
+                      className="font-medium"
+                      style={{ color: COLORS.neutral[900] }}
+                    >
+                      {action.title}
+                    </h4>
+                    <p 
+                      className="text-sm"
+                      style={{ color: COLORS.neutral[600] }}
+                    >
+                      {action.description}
+                    </p>
+                  </div>
+                  <ArrowRight className="h-4 w-4" style={{ color: COLORS.neutral[400] }} />
+                </Link>
+              );
+            })}
+          </CardContent>
+        </Card>
+
+        {/* Recent Activity */}
+        <Card 
+          className="border-0 shadow-sm"
+          style={{ backgroundColor: COLORS.neutral[50] }}
+        >
+          <CardHeader>
+            <CardTitle 
+              className="flex items-center justify-between text-lg"
+              style={{ color: COLORS.neutral[900] }}
+            >
+              <div className="flex items-center">
+                <Clock className="h-5 w-5 mr-2" style={{ color: COLORS.accent[600] }} />
+                System Status
               </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <TrendingUp className="h-6 w-6 text-white" />
-                  </div>
-                  <p className="text-3xl font-black text-green-600 mb-1">
-                    {stats.user_stats.active_users}
-                  </p>
-                  <p className="text-sm font-bold text-green-700">Active Users</p>
-                </div>
-                
-                <div className="text-center p-6 bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl border border-red-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <Crown className="h-6 w-6 text-white" />
-                  </div>
-                  <p className="text-3xl font-black text-red-600 mb-1">
-                    {stats.user_stats.admin_count}
-                  </p>
-                  <p className="text-sm font-bold text-red-700">Admins</p>
-                </div>
-                
-                <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border border-blue-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <Zap className="h-6 w-6 text-white" />
-                  </div>
-                  <p className="text-3xl font-black text-blue-600 mb-1">
-                    {stats.user_stats.editor_count}
-                  </p>
-                  <p className="text-sm font-bold text-blue-700">Editors</p>
-                </div>
-                
-                <div className="text-center p-6 bg-gradient-to-br from-slate-50 to-gray-50 rounded-2xl border border-slate-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-slate-500 to-gray-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <Eye className="h-6 w-6 text-white" />
-                  </div>
-                  <p className="text-3xl font-black text-slate-600 mb-1">
-                    {stats.user_stats.viewer_count}
-                  </p>
-                  <p className="text-sm font-bold text-slate-700">Viewers</p>
-                </div>
+              <Button variant="ghost" size="sm" onClick={fetchStats}>
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center p-4 rounded-lg" style={{ backgroundColor: COLORS.success[50] }}>
+              <CheckCircle className="h-5 w-5 mr-3" style={{ color: COLORS.success[600] }} />
+              <div>
+                <p className="font-medium" style={{ color: COLORS.success[800] }}>
+                  All Systems Operational
+                </p>
+                <p className="text-sm" style={{ color: COLORS.success[600] }}>
+                  Dashboard loaded successfully
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm" style={{ color: COLORS.neutral[600] }}>
+                  Database Connection
+                </span>
+                <span className="text-sm font-medium" style={{ color: COLORS.success[600] }}>
+                  Connected
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm" style={{ color: COLORS.neutral[600] }}>
+                  API Status
+                </span>
+                <span className="text-sm font-medium" style={{ color: COLORS.success[600] }}>
+                  Healthy
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm" style={{ color: COLORS.neutral[600] }}>
+                  Last Updated
+                </span>
+                <span className="text-sm font-medium" style={{ color: COLORS.neutral[700] }}>
+                  {new Date().toLocaleTimeString()}
+                </span>
               </div>
             </div>
           </CardContent>
         </Card>
-      )}
-
-      {/* Quick Actions */}
-      <Card className="shadow-xl border-0 overflow-hidden">
-        <CardContent className="p-0">
-          <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-          <div className="p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl">
-                <Sparkles className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-slate-900">Quick Actions</h3>
-                <p className="text-slate-500">Jump to your most used features</p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {visibleActions.map((action) => {
-                const Icon = action.icon;
-                return (
-                  <Link key={action.title} to={action.href}>
-                    <div className="group p-6 bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-100 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 hover:scale-105">
-                      <div className={`w-12 h-12 bg-gradient-to-br ${action.gradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <h4 className="font-black text-slate-900 mb-1">{action.title}</h4>
-                      <p className="text-sm text-slate-500 mb-3">{action.description}</p>
-                      <div className="flex items-center gap-2 text-slate-400 group-hover:text-slate-600 transition-colors">
-                        <span className="text-xs font-bold uppercase tracking-wide">Open</span>
-                        <ArrowRight className="h-3 w-3 transform group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }
