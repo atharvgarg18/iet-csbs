@@ -44,7 +44,16 @@ import {
   MapPin,
   Clock,
   Check,
-  X
+  X,
+  FolderOpen,
+  UserCheck,
+  Target,
+  Layers,
+  Building,
+  Calendar,
+  User,
+  Eye,
+  Sparkles
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { COLORS } from './management-design-system';
@@ -303,17 +312,28 @@ export default function SectionsManagement() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6" style={{ backgroundColor: COLORS.neutral[50] }}>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Sections Management</h1>
-          <p className="text-slate-500 mt-1">Manage class sections and student assignments</p>
+          <h1 className="text-3xl font-bold" style={{ color: COLORS.neutral[900] }}>Sections Management</h1>
+          <p className="mt-2" style={{ color: COLORS.neutral[600] }}>Manage class sections and student assignments</p>
         </div>
         {(['admin', 'editor'].includes(user?.role || '')) && (
           <Button 
             onClick={openCreateDialog}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            className="px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-lg"
+            style={{ 
+              backgroundColor: COLORS.primary[600], 
+              color: 'white',
+              border: 'none'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.primary[700];
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.primary[600];
+            }}
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Section
@@ -323,16 +343,26 @@ export default function SectionsManagement() {
 
       {/* Error Alert */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+        <div 
+          className="rounded-lg p-6 border"
+          style={{ 
+            backgroundColor: COLORS.error[50], 
+            borderColor: COLORS.error[200] 
+          }}
+        >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-red-800 font-bold mb-1">Connection Issue</h3>
-              <p className="text-red-600">{error}</p>
+              <h3 className="font-semibold mb-1" style={{ color: COLORS.error[800] }}>Connection Issue</h3>
+              <p style={{ color: COLORS.error[600] }}>{error}</p>
             </div>
             <Button
               onClick={fetchSections}
               variant="outline"
-              className="text-red-600 border-red-200 hover:bg-red-50"
+              className="transition-colors duration-200"
+              style={{ 
+                color: COLORS.error[600], 
+                borderColor: COLORS.error[200] 
+              }}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               Retry
@@ -343,65 +373,89 @@ export default function SectionsManagement() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-indigo-50 to-purple-50">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-indigo-600 font-medium text-sm">Total Sections</p>
-                <p className="text-2xl font-black text-indigo-900">{sections.length}</p>
+                <p className="font-medium text-sm" style={{ color: COLORS.primary[600] }}>Total Sections</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>{sections.length}</p>
               </div>
-              <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center">
-                <FolderOpen className="h-6 w-6 text-indigo-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.primary[100] }}
+              >
+                <FolderOpen className="h-6 w-6" style={{ color: COLORS.primary[600] }} />
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-emerald-50 to-teal-50">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-emerald-600 font-medium text-sm">Active Sections</p>
-                <p className="text-2xl font-black text-emerald-900">
+                <p className="font-medium text-sm" style={{ color: COLORS.success[600] }}>Active Sections</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>
                   {sections.filter(s => s.is_active).length}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center">
-                <UserCheck className="h-6 w-6 text-emerald-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.success[100] }}
+              >
+                <UserCheck className="h-6 w-6" style={{ color: COLORS.success[600] }} />
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-orange-50 to-red-50">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-600 font-medium text-sm">Total Students</p>
-                <p className="text-2xl font-black text-orange-900">
+                <p className="font-medium text-sm" style={{ color: COLORS.warning[600] }}>Total Students</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>
                   {sections.reduce((sum, section) => sum + section.current_students, 0)}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center">
-                <Users className="h-6 w-6 text-orange-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.warning[100] }}
+              >
+                <Users className="h-6 w-6" style={{ color: COLORS.warning[600] }} />
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-lg border-0 bg-gradient-to-br from-blue-50 to-cyan-50">
+        <Card 
+          className="shadow-sm border-0 transition-shadow duration-200 hover:shadow-md"
+          style={{ backgroundColor: 'white' }}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-600 font-medium text-sm">Avg. Capacity</p>
-                <p className="text-2xl font-black text-blue-900">
+                <p className="font-medium text-sm" style={{ color: COLORS.accent[600] }}>Avg. Capacity</p>
+                <p className="text-2xl font-bold" style={{ color: COLORS.neutral[900] }}>
                   {sections.length > 0 
                     ? Math.round(sections.reduce((sum, s) => sum + (s.current_students / s.max_students * 100), 0) / sections.length)
                     : 0}%
                 </p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center">
-                <Target className="h-6 w-6 text-blue-600" />
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: COLORS.accent[100] }}
+              >
+                <Target className="h-6 w-6" style={{ color: COLORS.accent[600] }} />
               </div>
             </div>
           </CardContent>
@@ -409,12 +463,15 @@ export default function SectionsManagement() {
       </div>
 
       {/* Filters */}
-      <Card className="shadow-xl border-0">
+      <Card 
+        className="shadow-sm border-0"
+        style={{ backgroundColor: 'white' }}
+      >
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="lg:col-span-1">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5" style={{ color: COLORS.neutral[400] }} />
                 <Input
                   placeholder="Search sections..."
                   value={searchTerm}
