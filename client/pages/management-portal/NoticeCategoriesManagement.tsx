@@ -47,7 +47,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { NoticeCategory } from '@shared/api';
-import { COLORS } from './management-design-system';
+import { COLORS } from '@/lib/management-design-system';
 
 export default function NoticeCategoriesManagement() {
   const { user } = useAuth();
@@ -583,8 +583,7 @@ export default function NoticeCategoriesManagement() {
                     `}
                     style={{
                       backgroundColor: colorOption.bg,
-                      borderColor: formData.color === colorOption.value ? colorOption.value : 'transparent',
-                      ringColor: colorOption.value
+                      borderColor: formData.color === colorOption.value ? colorOption.value : 'transparent'
                     }}
                   >
                     <div 

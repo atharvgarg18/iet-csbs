@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { apiGet } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -55,7 +56,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { COLORS } from './management-design-system';
+import { COLORS } from '@/lib/management-design-system';
 
 interface GalleryCategory {
   id: string;
@@ -104,38 +105,9 @@ export default function GalleryManagement() {
       setLoading(true);
       setError(null);
       
-      // Mock data for now - replace with actual API call
-      const mockData: GalleryCategory[] = [
-        {
-          id: '1',
-          name: 'Campus Events',
-          description: 'Photos from various campus events and activities',
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          image_count: 45
-        },
-        {
-          id: '2',
-          name: 'Academic Activities',
-          description: 'Classroom sessions, workshops, and academic programs',
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          image_count: 32
-        },
-        {
-          id: '3',
-          name: 'Sports & Recreation',
-          description: 'Sports events, tournaments, and recreational activities',
-          is_active: false,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          image_count: 18
-        }
-      ];
-      
-      setCategories(mockData);
+      const result = await apiGet('/.netlify/functions/api/admin/gallery-categories');
+      const data = result.success ? result.data : result;
+      setCategories(Array.isArray(data) ? data : []);
     } catch (err: any) {
       console.error('Categories fetch error:', err);
       setError('Failed to load gallery categories');
@@ -182,8 +154,25 @@ export default function GalleryManagement() {
     try {
       setActionLoading('save');
       
-      // Mock save operation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const url = editingCategory 
+        ? `/.netlify/functions/api/admin/gallery-categories/${editingCategory.id}`
+        : '/.netlify/functions/api/admin/gallery-categories';
+      
+      const method = editingCategory ? 'PUT' : 'POST';
+      
+      const response = await fetch(url, {
+        method,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Failed to ${editingCategory ? 'update' : 'create'} category`);
+      }
       
       toast({
         title: "Success!",
@@ -208,8 +197,15 @@ export default function GalleryManagement() {
     try {
       setActionLoading(`delete-${categoryId}`);
       
-      // Mock delete operation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch(`/.netlify/functions/api/admin/gallery-categories/${categoryId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to delete category');
+      }
 
       toast({
         title: "Success!",
