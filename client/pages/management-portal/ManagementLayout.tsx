@@ -209,7 +209,7 @@ export default function ManagementLayout() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2">
+          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
             {filteredNavItems.map((item) => {
               const Icon = item.icon;
               return (

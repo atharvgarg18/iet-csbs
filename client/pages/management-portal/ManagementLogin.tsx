@@ -195,8 +195,9 @@ export default function ManagementLogin() {
                         : 'border-gray-200 focus:border-blue-500'
                     }`}
                     style={{
-                      backgroundColor: COLORS.neutral[50],
+                      backgroundColor: 'white',
                       borderColor: errors.email ? COLORS.error[300] : COLORS.neutral[300],
+                      color: COLORS.neutral[900]
                     }}
                     placeholder="Enter your email"
                     disabled={isLoading}
@@ -237,8 +238,9 @@ export default function ManagementLogin() {
                         : 'border-gray-200 focus:border-blue-500'
                     }`}
                     style={{
-                      backgroundColor: COLORS.neutral[50],
+                      backgroundColor: 'white',
                       borderColor: errors.password ? COLORS.error[300] : COLORS.neutral[300],
+                      color: COLORS.neutral[900]
                     }}
                     placeholder="Enter your password"
                     disabled={isLoading}
