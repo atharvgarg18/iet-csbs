@@ -68,7 +68,6 @@ export interface GalleryImage {
   id: string;
   category_id: string;
   title: string;
-  description?: string;
   image_url: string;
   photographer?: string;
   event_date?: string;

@@ -76,7 +76,6 @@ export default function GalleryImagesManagement() {
   const [editingImage, setEditingImage] = useState<GalleryImage | null>(null);
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
     category_id: '',
     image_url: '',
     is_featured: false,
@@ -91,7 +90,6 @@ export default function GalleryImagesManagement() {
   const filteredImages = images.filter(image => {
     const matchesSearch = !searchTerm || 
       image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (image.description && image.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (image.category?.name.toLowerCase().includes(searchTerm.toLowerCase()));
     
     const matchesCategory = selectedCategory === 'all' || image.category_id === selectedCategory;
@@ -141,7 +139,6 @@ export default function GalleryImagesManagement() {
     setEditingImage(null);
     setFormData({
       title: '',
-      description: '',
       category_id: '',
       image_url: '',
       is_featured: false,
@@ -154,7 +151,6 @@ export default function GalleryImagesManagement() {
     setEditingImage(image);
     setFormData({
       title: image.title,
-      description: image.description || '',
       category_id: image.category_id,
       image_url: image.image_url,
       is_featured: image.is_featured,
@@ -685,9 +681,6 @@ export default function GalleryImagesManagement() {
                     <h3 className="font-semibold mb-1" style={{ color: COLORS.neutral[900] }}>
                       {image.title}
                     </h3>
-                    <p className="text-sm mb-2 line-clamp-2" style={{ color: COLORS.neutral[600] }}>
-                      {image.description || 'No description available'}
-                    </p>
                     
                     <div className="flex items-center gap-3">
                       <Badge 
@@ -860,16 +853,6 @@ export default function GalleryImagesManagement() {
                 value={formData.image_url}
                 onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                 placeholder="https://example.com/image.jpg"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Input
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Optional description of the image"
               />
             </div>
 

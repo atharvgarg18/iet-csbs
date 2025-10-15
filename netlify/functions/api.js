@@ -1195,8 +1195,8 @@ exports.handler = async (event, context) => {
 
     // POST /admin/gallery-images
     if (httpMethod === 'POST' && apiRoute.includes('/admin/gallery-images')) {
-      const { category_id, image_url, title, description } = JSON.parse(body || '{}');
-      const { data, error } = await supabase.from('gallery_images').insert({ category_id, image_url, title, description }).select().single();
+      const { category_id, image_url, title } = JSON.parse(body || '{}');
+      const { data, error } = await supabase.from('gallery_images').insert({ category_id, image_url, title }).select().single();
       if (error) {
         return {
           statusCode: 400,
@@ -1214,10 +1214,10 @@ exports.handler = async (event, context) => {
     // PUT /admin/gallery-images/:id
     if (httpMethod === 'PUT' && apiRoute.includes('/admin/gallery-images/')) {
       const imageId = apiRoute.split('/admin/gallery-images/')[1];
-      const { category_id, image_url, title, description } = JSON.parse(body || '{}');
+      const { category_id, image_url, title } = JSON.parse(body || '{}');
       const { data, error } = await supabase
         .from('gallery_images')
-        .update({ category_id, image_url, title, description })
+        .update({ category_id, image_url, title })
         .eq('id', imageId)
         .select()
         .single();

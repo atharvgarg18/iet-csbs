@@ -42,10 +42,11 @@ import {
   GraduationCap,
   FolderOpen,
   Search,
-  Filter
+  Filter,
+  AlertCircle
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { COLORS } from './management-design-system';
+import { COLORS } from '@/lib/management-design-system';
 
 interface Note {
   id: string;
@@ -227,14 +228,22 @@ export default function NotesManagement() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center py-12">
-            <div className="flex items-center gap-3">
-              <RefreshCw className="w-6 h-6 animate-spin text-blue-600" />
-              <span className="text-lg text-gray-600">Loading notes...</span>
+      <div className="min-h-96 flex items-center justify-center" style={{ backgroundColor: COLORS.neutral[50] }}>
+        <div className="text-center">
+          <div className="relative mb-6">
+            <div 
+              className="w-16 h-16 border-4 rounded-full animate-spin"
+              style={{ 
+                borderColor: COLORS.neutral[200],
+                borderTopColor: COLORS.primary[600]
+              }}
+            ></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <BookOpen className="h-6 w-6 animate-pulse" style={{ color: COLORS.primary[600] }} />
             </div>
           </div>
+          <h3 className="text-lg font-bold mb-2" style={{ color: COLORS.neutral[900] }}>Loading Notes</h3>
+          <p style={{ color: COLORS.neutral[600] }}>Fetching study notes...</p>
         </div>
       </div>
     );
@@ -276,6 +285,39 @@ export default function NotesManagement() {
             Add Notes Link
           </Button>
         </div>
+
+        {/* Error Alert */}
+        {error && (
+          <div 
+            className="rounded-lg p-6 border"
+            style={{ 
+              backgroundColor: COLORS.error[50], 
+              borderColor: COLORS.error[200] 
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <AlertCircle className="h-5 w-5 mr-3" style={{ color: COLORS.error[600] }} />
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: COLORS.error[800] }}>Error Loading Data</h3>
+                  <p style={{ color: COLORS.error[600] }}>{error}</p>
+                </div>
+              </div>
+              <Button
+                onClick={fetchNotes}
+                variant="outline"
+                className="transition-colors duration-200"
+                style={{ 
+                  color: COLORS.error[600], 
+                  borderColor: COLORS.error[200] 
+                }}
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Retry
+              </Button>
+            </div>
+          </div>
+        )}
 
         {/* Filters */}
         <Card 
