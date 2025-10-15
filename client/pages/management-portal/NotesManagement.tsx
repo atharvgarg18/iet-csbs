@@ -228,22 +228,20 @@ export default function NotesManagement() {
 
   if (loading) {
     return (
-      <div className="min-h-96 flex items-center justify-center" style={{ backgroundColor: COLORS.neutral[50] }}>
-        <div className="text-center">
-          <div className="relative mb-6">
-            <div 
-              className="w-16 h-16 border-4 rounded-full animate-spin"
-              style={{ 
-                borderColor: COLORS.neutral[200],
-                borderTopColor: COLORS.primary[600]
-              }}
-            ></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <BookOpen className="h-6 w-6 animate-pulse" style={{ color: COLORS.primary[600] }} />
-            </div>
-          </div>
-          <h3 className="text-lg font-bold mb-2" style={{ color: COLORS.neutral[900] }}>Loading Notes</h3>
-          <p style={{ color: COLORS.neutral[600] }}>Fetching study notes...</p>
+      <div className="space-y-6">
+        <div className="animate-pulse">
+          <div 
+            className="h-8 rounded mb-4"
+            style={{ backgroundColor: COLORS.neutral[200] }}
+          />
+          <div 
+            className="h-20 rounded-lg mb-6"
+            style={{ backgroundColor: COLORS.neutral[200] }}
+          />
+          <div 
+            className="h-64 rounded-lg"
+            style={{ backgroundColor: COLORS.neutral[200] }}
+          />
         </div>
       </div>
     );

@@ -265,22 +265,25 @@ export default function SectionsManagement() {
 
   if (loading) {
     return (
-      <div className="min-h-96 flex items-center justify-center" style={{ backgroundColor: COLORS.neutral[50] }}>
-        <div className="text-center">
-          <div className="relative mb-6">
-            <div 
-              className="w-16 h-16 border-4 rounded-full animate-spin"
-              style={{ 
-                borderColor: COLORS.neutral[200],
-                borderTopColor: COLORS.primary[600]
-              }}
-            ></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <FolderOpen className="h-6 w-6 animate-pulse" style={{ color: COLORS.primary[600] }} />
-            </div>
+      <div className="space-y-6">
+        <div className="animate-pulse">
+          <div 
+            className="h-8 rounded mb-4"
+            style={{ backgroundColor: COLORS.neutral[200] }}
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            {[...Array(4)].map((_, i) => (
+              <div 
+                key={i}
+                className="h-32 rounded-lg"
+                style={{ backgroundColor: COLORS.neutral[200] }}
+              />
+            ))}
           </div>
-          <h3 className="text-lg font-bold mb-2" style={{ color: COLORS.neutral[900] }}>Loading Sections</h3>
-          <p style={{ color: COLORS.neutral[600] }}>Fetching class sections...</p>
+          <div 
+            className="h-64 rounded-lg"
+            style={{ backgroundColor: COLORS.neutral[200] }}
+          />
         </div>
       </div>
     );
