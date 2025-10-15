@@ -50,9 +50,8 @@ export default function Syllabus() {
         "Business Communication & Value Science - I",
       ],
       downloadLink:
-        "https://info.tcs.com/rs/744-FUI-742/images/CSBS%20Syllabus%20Sem%201_8SemPattern.pdf",
+        "https://ietdavv.edu.in/images/downloads/syllabus/BTech_Iyr_CSBS_Scheme_syllabus_2024.pdf",
       credits: "22 Credits",
-      status: "completed",
     },
     {
       id: 2,
@@ -69,18 +68,16 @@ export default function Syllabus() {
         "Environmental Sciences",
       ],
       downloadLink:
-        "https://info.tcs.com/rs/744-FUI-742/images/CSBS%20Syllabus%20Sem%202_8SemPattern_Revised.pdf",
-      credits: "24 Credits",
-      status: "completed",
+        "https://ietdavv.edu.in/images/downloads/syllabus/BTech_Iyr_CSBS_Scheme_syllabus_2024.pdf",
+      credits: "22 Credits",
     },
     {
       id: 3,
       title: "Semester 3",
       description: "Advanced programming concepts and system fundamentals",
       downloadLink:
-        "https://html-starter-beige-beta.vercel.app/B.Tech-Scheme-44-51.pdf",
+        "https://res.cloudinary.com/dt326igsz/image/upload/v1760514550/II_Year_3rd_Sem_Syllabus_updated_iiyis1.pdf",
       credits: "22 Credits",
-      status: "ongoing",
     },
     {
       id: 4,
@@ -88,8 +85,6 @@ export default function Syllabus() {
       description: "Core computer science subjects and business applications",
       downloadLink:
         "https://html-starter-beige-beta.vercel.app/B.Tech-Scheme-53-77.pdf",
-      credits: "22 Credits",
-      status: "upcoming",
     },
     {
       id: 5,
@@ -97,32 +92,24 @@ export default function Syllabus() {
       description:
         "Specialized topics in software engineering and business intelligence",
       downloadLink: "#",
-      credits: "22 Credits",
-      status: "upcoming",
     },
     {
       id: 6,
       title: "Semester 6",
       description: "Advanced algorithms, machine learning, and project work",
       downloadLink: "#",
-      credits: "22 Credits",
-      status: "upcoming",
     },
     {
       id: 7,
       title: "Semester 7",
       description: "Industry-oriented subjects and major project development",
       downloadLink: "#",
-      credits: "22 Credits",
-      status: "upcoming",
     },
     {
       id: 8,
       title: "Semester 8",
       description: "Capstone project, internship, and career preparation",
       downloadLink: "#",
-      credits: "24 Credits",
-      status: "upcoming",
     },
   ];
 
