@@ -41,7 +41,7 @@ export const getGalleryCategories: RequestHandler = async (req, res) => {
 // Create new gallery category
 export const createGalleryCategory: RequestHandler = async (req, res) => {
   try {
-    const { name, color, description }: CreateGalleryCategoryRequest = req.body;
+    const { name, color }: CreateGalleryCategoryRequest = req.body;
 
     if (!name) {
       return res.status(400).json({
@@ -54,8 +54,7 @@ export const createGalleryCategory: RequestHandler = async (req, res) => {
       .from('gallery_categories')
       .insert({
         name,
-        color: color || '#3B82F6',
-        description
+        color: color || '#3B82F6'
       })
       .select()
       .single();
@@ -86,7 +85,7 @@ export const createGalleryCategory: RequestHandler = async (req, res) => {
 export const updateGalleryCategory: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, color, description, is_active }: UpdateGalleryCategoryRequest = req.body;
+    const { name, color, is_active }: UpdateGalleryCategoryRequest = req.body;
 
     if (!id) {
       return res.status(400).json({
@@ -98,7 +97,6 @@ export const updateGalleryCategory: RequestHandler = async (req, res) => {
     const updateData: any = {};
     if (name !== undefined) updateData.name = name;
     if (color !== undefined) updateData.color = color;
-    if (description !== undefined) updateData.description = description;
     if (is_active !== undefined) updateData.is_active = is_active;
 
     const { data, error } = await supabaseAdmin

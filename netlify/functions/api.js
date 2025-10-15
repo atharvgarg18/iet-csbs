@@ -1118,10 +1118,9 @@ exports.handler = async (event, context) => {
 
     // POST /admin/gallery-categories
     if (httpMethod === 'POST' && apiRoute.includes('/admin/gallery-categories')) {
-      const { name, description, color, is_active } = JSON.parse(body || '{}');
+      const { name, color, is_active } = JSON.parse(body || '{}');
       const { data, error } = await supabase.from('gallery_categories').insert({ 
         name, 
-        description, 
         color: color || '#3b82f6', 
         is_active: is_active !== undefined ? is_active : true 
       }).select().single();
@@ -1142,10 +1141,10 @@ exports.handler = async (event, context) => {
     // PUT /admin/gallery-categories/:id  
     if (httpMethod === 'PUT' && apiRoute.includes('/admin/gallery-categories/')) {
       const categoryId = apiRoute.split('/admin/gallery-categories/')[1];
-      const { name, description, color, is_active } = JSON.parse(body || '{}');
+      const { name, color, is_active } = JSON.parse(body || '{}');
       const { data, error } = await supabase
         .from('gallery_categories')
-        .update({ name, description, color, is_active })
+        .update({ name, color, is_active })
         .eq('id', categoryId)
         .select()
         .single();

@@ -61,7 +61,6 @@ import { COLORS } from '@/lib/management-design-system';
 interface GalleryCategory {
   id: string;
   name: string;
-  description: string;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -80,7 +79,6 @@ export default function GalleryManagement() {
   const [editingCategory, setEditingCategory] = useState<GalleryCategory | null>(null);
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
     is_active: true
   });
 
@@ -90,8 +88,7 @@ export default function GalleryManagement() {
 
   const filteredCategories = categories.filter(category => {
     const matchesSearch = !searchTerm || 
-      category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (category.description && category.description.toLowerCase().includes(searchTerm.toLowerCase()));
+      category.name.toLowerCase().includes(searchTerm.toLowerCase());
     
     let matchesStatus = true;
     if (statusFilter === 'active') matchesStatus = category.is_active;
@@ -125,7 +122,6 @@ export default function GalleryManagement() {
     setEditingCategory(null);
     setFormData({
       name: '',
-      description: '',
       is_active: true
     });
     setShowDialog(true);
@@ -135,7 +131,6 @@ export default function GalleryManagement() {
     setEditingCategory(category);
     setFormData({
       name: category.name,
-      description: category.description || '',
       is_active: category.is_active
     });
     setShowDialog(true);
@@ -584,12 +579,6 @@ export default function GalleryManagement() {
                   )}
                 </div>
                 
-                {category.description && (
-                  <p className="text-sm mb-4" style={{ color: COLORS.neutral[600] }}>
-                    {category.description}
-                  </p>
-                )}
-                
                 <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: COLORS.neutral[100] }}>
                   <div className="text-xs" style={{ color: COLORS.neutral[500] }}>
                     Created {formatDate(category.created_at)}
@@ -632,9 +621,6 @@ export default function GalleryManagement() {
                       <h3 className="font-semibold" style={{ color: COLORS.neutral[900] }}>
                         {category.name}
                       </h3>
-                      <p className="text-sm mt-1" style={{ color: COLORS.neutral[600] }}>
-                        {category.description || 'No description available'}
-                      </p>
                       <div className="flex items-center gap-4 mt-2">
                         <Badge 
                           className="text-xs border"
@@ -747,17 +733,6 @@ export default function GalleryManagement() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g., Campus Events, Academic Activities"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Brief description of this gallery category"
-                rows={3}
               />
             </div>
 
