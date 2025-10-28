@@ -1,6 +1,7 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { compression } from "vite-plugin-compression2";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -10,13 +11,57 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     outDir: "dist/spa",
+    sourcemap: false, // Disable sourcemaps in production for smaller size
+    minify: "terser", // Use terser for better minification
+    terserOptions: {
+      compress: {
+        drop_console: mode === "production", // Remove console.logs in production
+        drop_debugger: true,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split vendor code
+          "react-vendor": ["react", "react-dom", "react-router-dom"],
+          "ui-vendor": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-select",
+            "@radix-ui/react-toast",
+          ],
+          "query-vendor": ["@tanstack/react-query"],
+          "supabase-vendor": ["@supabase/supabase-js"],
+        },
+        // Optimize chunk file names
+        chunkFileNames: "assets/js/[name]-[hash].js",
+        entryFileNames: "assets/js/[name]-[hash].js",
+        assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
+      },
+    },
+    chunkSizeWarningLimit: 1000, // Warn for chunks over 1MB
   },
-  plugins: [react(), expressPlugin()],
+  plugins: [
+    react(),
+    expressPlugin(),
+    compression({
+      algorithm: "gzip",
+      ext: ".gz",
+    }),
+    compression({
+      algorithm: "brotliCompress",
+      ext: ".br",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./client"),
       "@shared": path.resolve(__dirname, "./shared"),
     },
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "react-router-dom"],
   },
 }));
 

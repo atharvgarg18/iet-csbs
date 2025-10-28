@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+/* Use system fonts for better performance - Inter is very similar to system UI fonts */
+/* If you want to self-host Inter, download from https://fonts.google.com/specimen/Inter */
+/* and place woff2 files in public/fonts/ */
 
 @tailwind base;
 @tailwind components;
@@ -99,16 +101,19 @@
   body {
     @apply bg-background text-foreground;
     font-family:
-      "Inter",
       -apple-system,
       BlinkMacSystemFont,
       "Segoe UI",
       "Roboto",
       "Oxygen",
       "Ubuntu",
-      "sans-serif";
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    letter-spacing: -0.005em;
+      "Cantarell",
+      "Fira Sans",
+      "Droid Sans",
+      "Helvetica Neue",
+      sans-serif;
+    font-feature-settings: normal;
+    letter-spacing: normal;
   }
 
   .animate-gradient {
