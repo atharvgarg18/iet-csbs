@@ -10,30 +10,45 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollToTop from "@/components/ScrollToTop";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { registerServiceWorker } from "@/lib/serviceWorker";
-import Index from "./pages/Index";
-import Notes from "./pages/Notes";
-import Papers from "./pages/Papers";
-import Contributors from "./pages/Contributors";
-import Notices from "./pages/Notices";
-import AtAGlance from "./pages/AtAGlance";
-import Gallery from "./pages/Gallery";
-import Syllabus from "./pages/Syllabus";
-import NotFound from "./pages/NotFound";
-import ManagementLogin from "./pages/management-portal/ManagementLogin";
-import ManagementLayout from "./pages/management-portal/ManagementLayout";
-import ManagementDashboard from "./pages/management-portal/ManagementDashboard";
-import BatchesManagement from "./pages/management-portal/BatchesManagement";
-import SectionsManagement from "./pages/management-portal/SectionsManagement";
-import NotesManagement from "./pages/management-portal/NotesManagement";
-import PapersManagement from "./pages/management-portal/PapersManagement";
-import UsersManagement from "./pages/management-portal/UsersManagement";
-import GalleryCategoriesManagement from "./pages/management-portal/GalleryCategoriesManagement";
-import GalleryImagesManagement from "./pages/management-portal/GalleryImagesManagement";
-import NoticeCategoriesManagement from "./pages/management-portal/NoticeCategoriesManagement";
-import NoticesManagement from "./pages/management-portal/NoticesManagement";
+import { lazy, Suspense } from "react";
 import { AuthProvider } from "./components/auth/AuthProvider";
+import { PageLoading } from "@/components/Loading";
 
-const queryClient = new QueryClient();
+// Lazy load all page components for code splitting
+const Index = lazy(() => import("./pages/Index"));
+const Notes = lazy(() => import("./pages/Notes"));
+const Papers = lazy(() => import("./pages/Papers"));
+const Contributors = lazy(() => import("./pages/Contributors"));
+const Notices = lazy(() => import("./pages/Notices"));
+const AtAGlance = lazy(() => import("./pages/AtAGlance"));
+const Gallery = lazy(() => import("./pages/Gallery"));
+const Syllabus = lazy(() => import("./pages/Syllabus"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Lazy load management portal components (heaviest code)
+const ManagementLogin = lazy(() => import("./pages/management-portal/ManagementLogin"));
+const ManagementLayout = lazy(() => import("./pages/management-portal/ManagementLayout"));
+const ManagementDashboard = lazy(() => import("./pages/management-portal/ManagementDashboard"));
+const BatchesManagement = lazy(() => import("./pages/management-portal/BatchesManagement"));
+const SectionsManagement = lazy(() => import("./pages/management-portal/SectionsManagement"));
+const NotesManagement = lazy(() => import("./pages/management-portal/NotesManagement"));
+const PapersManagement = lazy(() => import("./pages/management-portal/PapersManagement"));
+const UsersManagement = lazy(() => import("./pages/management-portal/UsersManagement"));
+const GalleryCategoriesManagement = lazy(() => import("./pages/management-portal/GalleryCategoriesManagement"));
+const GalleryImagesManagement = lazy(() => import("./pages/management-portal/GalleryImagesManagement"));
+const NoticeCategoriesManagement = lazy(() => import("./pages/management-portal/NoticeCategoriesManagement"));
+const NoticesManagement = lazy(() => import("./pages/management-portal/NoticesManagement"));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // Register service worker for caching
 registerServiceWorker();
@@ -48,6 +63,7 @@ const App = () => (
           <ErrorBoundary>
           <BrowserRouter>
             <ScrollToTop />
+            <Suspense fallback={<PageLoading />}>
             <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/notes" element={<Notes />} />
@@ -76,6 +92,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </BrowserRouter>
         </ErrorBoundary>
       </TooltipProvider>

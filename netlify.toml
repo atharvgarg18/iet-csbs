@@ -9,13 +9,116 @@
   node_bundler = "esbuild"
   
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
+  from = "/api/ping"
+  to = "/.netlify/functions/ping"
   status = 200
   force = true
 
 [[redirects]]
-  from = "/api"
-  to = "/.netlify/functions/api/"
+  from = "/api/debug"
+  to = "/.netlify/functions/ping"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/auth/*"
+  to = "/.netlify/functions/auth/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-users/*"
+  to = "/.netlify/functions/admin-users/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-users"
+  to = "/.netlify/functions/admin-users"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin/batches/*"
+  to = "/.netlify/functions/admin/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin/batches"
+  to = "/.netlify/functions/admin/batches"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin/sections/*"
+  to = "/.netlify/functions/admin/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin/sections"
+  to = "/.netlify/functions/admin/sections"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin/stats"
+  to = "/.netlify/functions/admin/stats"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-notes/*"
+  to = "/.netlify/functions/admin-notes/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-notes"
+  to = "/.netlify/functions/admin-notes"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-papers/*"
+  to = "/.netlify/functions/admin-papers/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-papers"
+  to = "/.netlify/functions/admin-papers"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-gallery/*"
+  to = "/.netlify/functions/admin-gallery/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-gallery"
+  to = "/.netlify/functions/admin-gallery"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-notices/*"
+  to = "/.netlify/functions/admin-notices/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-notices"
+  to = "/.netlify/functions/admin-notices"
+  status = 200
+  force = true
+
+# Fallback to old API for any unmapped routes (temporary during migration)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
