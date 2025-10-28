@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import {
   Camera,
   Calendar,
@@ -12,79 +13,59 @@ import {
   Star,
   Clock,
   X,
+  Loader2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { GalleryImage, GalleryCategory } from "@shared/api";
-import { supabase } from "@/lib/supabase";
+import { GalleryImage } from "@shared/api";
+import { useGalleryImages, useGalleryCategories } from "@/hooks/useDataQueries";
 
 export default function Gallery() {
-  const [images, setImages] = useState<GalleryImage[]>([]);
-  const [categories, setCategories] = useState<GalleryCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+  const [allImages, setAllImages] = useState<GalleryImage[]>([]);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredImages, setFilteredImages] = useState<GalleryImage[]>([]);
 
+  // Use React Query hooks
+  const { 
+    data: imagesData, 
+    isLoading: imagesLoading, 
+    error: imagesError 
+  } = useGalleryImages(page);
+  
+  const { 
+    data: categories = [], 
+    isLoading: categoriesLoading 
+  } = useGalleryCategories();
+
+  const loading = imagesLoading || categoriesLoading;
+  const error = imagesError ? 'Failed to load gallery' : null;
+
   useEffect(() => {
     document.title = "Gallery - CSBS IET DAVV";
-    fetchGalleryData();
   }, []);
 
-  const fetchGalleryData = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch images and categories in parallel
-      const [imagesResponse, categoriesResponse] = await Promise.all([
-        supabase
-          .from('gallery_images')
-          .select(`
-            id,
-            category_id,
-            title,
-            image_url,
-            photographer,
-            event_date,
-            is_featured,
-            is_active,
-            created_at,
-            updated_at,
-            category:gallery_categories (
-              id,
-              name,
-              color,
-              description,
-              is_active
-            )
-          `)
-          .eq('is_active', true)
-          .order('is_featured', { ascending: false })
-          .order('event_date', { ascending: false }),
-        
-        supabase
-          .from('gallery_categories')
-          .select('*')
-          .eq('is_active', true)
-          .order('name')
-      ]);
-
-      if (imagesResponse.error) throw imagesResponse.error;
-      if (categoriesResponse.error) throw categoriesResponse.error;
-
-      const imagesData = (imagesResponse.data || []) as unknown as GalleryImage[];
-      const categoriesData = (categoriesResponse.data || []) as GalleryCategory[];
-
-      setImages(imagesData);
-      setCategories(categoriesData);
-      setFilteredImages(imagesData);
-    } catch (err) {
-      console.error('Error fetching gallery:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load gallery');
-    } finally {
-      setLoading(false);
+  // Accumulate images as pages load
+  useEffect(() => {
+    if (imagesData?.images) {
+      setAllImages(prev => {
+        // Avoid duplicates when re-fetching
+        const newImages = imagesData.images.filter(
+          img => !prev.some(p => p.id === img.id)
+        );
+        return [...prev, ...newImages];
+      });
     }
-  };
+  }, [imagesData]);
+
+  // Update filtered images when category changes or images load
+  useEffect(() => {
+    if (selectedCategory) {
+      setFilteredImages(allImages.filter(img => img.category_id === selectedCategory));
+    } else {
+      setFilteredImages(allImages);
+    }
+  }, [selectedCategory, allImages]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -104,21 +85,20 @@ export default function Gallery() {
 
   const filterByCategory = (categoryId: string | null) => {
     setSelectedCategory(categoryId);
-    if (categoryId === null) {
-      setFilteredImages(images);
-    } else {
-      setFilteredImages(images.filter(image => image.category_id === categoryId));
-    }
   };
 
-  // Update filtered images when images change
+  const loadMore = () => {
+    setPage(prev => prev + 1);
+  };
+
+  // Update filtered images when allImages change
   useEffect(() => {
     if (selectedCategory === null) {
-      setFilteredImages(images);
+      setFilteredImages(allImages);
     } else {
-      setFilteredImages(images.filter(image => image.category_id === selectedCategory));
+      setFilteredImages(allImages.filter(image => image.category_id === selectedCategory));
     }
-  }, [images, selectedCategory]);
+  }, [allImages, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -163,7 +143,7 @@ export default function Gallery() {
               </div>
               <h3 className="text-2xl font-bold text-destructive mb-2">Unable to Load Content</h3>
               <p className="text-destructive/80 text-lg mb-4">{error}</p>
-              <Button onClick={fetchGalleryData} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
+              <Button onClick={() => window.location.reload()} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
                 Try Again
               </Button>
             </CardContent>
@@ -218,11 +198,11 @@ export default function Gallery() {
                 className="group relative aspect-square overflow-hidden rounded-lg cursor-pointer hover:shadow-lg transition-all duration-300"
                 onClick={() => openImageModal(image)}
               >
-                <img
+                <OptimizedImage
                   src={image.image_url}
                   alt={image.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
+                  aspectRatio="square"
+                  className="w-full h-full group-hover:scale-105 transition-transform duration-300"
                 />
                 
                 {/* Overlay with subtle info */}
@@ -267,7 +247,7 @@ export default function Gallery() {
               </div>
             ))}
 
-            {filteredImages.length === 0 && images.length > 0 && (
+            {filteredImages.length === 0 && allImages.length > 0 && (
               <div className="col-span-full text-center py-24">
                 <Card className="p-12 bg-muted/30 border-dashed border-2 border-muted-foreground/20">
                   <CardContent className="p-0">
@@ -289,7 +269,7 @@ export default function Gallery() {
               </div>
             )}
 
-            {images.length === 0 && (
+            {allImages.length === 0 && (
               <div className="col-span-full text-center py-24">
                 <Card className="p-16 bg-muted/30 border-dashed border-2 border-muted-foreground/20">
                   <CardContent className="p-0">
@@ -308,14 +288,38 @@ export default function Gallery() {
                     <p className="text-lg text-muted-foreground max-w-md mx-auto mb-6">
                       Images will be uploaded soon. Check back later to see the latest captures.
                     </p>
-                    <Button onClick={fetchGalleryData} variant="outline" className="gap-2">
-                      <Camera className="w-4 h-4" />
-                      Refresh
-                    </Button>
                   </CardContent>
                 </Card>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {!loading && !error && imagesData?.hasMore && (
+          <div className="text-center mt-8">
+            <Button 
+              onClick={loadMore}
+              disabled={imagesLoading}
+              variant="outline"
+              size="lg"
+              className="gap-2"
+            >
+              {imagesLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  Load More Images
+                  <Camera className="w-4 h-4" />
+                </>
+              )}
+            </Button>
+            <p className="text-sm text-muted-foreground mt-2">
+              Showing {filteredImages.length} of {imagesData?.total || 0} images
+            </p>
           </div>
         )}
       </div>
@@ -327,10 +331,12 @@ export default function Gallery() {
           onClick={closeImageModal}
         >
           <div className="relative max-w-4xl max-h-full">
-            <img
+            <OptimizedImage
               src={selectedImage.image_url}
               alt={selectedImage.title}
-              className="max-w-full max-h-full object-contain rounded-lg"
+              aspectRatio="auto"
+              className="max-w-full max-h-[90vh] rounded-lg"
+              showBlurPlaceholder={false}
             />
             
             {/* Close button */}

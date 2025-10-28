@@ -30,6 +30,7 @@ export default function Navigation() {
     { name: "Syllabus", href: "/syllabus", icon: GraduationCap },
     { name: "Notices", href: "/notices", icon: Bell },
     { name: "Gallery", href: "/gallery", icon: Camera },
+    { name: "About", href: "/about", icon: GraduationCap },
     { name: "Contributors", href: "/contributors", icon: Users },
   ];
 
@@ -39,18 +40,13 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-4 group">
+            <Link to="/" className="flex items-center group">
               {/* Full IET Logo */}
               <img
                 src="https://html-starter-beige-beta.vercel.app/ietlogom.png"
                 alt="IET DAVV Logo"
                 className="h-14 object-contain group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="hidden sm:block">
-                <div className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  CSBS
-                </div>
-              </div>
             </Link>
           </div>
 
