@@ -148,20 +148,6 @@ const Index = memo(function Index() {
                   </Button>
                 </Link>
               </div>
-
-              {/* Welcome message */}
-              <div className="pt-6 sm:pt-8 max-w-2xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-2 rounded-full text-xs font-medium border border-primary/20 mb-3 sm:mb-4">
-                  <Heart className="w-3 h-3" />
-                  <span className="text-xs">
-                    Welcome Class of 2029! Classes have begun
-                  </span>
-                </div>
-                <p className="text-sm sm:text-base text-muted-foreground px-4">
-                  The CSBS program is now active with students beginning their
-                  industry-aligned education journey.
-                </p>
-              </div>
             </header>
           </div>
         </section>

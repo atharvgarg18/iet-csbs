@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -10,91 +9,59 @@ import {
   FileText, 
   Clock, 
   ExternalLink,
-  Star
+  Star,
+  Loader2
 } from 'lucide-react';
-import { Note, Section, Batch } from '@shared/api';
+import { Note, Section } from '@shared/api';
+import { useNotes, useNotesSections } from '@/hooks/useDataQueries';
 
 export default function Notes() {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [sections, setSections] = useState<Section[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [page, setPage] = useState(0);
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
+
+  // Use React Query hooks
+  const {
+    data: notesData,
+    isLoading: notesLoading,
+    error: notesError
+  } = useNotes(page);
+
+  const {
+    data: sections = [],
+    isLoading: sectionsLoading
+  } = useNotesSections();
+
+  const loading = notesLoading || sectionsLoading;
+  const error = notesError ? 'Failed to load notes' : '';
 
   useEffect(() => {
-    fetchNotesData();
+    document.title = "Notes - CSBS IET DAVV";
   }, []);
 
-  const fetchNotesData = async () => {
-    try {
-      setLoading(true);
-      setError('');
-      
-
-      
-      // Fetch notes with section and batch info - same as Papers page
-      const { data: notesData, error: notesError } = await supabase
-        .from('notes')
-        .select(`
-          id,
-          section_id,
-          drive_link,
-          description,
-          created_at,
-          updated_at,
-          section:sections (
-            id,
-            batch_id,
-            name,
-            is_active,
-            batch:batches (
-              id,
-              name,
-              is_active
-            )
-          )
-        `)
-        .order('created_at', { ascending: false });
-
-      // Fetch sections with batch info - same as Papers page
-      const { data: sectionsData, error: sectionsError } = await supabase
-        .from('sections')
-        .select(`
-          id,
-          batch_id,
-          name,
-          is_active,
-          created_at,
-          updated_at,
-          batch:batches (
-            id,
-            name,
-            is_active
-          )
-        `)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
-
-      if (notesError) throw notesError;
-      if (sectionsError) throw sectionsError;
-
-      setNotes((notesData || []) as unknown as Note[]);
-      setSections((sectionsData || []) as unknown as Section[]);
-    } catch (err) {
-      console.error('Error fetching notes:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load notes');
-    } finally {
-      setLoading(false);
+  // Accumulate notes as pages load
+  useEffect(() => {
+    if (notesData?.notes) {
+      setAllNotes(prev => {
+        const newNotes = notesData.notes.filter(
+          note => !prev.some(p => p.id === note.id)
+        );
+        return [...prev, ...newNotes];
+      });
     }
-  };
+  }, [notesData]);
 
   const groupNotesBySection = () => {
     return sections.map(section => {
-      const sectionNotes = notes.filter(note => note.section_id === section.id);
+      const sectionNotes = allNotes.filter(note => note.section_id === section.id);
       return {
         section,
         notes: sectionNotes
       };
-    }).filter(group => group.notes.length > 0); // Only show sections with notes
+    }).filter(group => group.notes.length > 0);
+  };
+
+  const loadMore = () => {
+    setPage(prev => prev + 1);
   };
 
   // Get grouped data
@@ -146,7 +113,7 @@ export default function Notes() {
               </div>
               <h3 className="text-2xl font-bold text-destructive mb-2">Unable to Load Content</h3>
               <p className="text-destructive/80 text-lg mb-4">{error}</p>
-              <Button onClick={fetchNotesData} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
+              <Button onClick={() => window.location.reload()} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
                 Try Again
               </Button>
             </CardContent>
@@ -245,14 +212,38 @@ export default function Notes() {
                     <p className="text-lg text-muted-foreground max-w-md mx-auto mb-6">
                       We're preparing comprehensive study resources for you. Check back soon for fresh materials!
                     </p>
-                    <Button onClick={fetchNotesData} variant="outline" className="gap-2">
-                      <BookOpen className="w-4 h-4" />
-                      Refresh
-                    </Button>
                   </CardContent>
                 </Card>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {!loading && !error && notesData?.hasMore && (
+          <div className="text-center mt-8">
+            <Button 
+              onClick={loadMore}
+              disabled={notesLoading}
+              variant="outline"
+              size="lg"
+              className="gap-2"
+            >
+              {notesLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  Load More Notes
+                  <FileText className="w-4 h-4" />
+                </>
+              )}
+            </Button>
+            <p className="text-sm text-muted-foreground mt-2">
+              Showing {allNotes.length} of {notesData?.total || 0} notes
+            </p>
           </div>
         )}
       </div>

@@ -10,90 +10,59 @@ import {
   BookOpen,
   Star,
   Clock,
+  Loader2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Paper, Section } from "@shared/api";
-import { supabase } from "@/lib/supabase";
+import { usePapers, usePapersSections } from "@/hooks/useDataQueries";
 
 export default function Papers() {
-  const [papers, setPapers] = useState<Paper[]>([]);
-  const [sections, setSections] = useState<Section[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+  const [allPapers, setAllPapers] = useState<Paper[]>([]);
+
+  // Use React Query hooks
+  const {
+    data: papersData,
+    isLoading: papersLoading,
+    error: papersError
+  } = usePapers(page);
+
+  const {
+    data: sections = [],
+    isLoading: sectionsLoading
+  } = usePapersSections();
+
+  const loading = papersLoading || sectionsLoading;
+  const error = papersError ? 'Failed to load papers' : null;
 
   useEffect(() => {
     document.title = "Papers - CSBS IET DAVV";
-    fetchPapersData();
   }, []);
 
-  const fetchPapersData = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch papers with section and batch info - same as Notes page
-      const { data: papersData, error: papersError } = await supabase
-        .from('papers')
-        .select(`
-          id,
-          section_id,
-          drive_link,
-          description,
-          created_at,
-          updated_at,
-          section:sections (
-            id,
-            batch_id,
-            name,
-            is_active,
-            batch:batches (
-              id,
-              name,
-              is_active
-            )
-          )
-        `)
-        .order('created_at', { ascending: false });
-
-      // Fetch sections with batch info - same as Notes page
-      const { data: sectionsData, error: sectionsError } = await supabase
-        .from('sections')
-        .select(`
-          id,
-          batch_id,
-          name,
-          is_active,
-          created_at,
-          updated_at,
-          batch:batches (
-            id,
-            name,
-            is_active
-          )
-        `)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
-
-      if (papersError) throw papersError;
-      if (sectionsError) throw sectionsError;
-
-      setPapers((papersData || []) as unknown as Paper[]);
-      setSections((sectionsData || []) as unknown as Section[]);
-    } catch (err) {
-      console.error('Error fetching papers:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load papers');
-    } finally {
-      setLoading(false);
+  // Accumulate papers as pages load
+  useEffect(() => {
+    if (papersData?.papers) {
+      setAllPapers(prev => {
+        const newPapers = papersData.papers.filter(
+          paper => !prev.some(p => p.id === paper.id)
+        );
+        return [...prev, ...newPapers];
+      });
     }
-  };
+  }, [papersData]);
 
   const groupPapersBySection = () => {
     return sections.map(section => {
-      const sectionPapers = papers.filter(paper => paper.section_id === section.id);
+      const sectionPapers = allPapers.filter(paper => paper.section_id === section.id);
       return {
         section,
         papers: sectionPapers
       };
-    }).filter(group => group.papers.length > 0); // Only show sections with papers
+    }).filter(group => group.papers.length > 0);
+  };
+
+  const loadMore = () => {
+    setPage(prev => prev + 1);
   };
 
   // Get grouped data
@@ -142,7 +111,7 @@ export default function Papers() {
               </div>
               <h3 className="text-2xl font-bold text-destructive mb-2">Unable to Load Content</h3>
               <p className="text-destructive/80 text-lg mb-4">{error}</p>
-              <Button onClick={fetchPapersData} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
+              <Button onClick={() => window.location.reload()} variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">
                 Try Again
               </Button>
             </CardContent>
@@ -242,14 +211,38 @@ export default function Papers() {
                     <p className="text-lg text-muted-foreground max-w-md mx-auto mb-6">
                       We're preparing comprehensive question papers for you. Check back soon for fresh materials!
                     </p>
-                    <Button onClick={fetchPapersData} variant="outline" className="gap-2">
-                      <FileText className="w-4 h-4" />
-                      Refresh
-                    </Button>
                   </CardContent>
                 </Card>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {!loading && !error && papersData?.hasMore && (
+          <div className="text-center mt-8">
+            <Button 
+              onClick={loadMore}
+              disabled={papersLoading}
+              variant="outline"
+              size="lg"
+              className="gap-2"
+            >
+              {papersLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  Load More Papers
+                  <FileText className="w-4 h-4" />
+                </>
+              )}
+            </Button>
+            <p className="text-sm text-muted-foreground mt-2">
+              Showing {allPapers.length} of {papersData?.total || 0} papers
+            </p>
           </div>
         )}
       </div>

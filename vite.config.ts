@@ -27,9 +27,10 @@ export default defineConfig(({ mode }) => ({
           "ui-vendor": [
             "@radix-ui/react-dialog",
             "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-popover",
             "@radix-ui/react-select",
             "@radix-ui/react-toast",
+            "@radix-ui/react-alert-dialog",
+            "@radix-ui/react-label",
           ],
           "query-vendor": ["@tanstack/react-query"],
           "supabase-vendor": ["@supabase/supabase-js"],
@@ -45,14 +46,8 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     expressPlugin(),
-    compression({
-      algorithm: "gzip",
-      ext: ".gz",
-    }),
-    compression({
-      algorithm: "brotliCompress",
-      ext: ".br",
-    }),
+    compression(), // gzip compression
+    compression({ algorithms: ["brotliCompress"] }), // brotli compression
   ],
   resolve: {
     alias: {

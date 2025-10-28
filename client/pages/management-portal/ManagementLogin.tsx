@@ -68,7 +68,7 @@ export default function ManagementLogin() {
       } else {
         toast({
           title: "Authentication Failed",
-          description: result.error || "Invalid email or password",
+          description: result.message || "Invalid email or password",
           variant: "destructive"
         });
       }
