@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { ImageUpload } from '@/components/ImageUpload';
 import {
   Dialog,
   DialogContent,
@@ -854,13 +855,14 @@ export default function GalleryImagesManagement() {
             </div>
 
             <div>
-              <Label htmlFor="image_url">Image URL</Label>
-              <Input
-                id="image_url"
-                type="url"
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                placeholder="https://example.com/image.jpg"
+              <Label>Upload Image</Label>
+              <ImageUpload
+                onUploadComplete={(url) => setFormData({ ...formData, image_url: url })}
+                onError={(error) => {
+                  console.error('Upload error:', error);
+                  // You can add a toast notification here if needed
+                }}
+                currentImageUrl={formData.image_url}
               />
             </div>
 
@@ -883,20 +885,6 @@ export default function GalleryImagesManagement() {
                 <Label htmlFor="is_published">Publish immediately</Label>
               </div>
             </div>
-
-            {formData.image_url && (
-              <div className="border rounded-lg p-4" style={{ backgroundColor: COLORS.neutral[50] }}>
-                <h4 className="font-medium mb-2" style={{ color: COLORS.neutral[800] }}>Preview</h4>
-                <img
-                  src={formData.image_url}
-                  alt="Preview"
-                  className="w-full h-48 object-cover rounded-lg"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-            )}
           </div>
 
           <DialogFooter>
