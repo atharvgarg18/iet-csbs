@@ -107,7 +107,7 @@ export const createNotice: RequestHandler = async (req, res) => {
       content, 
       attachment_url,
       is_published, 
-      is_featured, 
+      is_urgent,
       publish_date 
     }: CreateNoticeRequest = req.body;
 
@@ -140,7 +140,7 @@ export const createNotice: RequestHandler = async (req, res) => {
         content,
         attachment_url,
         is_published: is_published || false,
-        is_featured: is_featured || false,
+        is_urgent: is_urgent || false,
         publish_date: publish_date || new Date().toISOString()
       })
       .select(`
@@ -185,7 +185,7 @@ export const updateNotice: RequestHandler = async (req, res) => {
       content, 
       attachment_url,
       is_published, 
-      is_featured, 
+      is_urgent,
       publish_date 
     }: UpdateNoticeRequest = req.body;
 
@@ -218,7 +218,7 @@ export const updateNotice: RequestHandler = async (req, res) => {
     if (content !== undefined) updateData.content = content;
     if (attachment_url !== undefined) updateData.attachment_url = attachment_url;
     if (is_published !== undefined) updateData.is_published = is_published;
-    if (is_featured !== undefined) updateData.is_featured = is_featured;
+    if (is_urgent !== undefined) updateData.is_urgent = is_urgent;
     if (publish_date !== undefined) updateData.publish_date = publish_date;
 
     const { data, error } = await supabaseAdmin
