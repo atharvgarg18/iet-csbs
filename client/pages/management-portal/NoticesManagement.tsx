@@ -73,6 +73,7 @@ export default function NoticesManagement() {
     title: '',
     content: '',
     category_id: '',
+    attachment_url: '',
     is_urgent: false,
     is_published: true
   });
@@ -130,24 +131,24 @@ export default function NoticesManagement() {
     fetchCategories();
   }, []);
 
-  const openCreateDialog = () => {
-    setEditingNotice(null);
-    setFormData({
-      title: '',
-      content: '',
-      category_id: '',
-      is_urgent: false,
-      is_published: true
-    });
-    setShowNoticeDialog(true);
-  };
-
-  const openEditDialog = (notice: Notice) => {
+const openCreateDialog = () => {
+  setEditingNotice(null);
+  setFormData({
+    title: '',
+    content: '',
+    category_id: '',
+    attachment_url: '',
+    is_urgent: false,
+    is_published: true
+  });
+  setShowNoticeDialog(true);
+};  const openEditDialog = (notice: Notice) => {
     setEditingNotice(notice);
     setFormData({
       title: notice.title,
       content: notice.content,
       category_id: notice.category?.id || '',
+      attachment_url: notice.attachment_url || '',
       is_urgent: notice.is_urgent,
       is_published: notice.is_published
     });
@@ -712,6 +713,20 @@ export default function NoticesManagement() {
                 placeholder="Enter detailed notice content"
                 rows={6}
               />
+            </div>
+
+            <div>
+              <Label htmlFor="attachment_url">Attachment Link (Optional)</Label>
+              <Input
+                id="attachment_url"
+                value={formData.attachment_url}
+                onChange={(e) => setFormData({ ...formData, attachment_url: e.target.value })}
+                placeholder="https://example.com/document.pdf"
+                type="url"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Add a link to view additional documents or resources
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
