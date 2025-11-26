@@ -168,6 +168,14 @@ const openCreateDialog = () => {
     try {
       setActionLoading('save');
       
+      // Clean up the data - convert empty strings to null for optional fields
+      const dataToSend = {
+        ...formData,
+        attachment_url: formData.attachment_url?.trim() || null,
+      };
+      
+      console.log('Sending notice data:', dataToSend);
+      
       const url = editingNotice 
         ? `/.netlify/functions/api/admin/notices/${editingNotice.id}`
         : '/.netlify/functions/api/admin/notices';
@@ -180,7 +188,7 @@ const openCreateDialog = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(dataToSend)
       });
 
       if (!response.ok) {

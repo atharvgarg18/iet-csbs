@@ -124,23 +124,31 @@ exports.handler = async (event, context) => {
 
     // POST - Create notice
     if (httpMethod === 'POST') {
-      const { category_id, title, content, attachment_url, publish_date, is_published, is_urgent } = JSON.parse(body || '{}');
+      const requestBody = JSON.parse(body || '{}');
+      const { category_id, title, content, attachment_url, publish_date, is_published, is_urgent } = requestBody;
+      
+      console.log('Creating notice with data:', requestBody);
+      console.log('Attachment URL received:', attachment_url);
       
       if (!category_id || !title || !content) {
         return errorResponse('Category ID, title, and content required', headers, 400);
       }
       
+      const insertData = { 
+        category_id, 
+        title, 
+        content, 
+        attachment_url: attachment_url || null,
+        publish_date, 
+        is_published: is_published !== undefined ? is_published : false,
+        is_urgent: is_urgent !== undefined ? is_urgent : false
+      };
+      
+      console.log('Inserting into database:', insertData);
+      
       const { data, error } = await supabase
         .from('notices')
-        .insert({ 
-          category_id, 
-          title, 
-          content, 
-          attachment_url: attachment_url || null,
-          publish_date, 
-          is_published: is_published !== undefined ? is_published : false,
-          is_urgent: is_urgent !== undefined ? is_urgent : false
-        })
+        .insert(insertData)
         .select()
         .single();
       
@@ -154,7 +162,11 @@ exports.handler = async (event, context) => {
     // PUT - Update notice
     if (httpMethod === 'PUT') {
       const noticeId = path.split('/').pop();
-      const { category_id, title, content, attachment_url, publish_date, is_published, is_urgent } = JSON.parse(body || '{}');
+      const requestBody = JSON.parse(body || '{}');
+      const { category_id, title, content, attachment_url, publish_date, is_published, is_urgent } = requestBody;
+      
+      console.log('Updating notice', noticeId, 'with data:', requestBody);
+      console.log('Attachment URL received:', attachment_url);
       
       const updateData = {};
       if (category_id !== undefined) updateData.category_id = category_id;
@@ -164,6 +176,8 @@ exports.handler = async (event, context) => {
       if (publish_date !== undefined) updateData.publish_date = publish_date;
       if (is_published !== undefined) updateData.is_published = is_published;
       if (is_urgent !== undefined) updateData.is_urgent = is_urgent;
+      
+      console.log('Update data to apply:', updateData);
       
       const { data, error } = await supabase
         .from('notices')
