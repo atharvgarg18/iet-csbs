@@ -97,7 +97,7 @@ export interface Notice {
   title: string;
   content: string;
   is_published: boolean;
-  is_featured: boolean;
+  is_urgent: boolean;
   publish_date: string;
   attachment_url?: string;
   created_at: string;
@@ -199,7 +199,7 @@ export interface CreateNoticeRequest {
   content: string;
   attachment_url?: string;
   is_published?: boolean;
-  is_featured?: boolean;
+  is_urgent?: boolean;
   publish_date?: string;
 }
 
@@ -209,7 +209,7 @@ export interface UpdateNoticeRequest {
   content?: string;
   attachment_url?: string;
   is_published?: boolean;
-  is_featured?: boolean;
+  is_urgent?: boolean;
   publish_date?: string;
 }
 

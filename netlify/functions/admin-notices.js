@@ -124,7 +124,7 @@ exports.handler = async (event, context) => {
 
     // POST - Create notice
     if (httpMethod === 'POST') {
-      const { category_id, title, content, publish_date, is_published } = JSON.parse(body || '{}');
+      const { category_id, title, content, attachment_url, publish_date, is_published, is_urgent } = JSON.parse(body || '{}');
       
       if (!category_id || !title || !content) {
         return errorResponse('Category ID, title, and content required', headers, 400);
@@ -132,7 +132,15 @@ exports.handler = async (event, context) => {
       
       const { data, error } = await supabase
         .from('notices')
-        .insert({ category_id, title, content, publish_date, is_published })
+        .insert({ 
+          category_id, 
+          title, 
+          content, 
+          attachment_url: attachment_url || null,
+          publish_date, 
+          is_published: is_published !== undefined ? is_published : false,
+          is_urgent: is_urgent !== undefined ? is_urgent : false
+        })
         .select()
         .single();
       
@@ -146,11 +154,20 @@ exports.handler = async (event, context) => {
     // PUT - Update notice
     if (httpMethod === 'PUT') {
       const noticeId = path.split('/').pop();
-      const { category_id, title, content, publish_date, is_published } = JSON.parse(body || '{}');
+      const { category_id, title, content, attachment_url, publish_date, is_published, is_urgent } = JSON.parse(body || '{}');
+      
+      const updateData = {};
+      if (category_id !== undefined) updateData.category_id = category_id;
+      if (title !== undefined) updateData.title = title;
+      if (content !== undefined) updateData.content = content;
+      if (attachment_url !== undefined) updateData.attachment_url = attachment_url;
+      if (publish_date !== undefined) updateData.publish_date = publish_date;
+      if (is_published !== undefined) updateData.is_published = is_published;
+      if (is_urgent !== undefined) updateData.is_urgent = is_urgent;
       
       const { data, error } = await supabase
         .from('notices')
-        .update({ category_id, title, content, publish_date, is_published })
+        .update(updateData)
         .eq('id', noticeId)
         .select()
         .single();

@@ -9,7 +9,6 @@ import {
   ExternalLink,
   AlertCircle,
   BookOpen,
-  Star,
   Clock,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -38,7 +37,6 @@ export default function Notices() {
           title,
           content,
           is_published,
-          is_featured,
           publish_date,
           attachment_url,
           created_at,
@@ -51,7 +49,6 @@ export default function Notices() {
           )
         `)
         .eq('is_published', true)
-        .order('is_featured', { ascending: false })
         .order('publish_date', { ascending: false });
 
       if (noticesError) throw noticesError;
@@ -142,28 +139,15 @@ export default function Notices() {
                       noticeIndex % 4 === 1 ? 'bg-secondary/10' :
                       noticeIndex % 4 === 2 ? 'bg-accent/10' : 'bg-primary/10'
                     } flex items-center justify-center flex-shrink-0 mt-1`}>
-                      {notice.is_featured ? (
-                        <Star className={`w-4 h-4 ${
-                          noticeIndex % 4 === 0 ? 'text-primary' :
-                          noticeIndex % 4 === 1 ? 'text-secondary' :
-                          noticeIndex % 4 === 2 ? 'text-accent' : 'text-primary'
-                        }`} />
-                      ) : (
-                        <Bell className={`w-4 h-4 ${
-                          noticeIndex % 4 === 0 ? 'text-primary' :
-                          noticeIndex % 4 === 1 ? 'text-secondary' :
-                          noticeIndex % 4 === 2 ? 'text-accent' : 'text-primary'
-                        }`} />
-                      )}
+                      <Bell className={`w-4 h-4 ${
+                        noticeIndex % 4 === 0 ? 'text-primary' :
+                        noticeIndex % 4 === 1 ? 'text-secondary' :
+                        noticeIndex % 4 === 2 ? 'text-accent' : 'text-primary'
+                      }`} />
                     </div>
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
-                        {notice.is_featured && (
-                          <Badge variant="default" className="h-5 text-xs bg-primary">
-                            Featured
-                          </Badge>
-                        )}
                         {notice.category && (
                           <Badge variant="secondary" className="h-5 text-xs">
                             {notice.category.name}
