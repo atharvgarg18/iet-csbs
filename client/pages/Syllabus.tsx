@@ -84,7 +84,7 @@ export default function Syllabus() {
       title: "Semester 4",
       description: "Core computer science subjects and business applications",
       downloadLink:
-        "https://html-starter-beige-beta.vercel.app/B.Tech-Scheme-53-77.pdf",
+        "https://res.cloudinary.com/ddv5limch/image/upload/v1770468034/IV_Sem_CSBS_Syllabus_byz1lx.pdf",
     },
     {
       id: 5,
