@@ -1,46 +1,40 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   BookOpen,
   Download,
-  ExternalLink,
   GraduationCap,
-  FileText,
-  Calendar,
+  ChevronDown,
   Clock,
-  Star,
-  Target,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+interface Semester {
+  id: number;
+  title: string;
+  year: string;
+  description: string;
+  subjects: string[];
+  downloadLink: string;
+  credits: string;
+}
 
 export default function Syllabus() {
+  const [expandedSemester, setExpandedSemester] = useState<number | null>(null);
+
   useEffect(() => {
     document.title = "Syllabus - CSBS IET DAVV";
   }, []);
-  const allSemestersPDF = {
-    title: "Complete CSBS Curriculum (All 8 Semesters)",
-    description:
-      "Comprehensive curriculum pattern for the entire 4-year CSBS program",
-    downloadLink:
-      "https://info.tcs.com/rs/744-FUI-742/images/AY%2020-21%20-%20CSBS%20Curriculum%20-%207%20Sem%20Pattern%20180%20Credits.pdf",
-    credits: "180 Credits • 8 Semester Pattern",
-  };
 
-  const semesters = [
+  const semesters: Semester[] = [
     {
       id: 1,
       title: "Semester 1",
-      description:
-        "Foundation semester focusing on mathematics, basic computer science, and communication skills",
+      year: "1st Year",
+      description: "Foundation semester — mathematics, basic CS, and communication skills",
       subjects: [
         "Discrete Mathematics",
         "Introductory Topics in Statistics, Probability and Calculus",
@@ -56,8 +50,8 @@ export default function Syllabus() {
     {
       id: 2,
       title: "Semester 2",
-      description:
-        "Building on foundations with data structures, economics, and statistical methods",
+      year: "1st Year",
+      description: "Data structures, economics, electronics, and statistical methods",
       subjects: [
         "Linear Algebra",
         "Statistical Methods + Lab",
@@ -74,7 +68,8 @@ export default function Syllabus() {
     {
       id: 3,
       title: "Semester 3",
-      description: "Advanced programming concepts and system fundamentals",
+      year: "2nd Year",
+      description: "OOP, databases, computer architecture, and automata theory",
       subjects: [
         "Formal Language and Automata Theory",
         "Computer Organization and Architecture + Lab",
@@ -91,7 +86,8 @@ export default function Syllabus() {
     {
       id: 4,
       title: "Semester 4",
-      description: "Core computer science subjects and business applications",
+      year: "2nd Year",
+      description: "OS, algorithms, software engineering, and entrepreneurship",
       subjects: [
         "Operating Systems + Lab (Unix)",
         "Design and Analysis of Algorithms + Lab",
@@ -108,264 +104,268 @@ export default function Syllabus() {
     {
       id: 5,
       title: "Semester 5",
-      description:
-        "Specialized topics in software engineering and business intelligence",
-      downloadLink: "#",
+      year: "3rd Year",
+      description: "Specialized topics in software engineering and business intelligence",
+      subjects: [],
+      downloadLink: "",
+      credits: "",
     },
     {
       id: 6,
       title: "Semester 6",
+      year: "3rd Year",
       description: "Advanced algorithms, machine learning, and project work",
-      downloadLink: "#",
+      subjects: [],
+      downloadLink: "",
+      credits: "",
     },
     {
       id: 7,
       title: "Semester 7",
+      year: "4th Year",
       description: "Industry-oriented subjects and major project development",
-      downloadLink: "#",
+      subjects: [],
+      downloadLink: "",
+      credits: "",
     },
     {
       id: 8,
       title: "Semester 8",
+      year: "4th Year",
       description: "Capstone project, internship, and career preparation",
-      downloadLink: "#",
+      subjects: [],
+      downloadLink: "",
+      credits: "",
     },
   ];
 
-  const getStatusColor = (status: string) => {
-    const colors = {
-      completed: "bg-green-500/10 text-green-400 border-green-500/30",
-      ongoing: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-      upcoming: "bg-gray-500/10 text-gray-400 border-gray-500/30",
-    };
-    return colors[status as keyof typeof colors] || colors.upcoming;
+  const toggleSemester = (id: number) => {
+    setExpandedSemester(expandedSemester === id ? null : id);
   };
 
-  const getStatusText = (status: string) => {
-    const texts = {
-      completed: "Completed",
-      ongoing: "Current",
-      upcoming: "Upcoming",
-    };
-    return texts[status as keyof typeof texts] || "Upcoming";
+  const availableSemesters = semesters.filter((s) => s.subjects.length > 0);
+  const upcomingSemesters = semesters.filter((s) => s.subjects.length === 0);
+
+  const yearColors: Record<string, { bg: string; text: string; border: string; icon: string }> = {
+    "1st Year": { bg: "bg-primary/10", text: "text-primary", border: "border-primary/20", icon: "text-primary" },
+    "2nd Year": { bg: "bg-secondary/10", text: "text-secondary", border: "border-secondary/20", icon: "text-secondary" },
+    "3rd Year": { bg: "bg-accent/10", text: "text-accent", border: "border-accent/20", icon: "text-accent" },
+    "4th Year": { bg: "bg-primary/10", text: "text-primary", border: "border-primary/20", icon: "text-primary" },
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 dark:from-background dark:via-primary/10 dark:to-secondary/20 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      </div>
+    <div className="min-h-screen bg-background relative">
+      <Navigation />
 
-      <div className="relative z-10">
-        <Navigation />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/5 rounded-full px-4 py-2 mb-6">
+            <BookOpen className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Academic Curriculum</span>
+          </div>
+          <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+            CSBS Syllabus
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Comprehensive curriculum designed in collaboration with TCS — covering 8 semesters across 4 years
+          </p>
+        </div>
 
-        {/* Hero Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
-              <BookOpen className="w-4 h-4" />
-              Academic Curriculum
+        {/* Full Curriculum Download */}
+        <Card className="mb-12 border border-primary/10 bg-gradient-to-r from-card to-primary/5">
+          <CardContent className="p-6 sm:p-8">
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <GraduationCap className="w-7 h-7 text-primary" />
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <h2 className="text-xl font-bold text-foreground mb-1">
+                  Complete CSBS Curriculum
+                </h2>
+                <p className="text-muted-foreground">
+                  Full 4-year program overview — 180 Credits • 8 Semester Pattern
+                </p>
+              </div>
+              <a
+                href="https://info.tcs.com/rs/744-FUI-742/images/AY%2020-21%20-%20CSBS%20Curriculum%20-%207%20Sem%20Pattern%20180%20Credits.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="shadow-sm">
+                  <Download className="w-4 h-4 mr-2" />
+                  Download PDF
+                </Button>
+              </a>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-              CSBS{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent animate-gradient">
-                Syllabus
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Comprehensive curriculum designed in collaboration with TCS to
-              prepare you for the industry's evolving demands.
-            </p>
-          </div>
-        </section>
-
-        {/* Complete Curriculum Section */}
-        <section className="py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <Card className="bg-gradient-to-br from-card to-primary/5 border border-primary/10 backdrop-blur-xl shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-500">
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center">
-                    <GraduationCap className="w-8 h-8 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-2xl text-foreground mb-2">
-                      {allSemestersPDF.title}
-                    </CardTitle>
-                    <CardDescription className="text-lg">
-                      {allSemestersPDF.description}
-                    </CardDescription>
-                    <Badge variant="secondary" className="mt-2">
-                      {allSemestersPDF.credits}
-                    </Badge>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href={allSemestersPDF.downloadLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1"
-                  >
-                    <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg shadow-primary/20">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Complete Curriculum
-                    </Button>
-                  </a>
-                  <Button
-                    variant="outline"
-                    className="flex-1 border-primary/30 text-primary hover:bg-primary/5"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    View Online
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
 
         {/* Semester-wise Syllabus */}
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto space-y-8">
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Semester-wise Breakdown
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Detailed syllabus for each semester with subject-wise coverage
-                and learning outcomes.
-              </p>
-            </div>
+        <div className="space-y-12">
+          {/* Available Semesters (with subjects) */}
+          <div className="space-y-4">
+            {availableSemesters.map((semester) => {
+              const isExpanded = expandedSemester === semester.id;
+              const colors = yearColors[semester.year];
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {semesters.map((semester) => (
+              return (
                 <Card
                   key={semester.id}
-                  className="hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:scale-105 bg-gradient-to-br from-card to-accent/5 border border-accent/10 backdrop-blur-sm group"
+                  className="border border-border/50 hover:border-border transition-colors overflow-hidden"
                 >
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-accent/20 to-primary/20 rounded-xl flex items-center justify-center">
-                          <span className="text-lg font-bold text-primary">
-                            {semester.id}
-                          </span>
-                        </div>
-                        <div>
-                          <CardTitle className="text-xl text-foreground">
-                            {semester.title}
-                          </CardTitle>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge className={getStatusColor(semester.status)}>
-                              {getStatusText(semester.status)}
-                            </Badge>
-                            <Badge variant="secondary" size="sm">
-                              {semester.credits}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
+                  {/* Semester Header — clickable to expand */}
+                  <button
+                    onClick={() => toggleSemester(semester.id)}
+                    className="w-full text-left p-5 sm:p-6 flex items-center gap-4 hover:bg-muted/30 transition-colors"
+                  >
+                    <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center flex-shrink-0`}>
+                      <span className={`text-lg font-bold ${colors.text}`}>
+                        {semester.id}
+                      </span>
                     </div>
-                    <CardDescription className="text-base">
-                      {semester.description}
-                    </CardDescription>
-                  </CardHeader>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <h3 className="text-lg font-semibold text-foreground">
+                          {semester.title}
+                        </h3>
+                        <Badge variant="secondary" className="text-xs">
+                          {semester.year}
+                        </Badge>
+                        {semester.credits && (
+                          <Badge variant="outline" className="text-xs">
+                            {semester.credits}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground truncate">
+                        {semester.description}
+                      </p>
+                    </div>
+                    <ChevronDown
+                      className={`w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${
+                        isExpanded ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-                  <CardContent>
-                    {semester.subjects && (
-                      <div className="space-y-4 mb-6">
-                        <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                          <Target className="w-4 h-4 text-accent" />
-                          Subjects Covered:
-                        </h4>
-                        <div className="grid gap-2">
-                          {semester.subjects.map((subject, index) => (
-                            <div
-                              key={index}
-                              className="flex items-start gap-3 p-3 rounded-lg bg-background/50 backdrop-blur-sm border border-border/50 hover:bg-background/80 transition-colors duration-300"
-                            >
-                              <Star className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                              <span className="text-sm text-foreground">
-                                {subject}
+                  {/* Expanded Content */}
+                  <div
+                    className={`transition-all duration-300 ease-in-out ${
+                      isExpanded
+                        ? "max-h-[2000px] opacity-100"
+                        : "max-h-0 opacity-0 overflow-hidden"
+                    }`}
+                  >
+                    <div className="px-5 sm:px-6 pb-6 border-t border-border/50">
+                      {/* Subject List */}
+                      <div className="mt-5 grid gap-2">
+                        {semester.subjects.map((subject, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                          >
+                            <div className={`w-6 h-6 rounded-md ${colors.bg} flex items-center justify-center flex-shrink-0`}>
+                              <span className={`text-xs font-semibold ${colors.text}`}>
+                                {index + 1}
                               </span>
                             </div>
-                          ))}
-                        </div>
+                            <span className="text-sm text-foreground">
+                              {subject}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                    )}
 
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      {semester.downloadLink !== "#" ? (
-                        <a
-                          href={semester.downloadLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1"
-                        >
-                          <Button className="w-full bg-gradient-to-r from-accent to-primary hover:from-accent/90 hover:to-primary/90 text-white shadow-lg shadow-accent/20">
-                            <Download className="w-4 h-4 mr-2" />
-                            Download Syllabus
-                          </Button>
-                        </a>
-                      ) : (
-                        <Button disabled className="flex-1">
-                          <Clock className="w-4 h-4 mr-2" />
-                          Coming Soon
-                        </Button>
+                      {/* Download Button */}
+                      {semester.downloadLink && (
+                        <div className="mt-5">
+                          <a
+                            href={semester.downloadLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button variant="outline" size="sm" className={`${colors.border} ${colors.text} hover:${colors.bg}`}>
+                              <Download className="w-4 h-4 mr-2" />
+                              Download Semester {semester.id} Syllabus PDF
+                            </Button>
+                          </a>
+                        </div>
                       )}
-                      <Button
-                        variant="outline"
-                        className="flex-1 border-accent/30 text-accent hover:bg-accent/5"
-                      >
-                        <FileText className="w-4 h-4 mr-2" />
-                        Details
-                      </Button>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
-              ))}
-            </div>
-
-            {/* Info Section */}
-            <Card className="p-8 text-center bg-gradient-to-br from-card to-secondary/5 border border-secondary/10 backdrop-blur-sm">
-              <CardContent>
-                <div className="w-16 h-16 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <BookOpen className="w-8 h-8 text-secondary" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-2">
-                  Dynamic Curriculum
-                </h3>
-                <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-                  Our syllabus is continuously updated in collaboration with TCS
-                  and industry experts to ensure you learn the most relevant and
-                  cutting-edge technologies and business practices.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 justify-center text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>Updated annually</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Target className="w-4 h-4" />
-                    <span>Industry-aligned</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4" />
-                    <span>TCS partnership</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              );
+            })}
           </div>
-        </section>
 
-        <Footer />
+          {/* Upcoming Semesters */}
+          {upcomingSemesters.length > 0 && (
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-foreground">Upcoming Semesters</h2>
+                  <p className="text-sm text-muted-foreground">Syllabus will be updated as the program progresses</p>
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {upcomingSemesters.map((semester) => {
+                  const colors = yearColors[semester.year];
+                  return (
+                    <Card key={semester.id} className="border-dashed border-border/50 bg-muted/10">
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className={`w-9 h-9 rounded-lg ${colors.bg} flex items-center justify-center`}>
+                            <span className={`text-sm font-bold ${colors.text}`}>
+                              {semester.id}
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-foreground text-sm">{semester.title}</h3>
+                            <span className="text-xs text-muted-foreground">{semester.year}</span>
+                          </div>
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-2">
+                          {semester.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Stats Bar */}
+          <Card className="border border-border/50 bg-muted/10">
+            <CardContent className="p-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-foreground">8</div>
+                  <div className="text-sm text-muted-foreground">Semesters</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-foreground">180</div>
+                  <div className="text-sm text-muted-foreground">Total Credits</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-foreground">4</div>
+                  <div className="text-sm text-muted-foreground">Years Duration</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">TCS</div>
+                  <div className="text-sm text-muted-foreground">Industry Partner</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
