@@ -75,6 +75,15 @@ export default function Syllabus() {
       id: 3,
       title: "Semester 3",
       description: "Advanced programming concepts and system fundamentals",
+      subjects: [
+        "Formal Language and Automata Theory",
+        "Computer Organization and Architecture + Lab",
+        "Object Oriented Programming + Lab",
+        "Database Management Systems + Lab",
+        "Computational Statistics + Lab",
+        "Indian Constitution",
+        "Internship I",
+      ],
       downloadLink:
         "https://res.cloudinary.com/dt326igsz/image/upload/v1760514550/II_Year_3rd_Sem_Syllabus_updated_iiyis1.pdf",
       credits: "22 Credits",
@@ -83,8 +92,18 @@ export default function Syllabus() {
       id: 4,
       title: "Semester 4",
       description: "Core computer science subjects and business applications",
+      subjects: [
+        "Operating Systems + Lab (Unix)",
+        "Design and Analysis of Algorithms + Lab",
+        "Software Engineering + Lab",
+        "Introduction to Innovation, IP Management and Entrepreneurship",
+        "Design Thinking",
+        "Operations Research + Lab",
+        "Essence of Indian Traditional Knowledge",
+      ],
       downloadLink:
         "https://res.cloudinary.com/ddv5limch/image/upload/v1770468034/IV_Sem_CSBS_Syllabus_byz1lx.pdf",
+      credits: "22 Credits",
     },
     {
       id: 5,
