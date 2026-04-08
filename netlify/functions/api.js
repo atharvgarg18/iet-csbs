@@ -1484,6 +1484,196 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Forgot password — sends a reset link to the user's email
+    if (httpMethod === 'POST' && apiRoute.includes('/auth/forgot-password')) {
+      try {
+        const { email } = JSON.parse(body || '{}');
+        if (!email) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Email is required' }),
+          };
+        }
+
+        const supabase = getSupabaseClient();
+
+        // Look up user (always return success to avoid email enumeration)
+        const { data: users } = await supabase
+          .from('users')
+          .select('id, email, full_name')
+          .eq('email', email.toLowerCase())
+          .eq('is_active', true)
+          .limit(1);
+
+        if (users && users.length > 0) {
+          const user = users[0];
+
+          // Generate a short-lived reset token (15 min), stored in user_sessions with reset_ prefix
+          const resetToken = 'reset_' + crypto.randomBytes(32).toString('hex');
+          const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
+          // Remove any existing reset tokens for this user
+          await supabase
+            .from('user_sessions')
+            .delete()
+            .eq('user_id', user.id)
+            .like('session_token', 'reset_%');
+
+          await supabase
+            .from('user_sessions')
+            .insert({ user_id: user.id, session_token: resetToken, expires_at: expiresAt });
+
+          // Send reset email
+          const resendApiKey = process.env.RESEND_API_KEY;
+          const fromEmail = process.env.RESEND_FROM_EMAIL || 'IET CSBS Portal <noreply@ietcsbs.tech>';
+          const portalUrl = process.env.PORTAL_URL || 'https://ietcsbs.tech/management-portal/login';
+          const resetUrl = `${portalUrl.replace('/login', '/reset-password')}?token=${resetToken}`;
+          const year = new Date().getFullYear();
+
+          if (resendApiKey) {
+            const resetHtml = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:40px 16px;">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+<tr><td style="background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:40px 48px;text-align:center;">
+<h1 style="margin:0;color:#fff;font-size:26px;font-weight:700;">IET CSBS Department</h1>
+<p style="margin:8px 0 0;color:rgba(255,255,255,0.75);font-size:14px;">Management Portal</p>
+</td></tr>
+<tr><td style="padding:40px 48px;">
+<h2 style="margin:0 0 8px;color:#0f172a;font-size:22px;font-weight:700;">Password Reset Request</h2>
+<p style="margin:0 0 24px;color:#64748b;font-size:15px;line-height:1.6;">Hi ${user.full_name}, we received a request to reset your password. Click the button below to set a new one.</p>
+<div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;margin-bottom:28px;">
+<p style="margin:0;color:#78350f;font-size:13px;line-height:1.6;"><strong>This link expires in 15 minutes.</strong> If you did not request a password reset, you can safely ignore this email.</p>
+</div>
+<div style="text-align:center;margin-bottom:28px;">
+<a href="${resetUrl}" style="display:inline-block;background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 40px;border-radius:8px;">Reset My Password &rarr;</a>
+</div>
+<p style="margin:0;color:#94a3b8;font-size:12px;text-align:center;word-break:break-all;">Or copy this link: ${resetUrl}</p>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;"/>
+<p style="margin:0;color:#94a3b8;font-size:13px;text-align:center;">If you didn't request this, ignore this email — your password will not change.</p>
+</td></tr>
+<tr><td style="background:#f8fafc;padding:20px 48px;text-align:center;border-top:1px solid #e2e8f0;">
+<p style="margin:0;color:#94a3b8;font-size:12px;">&copy; ${year} IET DAVV &mdash; CSBS Department. This is an automated message.</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+
+            const emailResp = await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${resendApiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: fromEmail,
+                to: [user.email],
+                subject: 'IET CSBS Portal — Password Reset Link',
+                html: resetHtml,
+              }),
+            });
+            const emailData = await emailResp.json();
+            if (!emailResp.ok) console.warn('[Email] Reset email error:', emailData);
+            else console.log('[Email] Reset email sent to', user.email);
+          }
+        }
+
+        // Always return success to prevent email enumeration
+        return {
+          statusCode: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: true, message: 'If that email exists, a reset link has been sent.' }),
+        };
+      } catch (err) {
+        console.error('Forgot password error:', err);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: err.message }),
+        };
+      }
+    }
+
+    // Reset password — validates the reset token and sets new password
+    if (httpMethod === 'POST' && apiRoute.includes('/auth/reset-password')) {
+      try {
+        const { token, new_password } = JSON.parse(body || '{}');
+
+        if (!token || !new_password) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Token and new password are required' }),
+          };
+        }
+
+        if (new_password.length < 8) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Password must be at least 8 characters' }),
+          };
+        }
+
+        if (!token.startsWith('reset_')) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Invalid reset token' }),
+          };
+        }
+
+        const supabase = getSupabaseClient();
+
+        // Look up the reset token
+        const { data: sessions } = await supabase
+          .from('user_sessions')
+          .select('user_id, expires_at')
+          .eq('session_token', token)
+          .limit(1);
+
+        if (!sessions || sessions.length === 0) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Invalid or expired reset link' }),
+          };
+        }
+
+        const session = sessions[0];
+        if (new Date(session.expires_at) < new Date()) {
+          await supabase.from('user_sessions').delete().eq('session_token', token);
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Reset link has expired. Please request a new one.' }),
+          };
+        }
+
+        // Hash new password and update user
+        const newHash = await bcrypt.hash(new_password, 10);
+        await supabase.from('users').update({ password_hash: newHash }).eq('id', session.user_id);
+
+        // Delete the used reset token (and all sessions for this user for security)
+        await supabase.from('user_sessions').delete().eq('session_token', token);
+
+        return {
+          statusCode: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: true, message: 'Password updated successfully' }),
+        };
+      } catch (err) {
+        console.error('Reset password error:', err);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: err.message }),
+        };
+      }
+    }
+
     // Logout route
     if (httpMethod === 'POST' && apiRoute.includes('/auth/logout')) {
       const cookies = headers.cookie || '';

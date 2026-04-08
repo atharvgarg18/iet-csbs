@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield, User, Lock, Eye, EyeOff } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Shield, User, Lock, Eye, EyeOff, Mail, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { COLORS, COMPONENTS } from '@/lib/management-design-system';
@@ -18,6 +19,12 @@ export default function ManagementLogin() {
   const { user, login, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Forgot password dialog state
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
 
   useEffect(() => {
     if (user && !authLoading && (user.role === 'admin' || user.role === 'editor' || user.role === 'viewer')) {
@@ -47,6 +54,28 @@ export default function ManagementLogin() {
 
     setErrors(newErrors);
     return isValid;
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail || !/\S+@\S+\.\S+/.test(forgotEmail)) {
+      toast({ title: 'Invalid email', description: 'Please enter a valid email address.', variant: 'destructive' });
+      return;
+    }
+    setForgotLoading(true);
+    try {
+      await fetch('/.netlify/functions/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      // Always show success to prevent email enumeration
+      setForgotSent(true);
+    } catch {
+      toast({ title: 'Error', description: 'Something went wrong. Please try again.', variant: 'destructive' });
+    } finally {
+      setForgotLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -263,6 +292,16 @@ export default function ManagementLogin() {
                     {errors.password}
                   </p>
                 )}
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => { setForgotOpen(true); setForgotSent(false); setForgotEmail(''); }}
+                    className="text-sm font-medium hover:underline transition-colors"
+                    style={{ color: COLORS.primary[600] }}
+                  >
+                    Forgot password?
+                  </button>
+                </div>
               </div>
 
               {/* Submit Button */}
@@ -296,6 +335,75 @@ export default function ManagementLogin() {
           </p>
         </div>
       </div>
+
+      {/* Forgot Password Dialog */}
+      <Dialog open={forgotOpen} onOpenChange={(open) => { setForgotOpen(open); if (!open) setForgotSent(false); }}>
+        <DialogContent className="sm:max-w-md" style={{ backgroundColor: COLORS.neutral[50] }}>
+          <DialogHeader>
+            <DialogTitle style={{ color: COLORS.neutral[900] }}>Reset your password</DialogTitle>
+            <DialogDescription style={{ color: COLORS.neutral[600] }}>
+              Enter your account email and we'll send you a reset link valid for 15 minutes.
+            </DialogDescription>
+          </DialogHeader>
+
+          {forgotSent ? (
+            <div className="py-6 text-center space-y-3">
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center mx-auto"
+                style={{ backgroundColor: COLORS.primary[100] }}
+              >
+                <Mail className="h-6 w-6" style={{ color: COLORS.primary[600] }} />
+              </div>
+              <p className="font-semibold" style={{ color: COLORS.neutral[900] }}>Check your inbox</p>
+              <p className="text-sm" style={{ color: COLORS.neutral[600] }}>
+                If <strong>{forgotEmail}</strong> is registered, a reset link has been sent. Check your spam folder too.
+              </p>
+              <Button
+                className="w-full mt-2"
+                style={{ backgroundColor: COLORS.primary[600] }}
+                onClick={() => setForgotOpen(false)}
+              >
+                Close
+              </Button>
+            </div>
+          ) : (
+            <form onSubmit={handleForgotPassword} className="space-y-4 pt-2">
+              <div className="space-y-2">
+                <Label htmlFor="forgot-email" style={{ color: COLORS.neutral[700] }}>Email Address</Label>
+                <div className="relative">
+                  <Mail
+                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4"
+                    style={{ color: COLORS.neutral[500] }}
+                  />
+                  <Input
+                    id="forgot-email"
+                    type="email"
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="pl-10 h-11 border-2"
+                    style={{ borderColor: COLORS.neutral[300], backgroundColor: 'white' }}
+                    disabled={forgotLoading}
+                    autoFocus
+                  />
+                </div>
+              </div>
+              <Button
+                type="submit"
+                disabled={forgotLoading}
+                className="w-full h-11 text-white font-medium"
+                style={{ backgroundColor: COLORS.primary[600] }}
+              >
+                {forgotLoading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Sending...
+                  </span>
+                ) : 'Send Reset Link'}
+              </Button>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

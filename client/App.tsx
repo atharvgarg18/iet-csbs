@@ -28,6 +28,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Lazy load management portal components (heaviest code)
 const ManagementLogin = lazy(() => import("./pages/management-portal/ManagementLogin"));
+const ResetPassword = lazy(() => import("./pages/management-portal/ResetPassword"));
 const ManagementLayout = lazy(() => import("./pages/management-portal/ManagementLayout"));
 const ManagementDashboard = lazy(() => import("./pages/management-portal/ManagementDashboard"));
 const BatchesManagement = lazy(() => import("./pages/management-portal/BatchesManagement"));
@@ -78,6 +79,7 @@ const App = () => (
             
             {/* Management Portal Routes */}
             <Route path="/management-portal/login" element={<ManagementLogin />} />
+            <Route path="/management-portal/reset-password" element={<ResetPassword />} />
             <Route path="/management-portal" element={<ManagementLayout />}>
               <Route index element={<ManagementDashboard />} />
               <Route path="batches" element={<BatchesManagement />} />
