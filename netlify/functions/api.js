@@ -584,28 +584,121 @@ exports.handler = async (event, context) => {
 
           if (resendApiKey) {
             const roleLabel = role === 'admin' ? 'Administrator' : role === 'editor' ? 'Editor' : 'Viewer';
-            const roleBadgeColor = role === 'admin' ? '#ef4444' : role === 'editor' ? '#f59e0b' : '#3b82f6';
+            const roleBadgeBg = role === 'admin' ? '#fee2e2' : role === 'editor' ? '#fef3c7' : '#dbeafe';
+            const roleBadgeBorder = role === 'admin' ? '#fecaca' : role === 'editor' ? '#fde68a' : '#bfdbfe';
+            const roleBadgeText = role === 'admin' ? '#991b1b' : role === 'editor' ? '#92400e' : '#1e40af';
+            const firstName = full_name.split(' ')[0];
             const year = new Date().getFullYear();
 
-            const emailHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
-<div style="height:3px;background:#2563eb;"></div>
-<div style="max-width:540px;margin:0 auto;padding:44px 32px 32px;">
-<p style="margin:0 0 4px;font-size:11px;color:#9ca3af;letter-spacing:1.2px;text-transform:uppercase;">IET DAVV &nbsp;&middot;&nbsp; CSBS Department</p>
-<div style="background:#ffffff;border-radius:3px;padding:36px 36px 32px;margin-top:16px;">
-<p style="margin:0 0 20px;font-size:16px;color:#111827;">Hi ${full_name},</p>
-<p style="margin:0 0 18px;font-size:14px;color:#374151;line-height:1.75;">Your account on the CSBS Management Portal has been set up. Here are your login details:</p>
-<div style="border-left:3px solid #2563eb;background:#f9fafb;padding:14px 18px;margin:0 0 20px;">
-<p style="margin:0 0 12px;font-size:13px;color:#374151;"><span style="display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9ca3af;margin-bottom:2px;">Email</span>${email}</p>
-<p style="margin:0;font-size:13px;color:#374151;"><span style="display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9ca3af;margin-bottom:4px;">Temporary Password</span><span style="font-family:'Courier New',monospace;font-size:15px;letter-spacing:2px;background:#e5e7eb;padding:3px 8px;border-radius:2px;color:#111827;">${password}</span></p>
-</div>
-<p style="margin:0 0 18px;font-size:14px;color:#374151;line-height:1.75;">You've been given access as <strong style="color:#111827;">${roleLabel}</strong>. When you first sign in, you'll be asked to set your own password — so keep the above handy just for that first step.</p>
-<p style="margin:0 0 24px;"><a href="${portalUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:10px 24px;border-radius:4px;">Sign in to the portal &rarr;</a></p>
-<p style="margin:0 0 4px;font-size:14px;color:#374151;line-height:1.75;">If anything isn't working, reach out to the person who created your account.</p>
-<p style="margin:22px 0 0;font-size:14px;color:#374151;">— The CSBS Team</p>
-</div>
-<p style="margin:20px 0 0;font-size:11px;color:#9ca3af;line-height:1.6;text-align:center;">IET DAVV &middot; Computer Science &amp; Business Studies &middot; ${year}<br/>This message was sent automatically when your account was created.</p>
-</div>
+            const emailHtml = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Welcome to IET CSBS Portal</title></head>
+<body style="margin:0;padding:0;background-color:#e8edf5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#e8edf5">
+<tr><td align="center" style="padding:40px 16px 56px;">
+<table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;">
+
+  <!-- HEADER -->
+  <tr>
+    <td bgcolor="#1e3a8a" style="background-color:#1e3a8a;border-radius:16px 16px 0 0;padding:44px 40px 36px;text-align:center;">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 20px;">
+        <tr>
+          <td width="80" height="80" bgcolor="#2563eb" style="background-color:#2563eb;border-radius:50%;border:3px solid rgba(255,255,255,0.25);width:80px;height:80px;text-align:center;vertical-align:middle;line-height:80px;">
+            <span style="font-size:19px;font-weight:800;color:#ffffff;letter-spacing:1px;line-height:80px;">CSBS</span>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0 0 8px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);">IET DAVV &nbsp;&bull;&nbsp; Indore</p>
+      <h1 style="margin:0 0 8px;font-size:28px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;line-height:1.2;">Your portal account is ready</h1>
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.55);">Welcome to the CSBS Management Portal</p>
+    </td>
+  </tr>
+  <!-- ACCENT STRIPE -->
+  <tr><td bgcolor="#3b82f6" style="height:4px;background-color:#3b82f6;font-size:0;line-height:0;">&nbsp;</td></tr>
+
+  <!-- BODY -->
+  <tr>
+    <td bgcolor="#ffffff" style="background-color:#ffffff;padding:40px 44px 36px;">
+
+      <p style="margin:0 0 6px;font-size:22px;font-weight:700;color:#0f172a;letter-spacing:-0.4px;">Hi ${firstName},</p>
+      <p style="margin:0 0 22px;font-size:14px;color:#64748b;line-height:1.75;">Your account on the <strong style="color:#1e3a8a;">CSBS Management Portal</strong> has been set up. Here are your login details &mdash; keep them handy for your first sign-in.</p>
+
+      <!-- ROLE BADGE -->
+      <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+        <tr>
+          <td style="font-size:13px;color:#64748b;vertical-align:middle;">You've been added as&nbsp;&nbsp;</td>
+          <td bgcolor="${roleBadgeBg}" style="background-color:${roleBadgeBg};border:1.5px solid ${roleBadgeBorder};border-radius:20px;padding:4px 16px;vertical-align:middle;">
+            <span style="font-size:12px;font-weight:700;color:${roleBadgeText};text-transform:uppercase;letter-spacing:0.8px;">${roleLabel}</span>
+          </td>
+        </tr>
+      </table>
+
+      <!-- CREDENTIALS CARD -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8fafc" style="background-color:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;margin-bottom:28px;">
+        <tr>
+          <td style="padding:24px 28px 22px;">
+            <p style="margin:0 0 18px;font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:2.5px;text-transform:uppercase;">Your Login Credentials</p>
+            <!-- Email -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
+              <tr>
+                <td bgcolor="#eff6ff" style="background-color:#eff6ff;border-radius:10px;padding:14px 18px;">
+                  <p style="margin:0 0 5px;font-size:10px;font-weight:700;color:#93c5fd;text-transform:uppercase;letter-spacing:1.5px;">Email Address</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#1e3a8a;">${email}</p>
+                </td>
+              </tr>
+            </table>
+            <!-- Password -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#fffbeb" style="background-color:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:14px 18px;">
+                  <p style="margin:0 0 5px;font-size:10px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1.5px;">Temporary Password</p>
+                  <p style="margin:0 0 8px;font-size:19px;font-weight:800;color:#78350f;font-family:'Courier New',Consolas,monospace;letter-spacing:3px;">${password}</p>
+                  <p style="margin:0;font-size:12px;color:#b45309;font-style:italic;">You'll be prompted to create your own password on your very first sign-in.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- CTA BUTTON -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+        <tr>
+          <td align="center">
+            <a href="${portalUrl}" target="_blank" style="display:inline-block;background-color:#1d4ed8;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:15px 44px;border-radius:10px;letter-spacing:0.3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">Sign in to the portal &rarr;</a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- HELP BOX -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+        <tr>
+          <td bgcolor="#f0f9ff" style="background-color:#f0f9ff;border-left:3px solid #38bdf8;border-radius:0 6px 6px 0;padding:14px 18px;">
+            <p style="margin:0;font-size:13px;color:#0369a1;line-height:1.65;"><strong style="color:#0c4a6e;">Need help?</strong>&nbsp; Reach out to your administrator at <a href="mailto:atharv.garg@ietcsbs.tech" style="color:#0284c7;text-decoration:none;font-weight:700;">atharv.garg@ietcsbs.tech</a> &mdash; they'll get you sorted.</p>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin:0;font-size:14px;color:#475569;line-height:1.55;">Warm regards,<br/><strong style="color:#0f172a;">The CSBS Team</strong></p>
+
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td bgcolor="#f1f5f9" style="background-color:#f1f5f9;border-top:1px solid #e2e8f0;border-radius:0 0 16px 16px;padding:20px 44px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="font-size:11px;color:#94a3b8;line-height:1.6;">&copy; ${year} IET DAVV &middot; Computer Science &amp; Business Studies</td>
+          <td align="right" style="font-size:11px;color:#cbd5e1;">Sent automatically on account creation</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
 </body></html>`;
 
             const emailResp = await fetch('https://api.resend.com/emails', {
@@ -1552,21 +1645,98 @@ exports.handler = async (event, context) => {
           const year = new Date().getFullYear();
 
           if (resendApiKey) {
-            const resetHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
-<div style="height:3px;background:#2563eb;"></div>
-<div style="max-width:540px;margin:0 auto;padding:44px 32px 32px;">
-<p style="margin:0 0 4px;font-size:11px;color:#9ca3af;letter-spacing:1.2px;text-transform:uppercase;">IET DAVV &nbsp;&middot;&nbsp; CSBS Department</p>
-<div style="background:#ffffff;border-radius:3px;padding:36px 36px 32px;margin-top:16px;">
-<p style="margin:0 0 20px;font-size:16px;color:#111827;">Hi ${user.full_name},</p>
-<p style="margin:0 0 18px;font-size:14px;color:#374151;line-height:1.75;">We got a request to reset the password on your CSBS portal account. Use the link below to set a new one:</p>
-<p style="margin:0 0 20px;"><a href="${resetUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:10px 24px;border-radius:4px;">Set a new password &rarr;</a></p>
-<p style="margin:0 0 18px;font-size:13px;color:#6b7280;line-height:1.75;">This link expires in 15 minutes. If you didn't ask for this, just ignore the email — nothing on your account will change.</p>
-<p style="margin:0 0 4px;font-size:11px;color:#9ca3af;word-break:break-all;line-height:1.6;">Can't click the button? Copy this link: ${resetUrl}</p>
-<p style="margin:22px 0 0;font-size:14px;color:#374151;">— The CSBS Team</p>
-</div>
-<p style="margin:20px 0 0;font-size:11px;color:#9ca3af;line-height:1.6;text-align:center;">IET DAVV &middot; Computer Science &amp; Business Studies &middot; ${year}<br/>This email was sent automatically. Please do not reply.</p>
-</div>
+            const resetHtml = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Password Reset - IET CSBS Portal</title></head>
+<body style="margin:0;padding:0;background-color:#e8edf5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#e8edf5">
+<tr><td align="center" style="padding:40px 16px 56px;">
+<table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;">
+
+  <!-- HEADER -->
+  <tr>
+    <td bgcolor="#0f172a" style="background-color:#0f172a;border-radius:16px 16px 0 0;padding:40px 40px 32px;text-align:center;">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 18px;">
+        <tr>
+          <td width="72" height="72" bgcolor="#1e293b" style="background-color:#1e293b;border-radius:50%;border:2px solid rgba(255,255,255,0.12);width:72px;height:72px;text-align:center;vertical-align:middle;line-height:72px;font-size:28px;">
+            &#128274;
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0 0 8px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);">IET DAVV &nbsp;&bull;&nbsp; CSBS Department</p>
+      <h1 style="margin:0 0 6px;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:-0.4px;">Password Reset Request</h1>
+      <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.45);">CSBS Management Portal</p>
+    </td>
+  </tr>
+  <!-- AMBER ACCENT STRIPE -->
+  <tr><td bgcolor="#f59e0b" style="height:4px;background-color:#f59e0b;font-size:0;line-height:0;">&nbsp;</td></tr>
+
+  <!-- BODY -->
+  <tr>
+    <td bgcolor="#ffffff" style="background-color:#ffffff;padding:40px 44px 36px;">
+
+      <p style="margin:0 0 6px;font-size:22px;font-weight:700;color:#0f172a;letter-spacing:-0.4px;">Hi ${user.full_name.split(' ')[0]},</p>
+      <p style="margin:0 0 28px;font-size:14px;color:#64748b;line-height:1.75;">We got a request to reset the password on your CSBS portal account. If this was you, click the button below to choose a new one.</p>
+
+      <!-- CTA BUTTON -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+        <tr>
+          <td align="center">
+            <a href="${resetUrl}" target="_blank" style="display:inline-block;background-color:#1d4ed8;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:15px 44px;border-radius:10px;letter-spacing:0.3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">Reset my password &rarr;</a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- EXPIRY WARNING -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+        <tr>
+          <td bgcolor="#fffbeb" style="background-color:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:14px 18px;">
+            <p style="margin:0;font-size:13px;color:#92400e;line-height:1.65;">&#9200;&nbsp; <strong>This link expires in 15 minutes.</strong> If it's expired by the time you get here, go back to the portal and request a new one — it only takes a second.</p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- SECURITY NOTE -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+        <tr>
+          <td bgcolor="#f8fafc" style="background-color:#f8fafc;border-left:3px solid #94a3b8;border-radius:0 6px 6px 0;padding:13px 16px;">
+            <p style="margin:0;font-size:13px;color:#475569;line-height:1.65;">Didn't request this? <strong style="color:#334155;">No worries &mdash; just ignore this email.</strong> Your password stays exactly as it is and nothing on your account will change.</p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- LINK FALLBACK -->
+      <p style="margin:0 0 28px;font-size:12px;color:#94a3b8;word-break:break-all;line-height:1.65;">Button not working? Copy and paste this link into your browser:<br/><span style="color:#3b82f6;">${resetUrl}</span></p>
+
+      <!-- HELP BOX -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+        <tr>
+          <td bgcolor="#f0f9ff" style="background-color:#f0f9ff;border-left:3px solid #38bdf8;border-radius:0 6px 6px 0;padding:14px 18px;">
+            <p style="margin:0;font-size:13px;color:#0369a1;line-height:1.65;"><strong style="color:#0c4a6e;">Still having trouble?</strong>&nbsp; Contact your administrator at <a href="mailto:atharv.garg@ietcsbs.tech" style="color:#0284c7;text-decoration:none;font-weight:700;">atharv.garg@ietcsbs.tech</a></p>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin:0;font-size:14px;color:#475569;line-height:1.55;">Regards,<br/><strong style="color:#0f172a;">The CSBS Team</strong></p>
+
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td bgcolor="#f1f5f9" style="background-color:#f1f5f9;border-top:1px solid #e2e8f0;border-radius:0 0 16px 16px;padding:20px 44px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="font-size:11px;color:#94a3b8;line-height:1.6;">&copy; ${year} IET DAVV &middot; Computer Science &amp; Business Studies</td>
+          <td align="right" style="font-size:11px;color:#cbd5e1;">Automated security notification</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
 </body></html>`;
 
             const emailResp = await fetch('https://api.resend.com/emails', {
