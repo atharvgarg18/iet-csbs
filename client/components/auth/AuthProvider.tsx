@@ -4,7 +4,7 @@ import { User } from '@shared/api';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message?: string; first_login?: boolean }>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
 }
@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (data.success && data.data?.user) {
         setUser(data.data.user);
-        return { success: true };
+        return { success: true, first_login: data.first_login === true };
       } else {
         return { success: false, message: data.message || 'Login failed' };
       }

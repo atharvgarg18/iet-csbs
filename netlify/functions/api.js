@@ -350,6 +350,9 @@ exports.handler = async (event, context) => {
         };
       }
 
+      // Detect first-ever login before updating the timestamp
+      const isFirstLogin = !user.last_login;
+
       // Update last login
       await supabase
         .from('users')
@@ -368,6 +371,7 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           success: true,
+          first_login: isFirstLogin,
           data: {
             user: {
               id: user.id,
@@ -583,49 +587,25 @@ exports.handler = async (event, context) => {
             const roleBadgeColor = role === 'admin' ? '#ef4444' : role === 'editor' ? '#f59e0b' : '#3b82f6';
             const year = new Date().getFullYear();
 
-            const emailHtml = `<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:40px 16px;">
-<tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-<tr><td style="background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:40px 48px;text-align:center;">
-<h1 style="margin:0;color:#fff;font-size:26px;font-weight:700;">IET CSBS Department</h1>
-<p style="margin:8px 0 0;color:rgba(255,255,255,0.75);font-size:14px;">Management Portal Access</p>
-</td></tr>
-<tr><td style="padding:40px 48px;">
-<h2 style="margin:0 0 8px;color:#0f172a;font-size:22px;font-weight:700;">Welcome, ${full_name}!</h2>
-<p style="margin:0 0 24px;color:#64748b;font-size:15px;line-height:1.6;">Your account has been successfully created for the <strong style="color:#1e3a5f;">IET CSBS Management Portal</strong>. Use the credentials below to log in.</p>
-<div style="margin-bottom:24px;"><span style="display:inline-block;background:${roleBadgeColor};color:#fff;font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:0.8px;text-transform:uppercase;">${roleLabel}</span></div>
-<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:20px;">
-<p style="margin:0 0 16px;color:#334155;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Your Login Credentials</p>
-<table width="100%" cellpadding="0" cellspacing="0">
-<tr><td style="padding:10px 0;border-bottom:1px solid #e2e8f0;">
-<span style="color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:4px;">Email Address</span>
-<span style="color:#0f172a;font-size:15px;font-weight:500;">${email}</span>
-</td></tr>
-<tr><td style="padding:10px 0;">
-<span style="color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:6px;">Temporary Password</span>
-<code style="display:inline-block;background:#1e293b;color:#f8fafc;font-size:15px;font-weight:600;letter-spacing:3px;padding:10px 18px;border-radius:8px;font-family:monospace;">${password}</code>
-</td></tr>
-</table>
+            const emailHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
+<div style="height:3px;background:#2563eb;"></div>
+<div style="max-width:540px;margin:0 auto;padding:44px 32px 32px;">
+<p style="margin:0 0 4px;font-size:11px;color:#9ca3af;letter-spacing:1.2px;text-transform:uppercase;">IET DAVV &nbsp;&middot;&nbsp; CSBS Department</p>
+<div style="background:#ffffff;border-radius:3px;padding:36px 36px 32px;margin-top:16px;">
+<p style="margin:0 0 20px;font-size:16px;color:#111827;">Hi ${full_name},</p>
+<p style="margin:0 0 18px;font-size:14px;color:#374151;line-height:1.75;">Your account on the CSBS Management Portal has been set up. Here are your login details:</p>
+<div style="border-left:3px solid #2563eb;background:#f9fafb;padding:14px 18px;margin:0 0 20px;">
+<p style="margin:0 0 12px;font-size:13px;color:#374151;"><span style="display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9ca3af;margin-bottom:2px;">Email</span>${email}</p>
+<p style="margin:0;font-size:13px;color:#374151;"><span style="display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9ca3af;margin-bottom:4px;">Temporary Password</span><span style="font-family:'Courier New',monospace;font-size:15px;letter-spacing:2px;background:#e5e7eb;padding:3px 8px;border-radius:2px;color:#111827;">${password}</span></p>
 </div>
-<div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;margin-bottom:28px;">
-<p style="margin:0;color:#78350f;font-size:13px;line-height:1.6;"><strong>Security Notice:</strong> Please change your password immediately after your first login. Never share your credentials.</p>
+<p style="margin:0 0 18px;font-size:14px;color:#374151;line-height:1.75;">You've been given access as <strong style="color:#111827;">${roleLabel}</strong>. When you first sign in, you'll be asked to set your own password — so keep the above handy just for that first step.</p>
+<p style="margin:0 0 24px;"><a href="${portalUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:10px 24px;border-radius:4px;">Sign in to the portal &rarr;</a></p>
+<p style="margin:0 0 4px;font-size:14px;color:#374151;line-height:1.75;">If anything isn't working, reach out to the person who created your account.</p>
+<p style="margin:22px 0 0;font-size:14px;color:#374151;">— The CSBS Team</p>
 </div>
-<div style="text-align:center;margin-bottom:28px;">
-<a href="${portalUrl}" style="display:inline-block;background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 40px;border-radius:8px;">Login to Portal &rarr;</a>
+<p style="margin:20px 0 0;font-size:11px;color:#9ca3af;line-height:1.6;text-align:center;">IET DAVV &middot; Computer Science &amp; Business Studies &middot; ${year}<br/>This message was sent automatically when your account was created.</p>
 </div>
-<hr style="border:none;border-top:1px solid #e2e8f0;margin:0 0 20px;"/>
-<p style="margin:0;color:#94a3b8;font-size:13px;text-align:center;">If you did not expect this email, please contact your administrator immediately.</p>
-</td></tr>
-<tr><td style="background:#f8fafc;padding:20px 48px;text-align:center;border-top:1px solid #e2e8f0;">
-<p style="margin:0;color:#94a3b8;font-size:12px;">&copy; ${year} IET DAVV &mdash; CSBS Department. This is an automated message.</p>
-</td></tr>
-</table>
-</td></tr>
-</table>
 </body></html>`;
 
             const emailResp = await fetch('https://api.resend.com/emails', {
@@ -1484,6 +1464,46 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Change password — requires active session, updates to a new password
+    if (httpMethod === 'POST' && apiRoute.includes('/auth/change-password')) {
+      try {
+        const sessionUser = await verifySession(headers.cookie || '');
+        if (!requireAuth(sessionUser)) {
+          return {
+            statusCode: 401,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Authentication required' }),
+          };
+        }
+
+        const { new_password } = JSON.parse(body || '{}');
+        if (!new_password || new_password.length < 8) {
+          return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ success: false, error: 'Password must be at least 8 characters' }),
+          };
+        }
+
+        const supabase = getSupabaseClient();
+        const newHash = await bcrypt.hash(new_password, 10);
+        await supabase.from('users').update({ password_hash: newHash }).eq('id', sessionUser.id);
+
+        return {
+          statusCode: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: true, message: 'Password changed successfully' }),
+        };
+      } catch (err) {
+        console.error('Change password error:', err);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ success: false, error: err.message }),
+        };
+      }
+    }
+
     // Forgot password — sends a reset link to the user's email
     if (httpMethod === 'POST' && apiRoute.includes('/auth/forgot-password')) {
       try {
@@ -1532,36 +1552,21 @@ exports.handler = async (event, context) => {
           const year = new Date().getFullYear();
 
           if (resendApiKey) {
-            const resetHtml = `<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:40px 16px;">
-<tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-<tr><td style="background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:40px 48px;text-align:center;">
-<h1 style="margin:0;color:#fff;font-size:26px;font-weight:700;">IET CSBS Department</h1>
-<p style="margin:8px 0 0;color:rgba(255,255,255,0.75);font-size:14px;">Management Portal</p>
-</td></tr>
-<tr><td style="padding:40px 48px;">
-<h2 style="margin:0 0 8px;color:#0f172a;font-size:22px;font-weight:700;">Password Reset Request</h2>
-<p style="margin:0 0 24px;color:#64748b;font-size:15px;line-height:1.6;">Hi ${user.full_name}, we received a request to reset your password. Click the button below to set a new one.</p>
-<div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;margin-bottom:28px;">
-<p style="margin:0;color:#78350f;font-size:13px;line-height:1.6;"><strong>This link expires in 15 minutes.</strong> If you did not request a password reset, you can safely ignore this email.</p>
+            const resetHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
+<div style="height:3px;background:#2563eb;"></div>
+<div style="max-width:540px;margin:0 auto;padding:44px 32px 32px;">
+<p style="margin:0 0 4px;font-size:11px;color:#9ca3af;letter-spacing:1.2px;text-transform:uppercase;">IET DAVV &nbsp;&middot;&nbsp; CSBS Department</p>
+<div style="background:#ffffff;border-radius:3px;padding:36px 36px 32px;margin-top:16px;">
+<p style="margin:0 0 20px;font-size:16px;color:#111827;">Hi ${user.full_name},</p>
+<p style="margin:0 0 18px;font-size:14px;color:#374151;line-height:1.75;">We got a request to reset the password on your CSBS portal account. Use the link below to set a new one:</p>
+<p style="margin:0 0 20px;"><a href="${resetUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:10px 24px;border-radius:4px;">Set a new password &rarr;</a></p>
+<p style="margin:0 0 18px;font-size:13px;color:#6b7280;line-height:1.75;">This link expires in 15 minutes. If you didn't ask for this, just ignore the email — nothing on your account will change.</p>
+<p style="margin:0 0 4px;font-size:11px;color:#9ca3af;word-break:break-all;line-height:1.6;">Can't click the button? Copy this link: ${resetUrl}</p>
+<p style="margin:22px 0 0;font-size:14px;color:#374151;">— The CSBS Team</p>
 </div>
-<div style="text-align:center;margin-bottom:28px;">
-<a href="${resetUrl}" style="display:inline-block;background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 40px;border-radius:8px;">Reset My Password &rarr;</a>
+<p style="margin:20px 0 0;font-size:11px;color:#9ca3af;line-height:1.6;text-align:center;">IET DAVV &middot; Computer Science &amp; Business Studies &middot; ${year}<br/>This email was sent automatically. Please do not reply.</p>
 </div>
-<p style="margin:0;color:#94a3b8;font-size:12px;text-align:center;word-break:break-all;">Or copy this link: ${resetUrl}</p>
-<hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;"/>
-<p style="margin:0;color:#94a3b8;font-size:13px;text-align:center;">If you didn't request this, ignore this email — your password will not change.</p>
-</td></tr>
-<tr><td style="background:#f8fafc;padding:20px 48px;text-align:center;border-top:1px solid #e2e8f0;">
-<p style="margin:0;color:#94a3b8;font-size:12px;">&copy; ${year} IET DAVV &mdash; CSBS Department. This is an automated message.</p>
-</td></tr>
-</table>
-</td></tr>
-</table>
 </body></html>`;
 
             const emailResp = await fetch('https://api.resend.com/emails', {

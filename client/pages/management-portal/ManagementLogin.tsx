@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Shield, User, Lock, Eye, EyeOff, Mail, Loader2 } from 'lucide-react';
+import { Shield, User, Lock, Eye, EyeOff, Mail, Loader2, KeyRound } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { COLORS, COMPONENTS } from '@/lib/management-design-system';
@@ -26,11 +26,20 @@ export default function ManagementLogin() {
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotSent, setForgotSent] = useState(false);
 
+  // First-login force change-password dialog state
+  const [firstLoginOpen, setFirstLoginOpen] = useState(false);
+  const [newPwd, setNewPwd] = useState('');
+  const [confirmPwd, setConfirmPwd] = useState('');
+  const [showNewPwd, setShowNewPwd] = useState(false);
+  const [showConfirmPwd, setShowConfirmPwd] = useState(false);
+  const [pwdChangeLoading, setPwdChangeLoading] = useState(false);
+  const [pwdChangeError, setPwdChangeError] = useState('');
+
   useEffect(() => {
-    if (user && !authLoading && (user.role === 'admin' || user.role === 'editor' || user.role === 'viewer')) {
+    if (user && !authLoading && !firstLoginOpen && (user.role === 'admin' || user.role === 'editor' || user.role === 'viewer')) {
       navigate('/management-portal');
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, firstLoginOpen, navigate]);
 
   const validateForm = () => {
     const newErrors = { email: '', password: '' };
@@ -54,6 +63,41 @@ export default function ManagementLogin() {
 
     setErrors(newErrors);
     return isValid;
+  };
+
+  const handleFirstLoginChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPwdChangeError('');
+
+    if (newPwd.length < 8) {
+      setPwdChangeError('Password must be at least 8 characters.');
+      return;
+    }
+    if (newPwd !== confirmPwd) {
+      setPwdChangeError('Passwords do not match.');
+      return;
+    }
+
+    setPwdChangeLoading(true);
+    try {
+      const resp = await fetch('/.netlify/functions/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ new_password: newPwd }),
+      });
+      const data = await resp.json();
+      if (data.success) {
+        setFirstLoginOpen(false); // triggers useEffect → navigate to dashboard
+        toast({ title: 'Password set', description: 'Your new password is active. Welcome!' });
+      } else {
+        setPwdChangeError(data.error || 'Failed to update password.');
+      }
+    } catch {
+      setPwdChangeError('Something went wrong. Please try again.');
+    } finally {
+      setPwdChangeLoading(false);
+    }
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -90,10 +134,14 @@ export default function ManagementLogin() {
       const result = await login(email, password);
       
       if (result.success) {
-        toast({
-          title: "Welcome Back",
-          description: "Successfully logged into Management Portal",
-        });
+        if (result.first_login) {
+          setFirstLoginOpen(true);
+        } else {
+          toast({
+            title: "Welcome Back",
+            description: "Successfully logged into Management Portal",
+          });
+        }
       } else {
         toast({
           title: "Authentication Failed",
@@ -402,6 +450,96 @@ export default function ManagementLogin() {
               </Button>
             </form>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* First-Login Force Change Password Dialog — cannot be dismissed */}
+      <Dialog open={firstLoginOpen} onOpenChange={() => { /* intentionally locked */ }}>
+        <DialogContent
+          className="sm:max-w-md [&>button]:hidden"
+          style={{ backgroundColor: COLORS.neutral[50] }}
+          onInteractOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+        >
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-1">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                style={{ backgroundColor: COLORS.primary[100] }}
+              >
+                <KeyRound className="h-5 w-5" style={{ color: COLORS.primary[600] }} />
+              </div>
+              <div>
+                <DialogTitle style={{ color: COLORS.neutral[900] }}>Set your password</DialogTitle>
+                <DialogDescription style={{ color: COLORS.neutral[600] }}>
+                  This is your first sign-in. Please set a personal password to continue.
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <form onSubmit={handleFirstLoginChangePassword} className="space-y-4 pt-1">
+            {pwdChangeError && (
+              <p className="text-sm rounded px-3 py-2" style={{ color: '#b91c1c', backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}>
+                {pwdChangeError}
+              </p>
+            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="first-new-pwd" className="text-sm font-medium" style={{ color: COLORS.neutral[700] }}>New Password</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: COLORS.neutral[500] }} />
+                <Input
+                  id="first-new-pwd"
+                  type={showNewPwd ? 'text' : 'password'}
+                  value={newPwd}
+                  onChange={(e) => { setNewPwd(e.target.value); setPwdChangeError(''); }}
+                  placeholder="At least 8 characters"
+                  className="pl-10 pr-10 h-11 border-2"
+                  style={{ borderColor: COLORS.neutral[300], backgroundColor: 'white' }}
+                  disabled={pwdChangeLoading}
+                  autoFocus
+                />
+                <button type="button" onClick={() => setShowNewPwd(!showNewPwd)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-gray-100">
+                  {showNewPwd ? <EyeOff className="h-4 w-4" style={{ color: COLORS.neutral[500] }} /> : <Eye className="h-4 w-4" style={{ color: COLORS.neutral[500] }} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="first-confirm-pwd" className="text-sm font-medium" style={{ color: COLORS.neutral[700] }}>Confirm Password</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: COLORS.neutral[500] }} />
+                <Input
+                  id="first-confirm-pwd"
+                  type={showConfirmPwd ? 'text' : 'password'}
+                  value={confirmPwd}
+                  onChange={(e) => { setConfirmPwd(e.target.value); setPwdChangeError(''); }}
+                  placeholder="Repeat your password"
+                  className="pl-10 pr-10 h-11 border-2"
+                  style={{ borderColor: confirmPwd && confirmPwd !== newPwd ? '#fca5a5' : COLORS.neutral[300], backgroundColor: 'white' }}
+                  disabled={pwdChangeLoading}
+                />
+                <button type="button" onClick={() => setShowConfirmPwd(!showConfirmPwd)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-gray-100">
+                  {showConfirmPwd ? <EyeOff className="h-4 w-4" style={{ color: COLORS.neutral[500] }} /> : <Eye className="h-4 w-4" style={{ color: COLORS.neutral[500] }} />}
+                </button>
+              </div>
+              {confirmPwd && confirmPwd !== newPwd && (
+                <p className="text-xs" style={{ color: '#ef4444' }}>Passwords do not match</p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              disabled={pwdChangeLoading || !newPwd || !confirmPwd}
+              className="w-full h-11 text-white font-medium"
+              style={{ backgroundColor: COLORS.primary[600] }}
+            >
+              {pwdChangeLoading ? (
+                <span className="flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" /> Saving…</span>
+              ) : 'Set Password & Continue'}
+            </Button>
+          </form>
         </DialogContent>
       </Dialog>
     </div>
