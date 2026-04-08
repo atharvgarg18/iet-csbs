@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { supabaseAdmin } from "../lib/supabase";
+import { sendWelcomeEmail } from "../lib/email";
 import { 
   LoginRequest, 
   LoginResponse,
@@ -262,6 +263,18 @@ export const register: RequestHandler = async (req, res) => {
         message: 'Failed to create user'
       });
     }
+
+    // Send welcome email (non-blocking — user creation succeeds regardless)
+    sendWelcomeEmail({
+      full_name,
+      email: email.toLowerCase(),
+      password,
+      role
+    }).then(({ success, error }) => {
+      if (!success) {
+        console.warn(`[Email] Welcome email not sent to ${email}:`, error);
+      }
+    });
 
     const response: RegisterResponse = {
       success: true,

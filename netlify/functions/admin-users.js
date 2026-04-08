@@ -1,6 +1,7 @@
 const { getSupabaseClient } = require('./_shared/supabase');
 const { verifySession, requireAdmin, hashPassword } = require('./_shared/auth');
 const { handleOptions, jsonResponse, errorResponse } = require('./_shared/http');
+const { sendWelcomeEmail } = require('./_shared/email');
 
 /**
  * Admin User Management API
@@ -72,7 +73,19 @@ exports.handler = async (event, context) => {
         console.error('Error creating user:', error);
         return errorResponse(error.message, headers, 400);
       }
-      
+
+      // Send welcome email (non-blocking — user creation succeeds regardless)
+      sendWelcomeEmail({
+        full_name,
+        email,
+        password,
+        role
+      }).then(({ success, error: emailError }) => {
+        if (!success) {
+          console.warn(`[Email] Welcome email not sent to ${email}:`, emailError);
+        }
+      });
+
       return jsonResponse({ success: true, data }, headers);
     }
 
