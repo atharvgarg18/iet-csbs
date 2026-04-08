@@ -1,6 +1,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const { sendWelcomeEmail } = require('./_shared/email');
 
 // Helper to create Supabase client
 function getSupabaseClient() {
@@ -571,6 +572,13 @@ exports.handler = async (event, context) => {
         }
         
         console.log('User created successfully:', data);
+
+        // Send welcome email — awaited so it completes before the function terminates
+        const emailResult = await sendWelcomeEmail({ full_name, email, password, role });
+        if (!emailResult.success) {
+          console.warn(`[Email] Welcome email not sent to ${email}:`, emailResult.error);
+        }
+
         return {
           statusCode: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
