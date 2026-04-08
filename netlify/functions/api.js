@@ -572,15 +572,84 @@ exports.handler = async (event, context) => {
         
         console.log('User created successfully:', data);
 
-        // Send welcome email — lazy require so a load failure can't crash the whole module
+        // Send welcome email via Resend REST API (inlined — esbuild can't bundle lazy requires)
         try {
-          const { sendWelcomeEmail } = require('./_shared/email');
-          const emailResult = await sendWelcomeEmail({ full_name, email, password, role });
-          if (!emailResult.success) {
-            console.warn(`[Email] Welcome email not sent to ${email}:`, emailResult.error);
+          const resendApiKey = process.env.RESEND_API_KEY;
+          const fromEmail = process.env.RESEND_FROM_EMAIL || 'IET CSBS Portal <noreply@ietcsbs.tech>';
+          const portalUrl = process.env.PORTAL_URL || 'https://ietcsbs.tech/management-portal/login';
+
+          if (resendApiKey) {
+            const roleLabel = role === 'admin' ? 'Administrator' : role === 'editor' ? 'Editor' : 'Viewer';
+            const roleBadgeColor = role === 'admin' ? '#ef4444' : role === 'editor' ? '#f59e0b' : '#3b82f6';
+            const year = new Date().getFullYear();
+
+            const emailHtml = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:40px 16px;">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+<tr><td style="background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:40px 48px;text-align:center;">
+<h1 style="margin:0;color:#fff;font-size:26px;font-weight:700;">IET CSBS Department</h1>
+<p style="margin:8px 0 0;color:rgba(255,255,255,0.75);font-size:14px;">Management Portal Access</p>
+</td></tr>
+<tr><td style="padding:40px 48px;">
+<h2 style="margin:0 0 8px;color:#0f172a;font-size:22px;font-weight:700;">Welcome, ${full_name}!</h2>
+<p style="margin:0 0 24px;color:#64748b;font-size:15px;line-height:1.6;">Your account has been successfully created for the <strong style="color:#1e3a5f;">IET CSBS Management Portal</strong>. Use the credentials below to log in.</p>
+<div style="margin-bottom:24px;"><span style="display:inline-block;background:${roleBadgeColor};color:#fff;font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:0.8px;text-transform:uppercase;">${roleLabel}</span></div>
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:20px;">
+<p style="margin:0 0 16px;color:#334155;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Your Login Credentials</p>
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="padding:10px 0;border-bottom:1px solid #e2e8f0;">
+<span style="color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:4px;">Email Address</span>
+<span style="color:#0f172a;font-size:15px;font-weight:500;">${email}</span>
+</td></tr>
+<tr><td style="padding:10px 0;">
+<span style="color:#94a3b8;font-size:11px;font-weight:600;text-transform:uppercase;display:block;margin-bottom:6px;">Temporary Password</span>
+<code style="display:inline-block;background:#1e293b;color:#f8fafc;font-size:15px;font-weight:600;letter-spacing:3px;padding:10px 18px;border-radius:8px;font-family:monospace;">${password}</code>
+</td></tr>
+</table>
+</div>
+<div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;margin-bottom:28px;">
+<p style="margin:0;color:#78350f;font-size:13px;line-height:1.6;"><strong>Security Notice:</strong> Please change your password immediately after your first login. Never share your credentials.</p>
+</div>
+<div style="text-align:center;margin-bottom:28px;">
+<a href="${portalUrl}" style="display:inline-block;background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 40px;border-radius:8px;">Login to Portal &rarr;</a>
+</div>
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:0 0 20px;"/>
+<p style="margin:0;color:#94a3b8;font-size:13px;text-align:center;">If you did not expect this email, please contact your administrator immediately.</p>
+</td></tr>
+<tr><td style="background:#f8fafc;padding:20px 48px;text-align:center;border-top:1px solid #e2e8f0;">
+<p style="margin:0;color:#94a3b8;font-size:12px;">&copy; ${year} IET DAVV &mdash; CSBS Department. This is an automated message.</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>`;
+
+            const emailResp = await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${resendApiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: fromEmail,
+                to: [email],
+                subject: 'Welcome to IET CSBS Management Portal — Your Credentials',
+                html: emailHtml,
+              }),
+            });
+
+            const emailData = await emailResp.json();
+            if (!emailResp.ok) {
+              console.warn(`[Email] Resend error for ${email}:`, emailData);
+            } else {
+              console.log(`[Email] Welcome email sent to ${email}, id: ${emailData.id}`);
+            }
+          } else {
+            console.warn('[Email] RESEND_API_KEY not set, skipping welcome email');
           }
         } catch (emailErr) {
-          console.error('[Email] Failed to load or send welcome email:', emailErr.message);
+          console.error('[Email] Unexpected error sending welcome email:', emailErr.message);
         }
 
         return {
