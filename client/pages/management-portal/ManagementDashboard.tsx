@@ -74,7 +74,7 @@ export default function ManagementDashboard() {
       subtitle: `${stats?.user_stats?.active_users || 0} active`,
       icon: Users,
       color: COLORS.primary[600],
-      bgColor: COLORS.primary[50],
+      bgColor: COLORS.primary[100],
       href: user?.role === 'admin' ? '/management-portal/users' : null,
     },
     {
@@ -83,7 +83,7 @@ export default function ManagementDashboard() {
       subtitle: 'Academic batches',
       icon: GraduationCap,
       color: COLORS.accent[600],
-      bgColor: COLORS.accent[50],
+      bgColor: COLORS.accent[100],
       href: user?.role === 'admin' ? '/management-portal/batches' : null,
     },
     {
@@ -92,7 +92,7 @@ export default function ManagementDashboard() {
       subtitle: 'Class sections',
       icon: BarChart3,
       color: COLORS.success[600],
-      bgColor: COLORS.success[50],
+      bgColor: COLORS.success[100],
       href: user?.role === 'admin' ? '/management-portal/sections' : null,
     },
     {
@@ -101,7 +101,7 @@ export default function ManagementDashboard() {
       subtitle: 'Available resources',
       icon: FileText,
       color: COLORS.warning[600],
-      bgColor: COLORS.warning[50],
+      bgColor: COLORS.warning[100],
       href: '/management-portal/notes',
     },
     {
@@ -110,7 +110,7 @@ export default function ManagementDashboard() {
       subtitle: 'Practice materials',
       icon: BookOpen,
       color: COLORS.error[600],
-      bgColor: COLORS.error[50],
+      bgColor: COLORS.error[100],
       href: '/management-portal/papers',
     },
     {
@@ -119,7 +119,7 @@ export default function ManagementDashboard() {
       subtitle: 'Active announcements',
       icon: Bell,
       color: COLORS.primary[500],
-      bgColor: COLORS.primary[50],
+      bgColor: COLORS.primary[100],
       href: '/management-portal/notices',
     },
     {
@@ -128,7 +128,7 @@ export default function ManagementDashboard() {
       subtitle: 'Media content',
       icon: Image,
       color: COLORS.accent[500],
-      bgColor: COLORS.accent[50],
+      bgColor: COLORS.accent[100],
       href: '/management-portal/gallery-images',
     }
   ];
@@ -264,8 +264,8 @@ export default function ManagementDashboard() {
               className={`block ${stat.href ? 'hover:shadow-lg transition-all duration-200' : ''}`}
             >
               <Card 
-                className="border-0 shadow-sm hover:shadow-md transition-all duration-200"
-                style={{ backgroundColor: COLORS.neutral[50] }}
+                className="shadow-sm hover:shadow-md transition-all duration-200"
+                style={{ backgroundColor: '#ffffff', borderColor: COLORS.neutral[200] }}
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
@@ -306,8 +306,8 @@ export default function ManagementDashboard() {
       {/* Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card 
-          className="border-0 shadow-sm"
-          style={{ backgroundColor: COLORS.neutral[50] }}
+          className="shadow-sm"
+          style={{ backgroundColor: '#ffffff', borderColor: COLORS.neutral[200] }}
         >
           <CardHeader>
             <CardTitle 
@@ -325,7 +325,7 @@ export default function ManagementDashboard() {
                 <Link
                   key={index}
                   to={action.href}
-                  className="flex items-center p-4 rounded-lg border transition-all duration-200 hover:shadow-md"
+                  className="flex items-center p-4 rounded-lg border transition-all duration-200 hover:shadow-md hover:border-blue-200"
                   style={{ 
                     backgroundColor: COLORS.neutral[50],
                     borderColor: COLORS.neutral[200]
@@ -333,7 +333,7 @@ export default function ManagementDashboard() {
                 >
                   <div 
                     className="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
-                    style={{ backgroundColor: `${action.color}15` }}
+                    style={{ backgroundColor: `${action.color}25` }}
                   >
                     <Icon className="h-5 w-5" style={{ color: action.color }} />
                   </div>
@@ -360,8 +360,8 @@ export default function ManagementDashboard() {
 
         {/* Recent Activity */}
         <Card 
-          className="border-0 shadow-sm"
-          style={{ backgroundColor: COLORS.neutral[50] }}
+          className="shadow-sm"
+          style={{ backgroundColor: '#ffffff', borderColor: COLORS.neutral[200] }}
         >
           <CardHeader>
             <CardTitle 

@@ -235,7 +235,7 @@ export default function UsersManagement() {
       </div>
 
       {/* Filters Card */}
-      <Card className="border-0 shadow-sm" style={{ backgroundColor: COLORS.neutral[50] }}>
+      <Card className="shadow-sm" style={{ backgroundColor: "#ffffff", borderColor: COLORS.neutral[200] }}>
         <CardContent className="p-6">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1">
@@ -294,7 +294,7 @@ export default function UsersManagement() {
       </Card>
 
       {/* Users Table */}
-      <Card className="border-0 shadow-sm" style={{ backgroundColor: COLORS.neutral[50] }}>
+      <Card className="shadow-sm" style={{ backgroundColor: "#ffffff", borderColor: COLORS.neutral[200] }}>
         <CardHeader>
           <CardTitle className="flex items-center text-xl" style={{ color: COLORS.neutral[900] }}>
             <Users className="h-5 w-5 mr-2" style={{ color: COLORS.primary[600] }} />
@@ -346,7 +346,7 @@ export default function UsersManagement() {
                     return (
                       <tr 
                         key={user.id} 
-                        className="border-t hover:bg-gray-50 transition-colors"
+                        className="border-t hover:bg-blue-50 transition-colors"
                         style={{ borderTopColor: COLORS.neutral[200] }}
                       >
                         <td className="py-4 px-6">

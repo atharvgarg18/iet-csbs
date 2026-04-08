@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/button';
@@ -30,6 +30,14 @@ export default function ManagementLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Force light mode CSS vars for this portal so shadcn components render correctly
+  useEffect(() => {
+    document.body.setAttribute('data-portal', 'management');
+    return () => {
+      document.body.removeAttribute('data-portal');
+    };
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -149,7 +157,25 @@ export default function ManagementLayout() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: COLORS.neutral[50] }}>
+    <div 
+      className="min-h-screen"
+      style={{ 
+        backgroundColor: COLORS.neutral[50],
+        // Override dark-mode CSS vars to light values for all in-layout elements
+        '--background': '0 0% 100%',
+        '--foreground': '222 47% 11%',
+        '--card': '0 0% 100%',
+        '--card-foreground': '222 47% 11%',
+        '--popover': '0 0% 100%',
+        '--popover-foreground': '222 47% 11%',
+        '--muted': '210 40% 96%',
+        '--muted-foreground': '215 16% 47%',
+        '--border': '214 32% 91%',
+        '--input': '214 32% 91%',
+        '--ring': '214 100% 35%',
+      } as React.CSSProperties
+      }
+    >
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
         <div 
@@ -285,12 +311,15 @@ export default function ManagementLayout() {
       </aside>
 
       {/* Main content */}
-      <div className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-72'}`}>
+      <div 
+        className={`transition-all duration-300 min-h-screen ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-72'}`}
+        style={{ backgroundColor: COLORS.neutral[100] }}
+      >
         {/* Top header */}
         <header 
           className="sticky top-0 z-30 px-6 py-4 border-b backdrop-blur-sm"
           style={{ 
-            backgroundColor: `${COLORS.neutral[50]}f5`,
+            backgroundColor: `rgba(255,255,255,0.92)`,
             borderBottomColor: COLORS.neutral[200]
           }}
         >
