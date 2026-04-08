@@ -1,18 +1,11 @@
-const { Resend } = require('resend');
+// Uses Resend REST API directly via fetch (Node 18+ built-in)
+// Avoids ESM/CJS compatibility issues with the resend npm package
 
 const FROM_EMAIL =
   process.env.RESEND_FROM_EMAIL || 'IET CSBS Portal <noreply@ietdavv.edu.in>';
 const PORTAL_URL =
   process.env.PORTAL_URL ||
   'https://iet-csbs.netlify.app/management-portal/login';
-
-function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey || apiKey === 're_your_api_key_here') {
-    throw new Error('RESEND_API_KEY is not configured');
-  }
-  return new Resend(apiKey);
-}
 
 function getRoleLabel(role) {
   switch (role) {
@@ -146,21 +139,33 @@ function buildWelcomeEmailHtml({ full_name, email, password, role, portal_url })
  */
 async function sendWelcomeEmail({ full_name, email, password, role }) {
   try {
-    const client = getResendClient();
-
-    const { error } = await client.emails.send({
-      from: FROM_EMAIL,
-      to: [email],
-      subject: 'Welcome to IET CSBS Management Portal — Your Credentials',
-      html: buildWelcomeEmailHtml({ full_name, email, password, role, portal_url: PORTAL_URL }),
-    });
-
-    if (error) {
-      console.error('[Email] Failed to send welcome email:', error);
-      return { success: false, error: error.message || String(error) };
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey || apiKey === 're_your_api_key_here') {
+      return { success: false, error: 'RESEND_API_KEY is not configured' };
     }
 
-    console.log(`[Email] Welcome email sent to ${email}`);
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to: [email],
+        subject: 'Welcome to IET CSBS Management Portal — Your Credentials',
+        html: buildWelcomeEmailHtml({ full_name, email, password, role, portal_url: PORTAL_URL }),
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error('[Email] Resend API error:', result);
+      return { success: false, error: result.message || JSON.stringify(result) };
+    }
+
+    console.log(`[Email] Welcome email sent to ${email}, id: ${result.id}`);
     return { success: true };
   } catch (err) {
     console.error('[Email] Service error:', err);
