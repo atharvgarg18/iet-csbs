@@ -9,7 +9,7 @@ export default function AdmissionPopup() {
 
   useEffect(() => {
     // Check if the user has already dismissed the popup
-    const hasDismissed = localStorage.getItem('csbs_admission_popup_dismissed');
+    const hasDismissed = sessionStorage.getItem('csbs_admission_popup_dismissed');
     
     // If not dismissed, wait 2 seconds before showing the entry ticket
     if (!hasDismissed) {
@@ -23,7 +23,7 @@ export default function AdmissionPopup() {
   const handleClose = () => {
     setIsOpen(false);
     setShowTicket(false); // Hide the ticket permanently for this session/device
-    localStorage.setItem('csbs_admission_popup_dismissed', 'true');
+    sessionStorage.setItem('csbs_admission_popup_dismissed', 'true');
   };
 
   return (
@@ -39,10 +39,7 @@ export default function AdmissionPopup() {
             onClick={() => setIsOpen(true)}
           >
             <div className="relative">
-              {/* Glowing Background Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-              
-              <div className="relative px-6 py-4 bg-background border border-primary/20 rounded-lg flex items-center gap-3 shadow-2xl">
+              <div className="relative px-6 py-4 bg-background border-2 border-primary rounded-lg flex items-center gap-3 shadow-xl hover:bg-muted/50 transition-colors">
                 <Sparkles className="w-5 h-5 text-primary" />
                 <div>
                   <p className="font-bold text-sm">Admissions 2026-27</p>
@@ -63,7 +60,7 @@ export default function AdmissionPopup() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/90"
               onClick={handleClose}
             />
             
@@ -73,60 +70,40 @@ export default function AdmissionPopup() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300, duration: 0.4 }}
-              className="relative w-full max-w-5xl max-h-[90vh] flex flex-col md:flex-row bg-card border border-border rounded-2xl shadow-2xl overflow-hidden overflow-y-auto"
+              className="relative w-fit max-w-[95vw] md:max-w-4xl bg-card border border-border rounded-xl shadow-2xl p-4 md:p-6 overflow-y-auto max-h-[95vh]"
             >
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 z-10 p-2 bg-background/60 hover:bg-background rounded-full transition-colors backdrop-blur-md border border-border"
+                className="absolute top-2 right-2 md:top-4 md:right-4 z-10 p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors"
+                aria-label="Close dialog"
               >
                 <X className="w-5 h-5" />
               </button>
               
-              {/* Text Side (Left) */}
-              <div className="flex-1 p-8 md:p-12 flex flex-col justify-center bg-gradient-to-br from-background to-muted/50">
-                <Badge variant="outline" className="w-fit mb-6 text-primary border-primary/30 text-sm">
-                  ✨ Coming Soon
-                </Badge>
-                
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 leading-tight">
-                  Think Tech,<br /> Think Business.
-                </h2>
-                
-                <h3 className="text-xl md:text-2xl text-muted-foreground mb-6">
-                  Shape your future with CSBS at IET DAVV.
-                </h3>
-                
-                <div className="space-y-4 text-sm md:text-base text-card-foreground/80 mb-8 font-medium">
-                  <p className="flex items-center gap-2">
-                    <span className="text-primary">🎓</span> Curriculum co-created with TCS Experts
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="text-primary">🚀</span> Industry-Driven B.Tech for Future Innovators
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="text-primary">💼</span> Expertise in Aligned Platforms
-                  </p>
+              <div className="flex flex-col items-center justify-center gap-4 mt-4 md:mt-2">
+                {/* Heading */}
+                <div className="text-center w-full px-8 md:px-12">
+                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+                    Admissions Open 2026-2027
+                  </h3>
+                </div>
+
+                {/* Poster - Maximized */}
+                <div className="w-full flex items-center justify-center">
+                  <img 
+                    src="/assets/admission-poster.jpg" 
+                    alt="CSBS Admissions 2026-2027 Poster" 
+                    className="w-auto max-w-full max-h-[75vh] object-contain rounded shadow-sm border border-muted rounded-md"
+                  />
                 </div>
                 
-                <div className="mt-auto p-5 bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary rounded-r-xl">
-                  <p className="font-bold text-lg text-primary">Admissions Open 2026-2027</p>
-                  <p className="text-sm mt-2 opacity-80">
-                    Stay tuned! Application dates, forms, and further announcements will be updated on the portal shortly.
+                {/* Footer Text */}
+                <div className="text-center px-4 w-full">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Application dates, forms, and further announcements will be updated on the portal shortly. <br className="hidden sm:block" />
+                    <span className="font-semibold text-foreground/80 mt-1 inline-block">Stay tuned!</span>
                   </p>
                 </div>
-              </div>
-              
-              {/* Image Side (Right) */}
-              <div className="flex-1 relative min-h-[400px] md:min-h-full bg-slate-900/5 flex items-center justify-center p-4 md:p-8">
-                {/* 
-                  Make sure to add your poster image into public/assets/admission-poster.jpg 
-                  (or change the src here to match your uploaded asset)
-                */}
-                <img 
-                  src="/assets/admission-poster.jpg" 
-                  alt="CSBS Admissions 2026-2027 Poster" 
-                  className="w-full h-auto max-h-[70vh] object-contain rounded-xl shadow-[0_0_40px_-10px_rgba(0,0,0,0.3)] ring-1 ring-border/50"
-                />
               </div>
             </motion.div>
           </div>
