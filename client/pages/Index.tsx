@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { memo } from "react";
+import AdmissionPopup from "@/components/AdmissionPopup";
 
 const Index = memo(function Index() {
 
@@ -86,6 +87,7 @@ const Index = memo(function Index() {
         />
         <StructuredData />
         <Navigation />
+        <AdmissionPopup />
 
         {/* Hero Section */}
         <section 
