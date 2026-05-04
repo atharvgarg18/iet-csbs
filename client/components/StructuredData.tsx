@@ -4,13 +4,13 @@ export function StructuredData() {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://iet-csbs.vercel.app/#organization",
+        "@id": "https://ietcsbs.in/#organization",
         "name": "Institute of Engineering & Technology, DAVV",
         "alternateName": "IET DAVV",
-        "url": "https://iet-csbs.vercel.app",
+        "url": "https://ietcsbs.in",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://iet-csbs.vercel.app/favicon.ico"
+          "url": "https://ietcsbs.in/favicon.ico"
         },
         "sameAs": [
           "https://www.ietdavv.edu.in"
@@ -18,22 +18,22 @@ export function StructuredData() {
       },
       {
         "@type": "WebSite",
-        "@id": "https://iet-csbs.vercel.app/#website",
-        "url": "https://iet-csbs.vercel.app",
+        "@id": "https://ietcsbs.in/#website",
+        "url": "https://ietcsbs.in",
         "name": "CSBS IET DAVV",
         "description": "Computer Science & Business Systems program at Institute of Engineering & Technology, DAVV Indore",
         "publisher": {
-          "@id": "https://iet-csbs.vercel.app/#organization"
+          "@id": "https://ietcsbs.in/#organization"
         },
         "inLanguage": "en-US"
       },
       {
         "@type": "Course",
-        "@id": "https://iet-csbs.vercel.app/#course",
+        "@id": "https://ietcsbs.in/#course",
         "name": "Computer Science & Business Systems",
         "description": "A pioneering 4-year B.Tech program developed in collaboration with TCS, combining computer science fundamentals with business systems knowledge",
         "provider": {
-          "@id": "https://iet-csbs.vercel.app/#organization"
+          "@id": "https://ietcsbs.in/#organization"
         },
         "educationalLevel": "Undergraduate",
         "timeRequired": "P4Y", // 4 years in ISO 8601 duration format
@@ -46,14 +46,14 @@ export function StructuredData() {
       },
       {
         "@type": "WebPage",
-        "@id": "https://iet-csbs.vercel.app/#webpage",
-        "url": "https://iet-csbs.vercel.app",
+        "@id": "https://ietcsbs.in/#webpage",
+        "url": "https://ietcsbs.in",
         "name": "CSBS IET DAVV - Computer Science & Business Systems",
         "isPartOf": {
-          "@id": "https://iet-csbs.vercel.app/#website"
+          "@id": "https://ietcsbs.in/#website"
         },
         "about": {
-          "@id": "https://iet-csbs.vercel.app/#course"
+          "@id": "https://ietcsbs.in/#course"
         },
         "datePublished": "2024-01-01",
         "dateModified": new Date().toISOString().split('T')[0],

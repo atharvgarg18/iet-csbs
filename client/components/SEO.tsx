@@ -12,7 +12,7 @@ export function SEO({
   title = "CSBS IET DAVV - Computer Science & Business Systems",
   description = "Pioneering 4-year B.Tech program in Computer Science & Business Systems developed with TCS at Institute of Engineering & Technology, DAVV Indore. Industry-aligned curriculum combining CS fundamentals with business systems.",
   image = "https://html-starter-beige-beta.vercel.app/ietlogom.png",
-  url = "https://iet-csbs.vercel.app",
+  url = "https://ietcsbs.in",
   type = "website"
 }: SEOProps) {
   useEffect(() => {

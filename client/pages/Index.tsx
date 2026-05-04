@@ -83,7 +83,7 @@ const Index = memo(function Index() {
         <SEO 
           title="Home - CSBS IET DAVV | Computer Science & Business Systems"
           description="Official website for Computer Science & Business Systems program at IET DAVV. Access notes, papers, syllabus, and all academic resources for CSBS students. Industry-aligned curriculum designed with TCS."
-          url="https://iet-csbs.vercel.app"
+          url="https://ietcsbs.in"
         />
         <StructuredData />
         <Navigation />
