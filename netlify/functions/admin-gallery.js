@@ -124,7 +124,7 @@ exports.handler = async (event, context) => {
 
       // POST - Create image
       if (httpMethod === 'POST') {
-        const { category_id, image_url, title } = JSON.parse(body || '{}');
+        const { category_id, image_url, title, photographer, is_featured, is_published } = JSON.parse(body || '{}');
         
         if (!category_id || !image_url) {
           return errorResponse('Category ID and image URL required', headers, 400);
@@ -132,7 +132,14 @@ exports.handler = async (event, context) => {
         
         const { data, error } = await supabase
           .from('gallery_images')
-          .insert({ category_id, image_url, title })
+          .insert({ 
+            category_id, 
+            image_url, 
+            title,
+            photographer: photographer || 'Gallery Division',
+            is_featured: !!is_featured,
+            is_active: is_published !== false // map is_published to is_active since schema uses is_active
+          })
           .select()
           .single();
         
@@ -146,11 +153,16 @@ exports.handler = async (event, context) => {
       // PUT - Update image
       if (httpMethod === 'PUT') {
         const imageId = path.split('/').pop();
-        const { category_id, image_url, title } = JSON.parse(body || '{}');
+        const { category_id, image_url, title, photographer, is_featured, is_published } = JSON.parse(body || '{}');
+
+        const updates = { category_id, image_url, title };
+        if (photographer !== undefined) updates.photographer = photographer || 'Gallery Division';
+        if (is_featured !== undefined) updates.is_featured = is_featured;
+        if (is_published !== undefined) updates.is_active = is_published;
         
         const { data, error } = await supabase
           .from('gallery_images')
-          .update({ category_id, image_url, title })
+          .update(updates)
           .eq('id', imageId)
           .select()
           .single();

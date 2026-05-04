@@ -79,6 +79,7 @@ export default function GalleryImagesManagement() {
     title: '',
     category_id: '',
     image_url: '',
+    photographer: '',
     is_featured: false,
     is_published: true
   });
@@ -142,6 +143,7 @@ export default function GalleryImagesManagement() {
       title: '',
       category_id: '',
       image_url: '',
+      photographer: user?.full_name || '',
       is_featured: false,
       is_published: true
     });
@@ -154,6 +156,7 @@ export default function GalleryImagesManagement() {
       title: image.title,
       category_id: image.category_id,
       image_url: image.image_url,
+      photographer: image.photographer || '',
       is_featured: image.is_featured,
       is_published: image.is_published
     });
@@ -835,6 +838,16 @@ export default function GalleryImagesManagement() {
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder="Enter descriptive title for the image"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="photographer">Uploaded By (Photographer)</Label>
+              <Input
+                id="photographer"
+                value={formData.photographer}
+                onChange={(e) => setFormData({ ...formData, photographer: e.target.value })}
+                placeholder="Enter photographer or uploader name"
               />
             </div>
 
