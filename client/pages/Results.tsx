@@ -10,6 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Badge } from "../components/ui/badge";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 interface SubjectResult {
     name: string;
@@ -32,8 +34,72 @@ export default function Results() {
     const [rollNo, setRollNo] = useState("");
     const [studentType, setStudentType] = useState("Regular");
     const [isLoading, setIsLoading] = useState(false);
+    const [isDownloading, setIsDownloading] = useState(false);
     const [error, setError] = useState("");
     const [result, setResult] = useState<StudentResult | null>(null);
+    const resultCardRef = React.useRef<HTMLDivElement>(null);
+
+    const downloadPDF = async () => {
+        if (!resultCardRef.current || !result) return;
+        setIsDownloading(true);
+        try {
+            // Save original styles that might affect rendering
+            const originalBorder = resultCardRef.current.style.border;
+            resultCardRef.current.style.border = 'none';
+
+            const canvas = await html2canvas(resultCardRef.current, {
+                scale: 2, // High resolution
+                useCORS: true,
+                backgroundColor: '#0A0A0A', // Match the card background
+            });
+
+            resultCardRef.current.style.border = originalBorder;
+
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            // Add a sleek dark background to the entire A4 page to match the theme
+            pdf.setFillColor(5, 5, 5);
+            pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'F');
+
+            // Add Header
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(24);
+            pdf.setTextColor(0, 240, 255); // Primary color
+            pdf.text('CSBS.', 15, 25);
+
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(10);
+            pdf.setTextColor(150, 150, 150);
+            pdf.text('Institute of Engineering & Technology, DAVV', 15, 33);
+            pdf.text('Semester Examination Transcript', 15, 39);
+
+            // Add the generated card image
+            // Margin 15mm on each side, so width is pdfWidth - 30
+            const finalWidth = pdfWidth - 30;
+            const finalHeight = (canvas.height * finalWidth) / canvas.width;
+            pdf.addImage(imgData, 'PNG', 15, 50, finalWidth, finalHeight);
+
+            // Add Footer
+            pdf.setFontSize(8);
+            pdf.setTextColor(100, 100, 100);
+            pdf.text(`Generated on ${new Date().toLocaleDateString()} | Data fetched from official portal`, 15, pdf.internal.pageSize.getHeight() - 15);
+
+            pdf.save(`CSBS_Result_${result.rollNo}.pdf`);
+        } catch (err) {
+            console.error('Error generating PDF:', err);
+        } finally {
+            setIsDownloading(false);
+        }
+    };
 
     const fetchResults = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -230,25 +296,38 @@ export default function Results() {
                             transition={{ duration: 0.5, ease: "easeOut" }}
                             className="space-y-6"
                         >
+                            <div className="flex justify-end">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={downloadPDF}
+                                    disabled={isDownloading}
+                                    className="gap-2 border-primary/50 hover:bg-primary hover:text-black transition-colors"
+                                >
+                                    {isDownloading ? (
+                                        <span className="flex items-center gap-2">
+                                            <div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                                            Generating PDF...
+                                        </span>
+                                    ) : (
+                                        <>
+                                            <Printer className="w-4 h-4" />
+                                            Download High-Res PDF
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+
                             {/* Student Info Card */}
-                            <Card className="border-primary/10 bg-card overflow-hidden">
-                                <div className="bg-primary/5 p-4 md:p-6 border-b border-primary/10">
+                            <Card ref={resultCardRef} className="border-primary/20 shadow-xl bg-[#0A0A0A] overflow-hidden">
+                                <div className="bg-primary/5 p-6 md:p-8 border-b border-primary/10">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                         <div>
                                             <div className="flex items-center gap-4">
-                                                <h2 className="text-2xl font-bold font-syne text-foreground flex items-center gap-2">
-                                                    <User className="w-6 h-6 text-primary" />
+                                                <h2 className="text-3xl font-bold font-syne text-foreground flex items-center gap-3">
+                                                    <User className="w-8 h-8 text-primary" />
                                                     {result.name || "N/A"}
                                                 </h2>
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => window.print()}
-                                                    className="ml-auto md:ml-4 hidden sm:flex gap-2 print:hidden"
-                                                >
-                                                    <Printer className="w-4 h-4" />
-                                                    Print / Save PDF
-                                                </Button>
                                             </div>
                                             <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
                                                 <span className="flex items-center gap-1">
