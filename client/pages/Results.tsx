@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, AlertCircle, User, BookOpen, Hash } from "lucide-react";
+import { Search, AlertCircle, User, BookOpen, Hash, Printer } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
@@ -235,10 +235,21 @@ export default function Results() {
                                 <div className="bg-primary/5 p-4 md:p-6 border-b border-primary/10">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                         <div>
-                                            <h2 className="text-2xl font-bold font-syne text-foreground flex items-center gap-2">
-                                                <User className="w-6 h-6 text-primary" />
-                                                {result.name || "N/A"}
-                                            </h2>
+                                            <div className="flex items-center gap-4">
+                                                <h2 className="text-2xl font-bold font-syne text-foreground flex items-center gap-2">
+                                                    <User className="w-6 h-6 text-primary" />
+                                                    {result.name || "N/A"}
+                                                </h2>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => window.print()}
+                                                    className="ml-auto md:ml-4 hidden sm:flex gap-2 print:hidden"
+                                                >
+                                                    <Printer className="w-4 h-4" />
+                                                    Print / Save PDF
+                                                </Button>
+                                            </div>
                                             <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
                                                 <span className="flex items-center gap-1">
                                                     <Hash className="w-4 h-4" /> Roll No: <span className="font-semibold text-foreground">{result.rollNo}</span>
@@ -319,7 +330,7 @@ export default function Results() {
                                 )}
                             </Card>
 
-                            <p className="text-xs text-center text-muted-foreground mt-8">
+                            <p className="text-xs text-center text-muted-foreground mt-8 print:block">
                                 Disclaimer: The results published here are fetched from the university portal for immediate information to the examinees. These cannot be treated as original mark sheets.
                             </p>
                         </motion.div>
