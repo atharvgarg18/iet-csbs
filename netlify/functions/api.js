@@ -6,18 +6,18 @@ const crypto = require('crypto');
 function getSupabaseClient() {
   const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://jcdciqwvtmgtdxsjyyab.supabase.co';
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  
+
   console.log('Supabase config check:', {
     hasUrl: !!supabaseUrl,
     hasServiceKey: !!supabaseServiceKey,
     urlPreview: supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'missing'
   });
-  
+
   if (!supabaseServiceKey) {
     console.error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
     throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable');
   }
-  
+
   try {
     return createClient(supabaseUrl, supabaseServiceKey, {
       auth: {
@@ -47,24 +47,24 @@ async function verifyPassword(password, hash) {
 // Authentication helper
 async function verifySession(cookies) {
   console.log('verifySession called with cookies:', cookies);
-  
+
   if (!cookies) {
     console.log('No cookies provided');
     return null;
   }
-  
+
   const sessionMatch = cookies.match(/session=([^;]+)/);
   if (!sessionMatch) {
     console.log('No session cookie found in:', cookies);
     return null;
   }
-  
+
   const sessionToken = sessionMatch[1];
   console.log('Found session token:', sessionToken.substring(0, 10) + '...');
   console.log('About to query user_sessions table');
-  
+
   const supabase = getSupabaseClient();
-  
+
   // First get the session
   const { data: sessions, error: sessionError } = await supabase
     .from('user_sessions')
@@ -97,7 +97,7 @@ async function verifySession(cookies) {
     console.log('Error details:', JSON.stringify(error, null, 2));
     return null;
   }
-  
+
   if (!users || users.length === 0) {
     console.log('No user found for session');
     return null;
@@ -124,7 +124,7 @@ function requireEditor(user) {
 // Main handler
 exports.handler = async (event, context) => {
   const { httpMethod, path, body, headers } = event;
-  
+
   // Set CORS headers - must specify exact origin when using credentials
   const origin = headers.origin || headers.referer || 'https://ietcsbs.tech';
   const corsHeaders = {
@@ -151,19 +151,19 @@ exports.handler = async (event, context) => {
       headers: Object.keys(headers),
       body: body ? body.substring(0, 100) : 'no body'
     });
-    
+
     // Parse the path to handle different routes
     // Remove the Netlify function prefix to get the actual API route
     const apiRoute = path.replace('/.netlify/functions/api', '') || '/';
     const pathSegments = apiRoute.split('/').filter(Boolean);
-    
+
     console.log('Parsed route:', { originalPath: path, apiRoute, pathSegments });
-    
+
     // Comprehensive debug endpoint (check FIRST before general debug)
     if (httpMethod === 'GET' && apiRoute.includes('/debug-auth')) {
       const cookies = headers.cookie;
       const sessionMatch = cookies ? cookies.match(/session=([^;]+)/) : null;
-      
+
       let debugInfo = {
         step1_cookies: {
           hasCookies: !!cookies,
@@ -183,7 +183,7 @@ exports.handler = async (event, context) => {
         try {
           const supabase = getSupabaseClient();
           const sessionToken = sessionMatch[1];
-          
+
           // Test session query
           const { data: sessions, error: sessionError } = await supabase
             .from('user_sessions')
@@ -230,20 +230,20 @@ exports.handler = async (event, context) => {
           };
         }
       }
-      
+
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify(debugInfo, null, 2),
       };
     }
-    
+
     // General debug route
     if (httpMethod === 'GET' && apiRoute.includes('/debug')) {
       // Show first few characters of env vars for debugging (safely)
       const supabaseUrl = process.env.VITE_SUPABASE_URL;
       const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-      
+
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -255,7 +255,7 @@ exports.handler = async (event, context) => {
           hasServiceKey: !!serviceKey,
           supabaseUrlPreview: supabaseUrl ? supabaseUrl.substring(0, 20) + '...' : 'missing',
           serviceKeyPreview: serviceKey ? serviceKey.substring(0, 20) + '...' : 'missing',
-          allEnvKeys: Object.keys(process.env).filter(key => 
+          allEnvKeys: Object.keys(process.env).filter(key =>
             key.includes('SUPABASE') || key.includes('VITE')
           ),
           path: path,
@@ -272,6 +272,51 @@ exports.handler = async (event, context) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: "Hello from Netlify Functions!" }),
       };
+    }
+
+    // Results Proxy route
+    if (httpMethod === 'GET' && apiRoute.includes('/results')) {
+      const { queryStringParameters } = event;
+      const { rollno, typeOfStudent } = queryStringParameters || {};
+
+      if (!rollno || !typeOfStudent) {
+        return {
+          statusCode: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: "Missing rollno or typeOfStudent parameters" })
+        };
+      }
+
+      try {
+        const targetUrl = `https://results.ietdavv.edu.in/DisplayStudentResult?rollno=${encodeURIComponent(
+          rollno
+        )}&typeOfStudent=${encodeURIComponent(typeOfStudent)}`;
+
+        const response = await fetch(targetUrl);
+
+        if (!response.ok) {
+          return {
+            statusCode: response.status,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: "Failed to fetch results from the portal" })
+          };
+        }
+
+        const html = await response.text();
+
+        return {
+          statusCode: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ html })
+        };
+      } catch (error) {
+        console.error("Error fetching results:", error);
+        return {
+          statusCode: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: "Internal server error while fetching results" })
+        };
+      }
     }
 
     // Auth test route (GET)
@@ -291,7 +336,7 @@ exports.handler = async (event, context) => {
     console.log('Login route check:', httpMethod === 'POST', apiRoute, apiRoute.includes('/auth/login'));
     if (httpMethod === 'POST' && (apiRoute.includes('/auth/login') || apiRoute.includes('auth/login') || apiRoute.endsWith('/login'))) {
       const { email, password } = JSON.parse(body || '{}');
-      
+
       if (!email || !password) {
         return {
           statusCode: 400,
@@ -301,7 +346,7 @@ exports.handler = async (event, context) => {
       }
 
       const supabase = getSupabaseClient();
-      
+
       // Get user by email
       const { data: users, error: userError } = await supabase
         .from('users')
@@ -319,7 +364,7 @@ exports.handler = async (event, context) => {
       }
 
       const user = users[0];
-      
+
       // Verify password
       const passwordValid = await verifyPassword(password, user.password_hash);
       if (!passwordValid) {
@@ -361,11 +406,11 @@ exports.handler = async (event, context) => {
 
       // Return success with session cookie
       const sessionCookie = `session=${sessionToken}; HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}; Path=/`;
-      
+
       return {
         statusCode: 200,
-        headers: { 
-          ...corsHeaders, 
+        headers: {
+          ...corsHeaders,
           'Content-Type': 'application/json',
           'Set-Cookie': sessionCookie
         },
@@ -389,7 +434,7 @@ exports.handler = async (event, context) => {
     if (httpMethod === 'GET' && apiRoute.includes('/auth/check')) {
       const cookies = headers.cookie || '';
       const sessionMatch = cookies.match(/session=([^;]+)/);
-      
+
       if (!sessionMatch) {
         return {
           statusCode: 401,
@@ -456,17 +501,17 @@ exports.handler = async (event, context) => {
     if (apiRoute.startsWith('/admin/') || apiRoute.includes('/dashboard/')) {
       console.log('Auth check triggered for route:', apiRoute);
       console.log('Headers cookie:', headers.cookie ? 'present' : 'missing');
-      
+
       const user = await verifySession(headers.cookie);
       console.log('User from verifySession:', user ? `${user.email} (${user.role})` : 'null');
-      
+
       if (!user || !user.is_active) {
         console.log('Authentication failed - user:', !!user, 'active:', user?.is_active);
         return {
           statusCode: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            success: false, 
+          body: JSON.stringify({
+            success: false,
             message: 'Authentication required',
             debug: {
               hasUser: !!user,
@@ -477,14 +522,14 @@ exports.handler = async (event, context) => {
           }),
         };
       }
-      
+
       // Admin-only routes
-      if ((apiRoute.includes('/admin/users') || 
-           apiRoute.includes('/admin/batches') ||
-           apiRoute.includes('/admin/sections') ||
-           apiRoute.includes('/admin/gallery-categories') ||
-           apiRoute.includes('/admin/notice-categories')) && 
-          user.role !== 'admin') {
+      if ((apiRoute.includes('/admin/users') ||
+        apiRoute.includes('/admin/batches') ||
+        apiRoute.includes('/admin/sections') ||
+        apiRoute.includes('/admin/gallery-categories') ||
+        apiRoute.includes('/admin/notice-categories')) &&
+        user.role !== 'admin') {
         return {
           statusCode: 403,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -494,10 +539,10 @@ exports.handler = async (event, context) => {
 
       // Editor+ routes (admin and editor)
       if ((apiRoute.includes('/admin/notes') ||
-           apiRoute.includes('/admin/papers') ||
-           apiRoute.includes('/admin/gallery-images') ||
-           apiRoute.includes('/admin/notices')) &&
-          !['admin', 'editor'].includes(user.role)) {
+        apiRoute.includes('/admin/papers') ||
+        apiRoute.includes('/admin/gallery-images') ||
+        apiRoute.includes('/admin/notices')) &&
+        !['admin', 'editor'].includes(user.role)) {
         return {
           statusCode: 403,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -538,33 +583,33 @@ exports.handler = async (event, context) => {
     if (httpMethod === 'POST' && apiRoute.includes('/admin/users')) {
       try {
         const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
-        
+
         console.log('Creating user with data:', { email, full_name, role, hasPassword: !!password, is_active });
-        
+
         // Validate required fields
         if (!email || !full_name || !role || !password) {
           return {
             statusCode: 400,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              success: false, 
-              error: 'Missing required fields: email, full_name, role, password' 
+            body: JSON.stringify({
+              success: false,
+              error: 'Missing required fields: email, full_name, role, password'
             }),
           };
         }
-        
+
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log('Password hashed successfully');
-        
-        const { data, error } = await supabase.from('users').insert({ 
-          email, 
-          full_name, 
+
+        const { data, error } = await supabase.from('users').insert({
+          email,
+          full_name,
           role: role, // Don't default to 'student', use the provided role
           password_hash: hashedPassword,
           is_active: is_active !== undefined ? is_active : true
         }).select('id, email, full_name, role, is_active, created_at').single();
-        
+
         if (error) {
           console.error('Supabase error creating user:', error);
           return {
@@ -573,7 +618,7 @@ exports.handler = async (event, context) => {
             body: JSON.stringify({ success: false, error: error.message }),
           };
         }
-        
+
         console.log('User created successfully:', data);
 
         // Send welcome email via Resend REST API (inlined — esbuild can't bundle lazy requires)
@@ -745,36 +790,36 @@ exports.handler = async (event, context) => {
       try {
         const userId = apiRoute.split('/admin/users/')[1];
         const { email, full_name, role, password, is_active } = JSON.parse(body || '{}');
-        
+
         console.log('Updating user:', userId, 'with data:', { email, full_name, role, hasPassword: !!password, is_active });
-        
+
         // Validate required fields
         if (!email || !full_name || !role) {
           return {
             statusCode: 400,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              success: false, 
-              error: 'Missing required fields: email, full_name, role' 
+            body: JSON.stringify({
+              success: false,
+              error: 'Missing required fields: email, full_name, role'
             }),
           };
         }
-        
+
         const updateData = { email, full_name, role, is_active };
-        
+
         // Only hash and update password if provided
         if (password && password.trim() !== '') {
           updateData.password_hash = await bcrypt.hash(password, 10);
           console.log('Password updated for user');
         }
-        
+
         const { data, error } = await supabase
           .from('users')
           .update(updateData)
           .eq('id', userId)
           .select('id, email, full_name, role, is_active, last_login, created_at')
           .single();
-        
+
         if (error) {
           console.error('Supabase error updating user:', error);
           return {
@@ -783,7 +828,7 @@ exports.handler = async (event, context) => {
             body: JSON.stringify({ success: false, error: error.message }),
           };
         }
-        
+
         console.log('User updated successfully:', data);
         return {
           statusCode: 200,
@@ -805,7 +850,7 @@ exports.handler = async (event, context) => {
       try {
         const userId = apiRoute.split('/admin/users/')[1];
         console.log('Deleting user:', userId);
-        
+
         const { error } = await supabase.from('users').delete().eq('id', userId);
         if (error) {
           console.error('Supabase error deleting user:', error);
@@ -815,7 +860,7 @@ exports.handler = async (event, context) => {
             body: JSON.stringify({ success: false, error: error.message }),
           };
         }
-        
+
         console.log('User deleted successfully');
         return {
           statusCode: 200,
@@ -996,7 +1041,7 @@ exports.handler = async (event, context) => {
 
       try {
         const supabase = getSupabaseClient();
-        
+
         // Get basic counts
         const [
           batchesResult,
@@ -1022,7 +1067,7 @@ exports.handler = async (event, context) => {
           const { data: userData } = await supabase
             .from('users')
             .select('role, is_active');
-          
+
           if (userData) {
             userStats = {
               active_users: userData.filter(u => u.is_active).length,
@@ -1273,10 +1318,10 @@ exports.handler = async (event, context) => {
     // POST /admin/gallery-categories
     if (httpMethod === 'POST' && apiRoute.includes('/admin/gallery-categories')) {
       const { name, color, is_active } = JSON.parse(body || '{}');
-      const { data, error } = await supabase.from('gallery_categories').insert({ 
-        name, 
-        color: color || '#3b82f6', 
-        is_active: is_active !== undefined ? is_active : true 
+      const { data, error } = await supabase.from('gallery_categories').insert({
+        name,
+        color: color || '#3b82f6',
+        is_active: is_active !== undefined ? is_active : true
       }).select().single();
       if (error) {
         return {
@@ -1420,11 +1465,11 @@ exports.handler = async (event, context) => {
     // POST /admin/notice-categories
     if (httpMethod === 'POST' && apiRoute.includes('/admin/notice-categories')) {
       const { name, description, color, is_active } = JSON.parse(body || '{}');
-      const { data, error } = await supabase.from('notice_categories').insert({ 
-        name, 
-        description, 
-        color: color || '#3b82f6', 
-        is_active: is_active !== undefined ? is_active : true 
+      const { data, error } = await supabase.from('notice_categories').insert({
+        name,
+        description,
+        color: color || '#3b82f6',
+        is_active: is_active !== undefined ? is_active : true
       }).select().single();
       if (error) {
         return {
@@ -1498,8 +1543,8 @@ exports.handler = async (event, context) => {
     // POST /admin/notices
     if (httpMethod === 'POST' && apiRoute.includes('/admin/notices')) {
       const { category_id, title, content, publish_date, is_published } = JSON.parse(body || '{}');
-      const { data, error } = await supabase.from('notices').insert({ 
-        category_id, title, content, publish_date, is_published 
+      const { data, error } = await supabase.from('notices').insert({
+        category_id, title, content, publish_date, is_published
       }).select().single();
       if (error) {
         return {
@@ -1853,11 +1898,11 @@ exports.handler = async (event, context) => {
     if (httpMethod === 'POST' && apiRoute.includes('/auth/logout')) {
       const cookies = headers.cookie || '';
       const sessionMatch = cookies.match(/session=([^;]+)/);
-      
+
       if (sessionMatch) {
         const sessionToken = sessionMatch[1];
         const supabase = getSupabaseClient();
-        
+
         // Delete session
         await supabase
           .from('user_sessions')
@@ -1867,11 +1912,11 @@ exports.handler = async (event, context) => {
 
       // Clear session cookie
       const clearCookie = 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/';
-      
+
       return {
         statusCode: 200,
-        headers: { 
-          ...corsHeaders, 
+        headers: {
+          ...corsHeaders,
           'Content-Type': 'application/json',
           'Set-Cookie': clearCookie
         },
@@ -1897,8 +1942,8 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 404,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        success: false, 
+      body: JSON.stringify({
+        success: false,
         message: 'Route not found',
         debug: {
           receivedPath: path,
@@ -1926,10 +1971,10 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        success: false, 
+      body: JSON.stringify({
+        success: false,
         message: 'Internal server error',
-        error: error.message 
+        error: error.message
       }),
     };
   }

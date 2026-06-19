@@ -116,12 +116,6 @@
   status = 200
   force = true
 
-[[redirects]]
-  from = "/api/results"
-  to = "/.netlify/functions/results"
-  status = 200
-  force = true
-
 # Fallback to old API for any unmapped routes (temporary during migration)
 [[redirects]]
   from = "/api/*"

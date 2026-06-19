@@ -99,21 +99,21 @@ export default function Navigation() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-[900] bg-background flex flex-col justify-center px-12 md:px-32"
+            className="fixed inset-0 z-[900] bg-background overflow-y-auto px-6 sm:px-12 md:px-32 pt-32 pb-16 flex flex-col justify-start md:justify-center"
           >
             {/* Background Noise/Grid */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none fixed" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
 
-            <div className="relative z-10 flex flex-col md:flex-row justify-between w-full max-w-7xl mx-auto mt-16 md:mt-0">
+            <div className="relative z-10 flex flex-col md:flex-row justify-between w-full max-w-7xl mx-auto gap-12 md:gap-8">
 
               {/* Links */}
-              <nav className="flex flex-col gap-4 md:gap-6">
+              <nav className="flex flex-col gap-2 sm:gap-4 md:gap-6">
                 {navLinks.map((link, i) => (
                   <div key={i} className="overflow-hidden">
                     <motion.div custom={i} variants={linkVariants} initial="closed" animate="open" exit="closed">
                       <Link
                         to={link.href}
-                        className="group relative inline-block text-5xl md:text-8xl font-bold font-syne hover-trigger"
+                        className="group relative inline-block text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-syne hover-trigger"
                       >
                         <span className="relative z-10 text-foreground group-hover:text-primary transition-colors duration-500">
                           {link.title}
@@ -126,7 +126,7 @@ export default function Navigation() {
               </nav>
 
               {/* Info Block */}
-              <div className="mt-16 md:mt-auto md:w-1/3 flex flex-col justify-end text-muted-foreground pb-12">
+              <div className="mt-8 md:mt-auto md:w-1/3 flex flex-col justify-end text-muted-foreground pb-4 md:pb-12">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

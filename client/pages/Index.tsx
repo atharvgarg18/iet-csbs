@@ -180,12 +180,12 @@ function HorizontalScrollSection() {
           {cards.map((card, idx) => (
             <div key={idx} className="w-[85vw] md:w-[450px] h-[550px] flex-shrink-0 bg-[#0A0A0A] border border-white/10 p-10 flex flex-col justify-between hover:bg-[#111111] transition-colors duration-500 hover-trigger relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-64 h-64 bg-[#00F0FF]/5 rounded-full blur-[80px] group-hover:bg-[#00F0FF]/10 transition-colors duration-500" />
-              <span className="font-syne text-[8rem] font-bold text-transparent leading-none" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.1)' }}>
+              <span className="font-syne text-7xl md:text-[8rem] font-bold text-transparent leading-none" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.1)' }}>
                 {card.num}
               </span>
               <div className="relative z-10">
-                <h3 className="font-syne text-4xl font-bold mb-4 uppercase text-[#00F0FF] tracking-tighter">{card.title}</h3>
-                <p className="text-xl text-white/60 font-light">{card.desc}</p>
+                <h3 className="font-syne text-3xl md:text-4xl font-bold mb-4 uppercase text-[#00F0FF] tracking-tighter">{card.title}</h3>
+                <p className="text-lg md:text-xl text-white/60 font-light">{card.desc}</p>
               </div>
             </div>
           ))}

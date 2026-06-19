@@ -109,15 +109,15 @@ export default function AboutDepartment() {
                 </div>
               </div>
 
-              <div className="lg:col-span-8 flex flex-col justify-center">
-                <h3 className="font-syne text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-4">
+              <div className="lg:col-span-8 flex flex-col justify-center text-center lg:text-left">
+                <h3 className="font-syne text-4xl md:text-7xl font-bold uppercase tracking-tighter mb-4">
                   {hodDetails.name}
                 </h3>
-                <p className="font-syne text-xl md:text-2xl text-[#00F0FF] tracking-tighter mb-12 uppercase">
+                <p className="font-syne text-lg md:text-2xl text-[#00F0FF] tracking-tighter mb-12 uppercase">
                   {hodDetails.designation}
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 text-left">
                   <div className="space-y-12">
                     <div>
                       <h4 className="font-syne text-lg uppercase tracking-widest text-white/40 mb-4">Credentials</h4>

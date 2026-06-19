@@ -42,7 +42,7 @@ export default function Papers() {
     <div className="min-h-screen bg-background text-foreground relative">
       <Navigation />
 
-      <main className="relative z-10 px-4 md:px-16 pt-48 pb-32 max-w-[1600px] mx-auto">
+      <main className="relative z-10 px-4 sm:px-8 md:px-16 pt-48 pb-32 max-w-[1600px] mx-auto">
         <Reveal>
           <div className="mb-24">
             <p className="font-syne text-sm uppercase tracking-widest text-secondary mb-4">Archive / 02</p>
