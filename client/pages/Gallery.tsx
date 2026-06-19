@@ -178,8 +178,8 @@ export default function Gallery() {
                 showBlurPlaceholder={false}
               />
 
-              <div className="absolute -bottom-16 left-0 right-0 flex justify-between items-center text-foreground font-syne uppercase tracking-widest text-sm">
-                <span className="font-bold text-xl">{selectedImage.title}</span>
+              <div className="absolute -bottom-12 md:-bottom-16 left-0 right-0 flex flex-col md:flex-row justify-between md:items-center text-foreground font-syne uppercase tracking-widest text-sm">
+                <span className="font-bold text-lg md:text-xl">{selectedImage.title}</span>
                 <span className="text-primary">{selectedImage.event_date ? formatDate(selectedImage.event_date) : ''}</span>
               </div>
             </motion.div>

@@ -1,7 +1,7 @@
 // Service Worker for CSBS IET DAVV Website
 // Version-based caching with proper cache strategies
 
-const VERSION = '2.0.0';
+const VERSION = '2.0.1';
 const CACHE_NAME = `csbs-iet-davv-v${VERSION}`;
 const DATA_CACHE_NAME = `csbs-data-v${VERSION}`;
 
@@ -71,10 +71,10 @@ self.addEventListener('fetch', event => {
   }
 
   // Static assets (JS, CSS, images) - Cache-first strategy
-  if (request.destination === 'script' || 
-      request.destination === 'style' || 
-      request.destination === 'image' ||
-      request.destination === 'font') {
+  if (request.destination === 'script' ||
+    request.destination === 'style' ||
+    request.destination === 'image' ||
+    request.destination === 'font') {
     event.respondWith(cacheFirstStrategy(request, CACHE_NAME));
     return;
   }
@@ -93,13 +93,13 @@ self.addEventListener('fetch', event => {
 async function networkFirstStrategy(request, cacheName) {
   try {
     const response = await fetch(request);
-    
+
     // Only cache GET requests with successful responses
     if (response && response.status === 200 && request.method === 'GET') {
       const cache = await caches.open(cacheName);
       cache.put(request, response.clone());
     }
-    
+
     return response;
   } catch (error) {
     // Network failed, try cache (only for GET requests)
@@ -110,7 +110,7 @@ async function networkFirstStrategy(request, cacheName) {
         return cachedResponse;
       }
     }
-    
+
     // If it's a navigation request and nothing in cache, return offline page
     if (request.mode === 'navigate') {
       return new Response(
@@ -149,7 +149,7 @@ async function networkFirstStrategy(request, cacheName) {
         }
       );
     }
-    
+
     throw error;
   }
 }
@@ -160,24 +160,24 @@ async function cacheFirstStrategy(request, cacheName) {
   if (request.method !== 'GET') {
     return fetch(request);
   }
-  
+
   const cachedResponse = await caches.match(request);
-  
+
   if (cachedResponse) {
     // Serve from cache
     return cachedResponse;
   }
-  
+
   // Not in cache, fetch from network
   try {
     const response = await fetch(request);
-    
+
     // Cache the response for future use
     if (response && response.status === 200) {
       const cache = await caches.open(cacheName);
       cache.put(request, response.clone());
     }
-    
+
     return response;
   } catch (error) {
     console.error('[SW] Fetch failed:', error);
