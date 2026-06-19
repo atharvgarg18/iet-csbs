@@ -13,11 +13,11 @@ import {
   changePassword
 } from "./routes/auth";
 import { requireAuth, requireAdmin, requireEditor } from "./middleware/auth";
-import { 
-  getBatches, 
-  getBatch, 
-  createBatch, 
-  updateBatch, 
+import {
+  getBatches,
+  getBatch,
+  createBatch,
+  updateBatch,
   deleteBatch,
   getSections,
   createSection,
@@ -66,6 +66,7 @@ import {
 import {
   getDashboardStats
 } from "./routes/admin/dashboard";
+import { getResults } from "./routes/results";
 
 export function createServer() {
   const app = express();
@@ -88,9 +89,12 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Results Proxy
+  app.get("/api/results", getResults);
+
   // Debug route to check if API is working
   app.get("/api/debug", (_req, res) => {
-    res.json({ 
+    res.json({
       message: "API is working",
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV || 'development',
@@ -118,7 +122,7 @@ export function createServer() {
   app.post("/api/admin/batches", requireAuth, requireEditor, createBatch);
   app.put("/api/admin/batches/:id", requireAuth, requireEditor, updateBatch);
   app.delete("/api/admin/batches/:id", requireAuth, requireEditor, deleteBatch);
-  
+
   app.get("/api/admin/sections", requireAuth, requireEditor, getSections);
   app.post("/api/admin/sections", requireAuth, requireEditor, createSection);
   app.put("/api/admin/sections/:id", requireAuth, requireEditor, updateSection);
@@ -176,7 +180,7 @@ export function createServer() {
       url: req.url,
       availableRoutes: [
         "GET /api/ping",
-        "GET /api/debug", 
+        "GET /api/debug",
         "POST /api/auth/login",
         "GET /api/auth/check",
         "POST /api/auth/logout"

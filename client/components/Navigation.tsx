@@ -19,6 +19,7 @@ export default function Navigation() {
     { title: 'Syllabus', href: '/syllabus' },
     { title: 'Notices', href: '/notices' },
     { title: 'Gallery', href: '/gallery' },
+    { title: 'Results', href: '/results' },
     { title: 'About', href: '/about' },
     { title: 'Contributors', href: '/contributors' },
   ];

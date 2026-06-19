@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>IET-DAVV RESULTS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="jumbotron-narrow.css" rel="stylesheet">
+<style>
+html,body{
+margin:0px;
+padding:0px;
+min-height:100%;
+}
+body{
+
+}
+.container{
+padding-top:20px;
+height:auto;
+}
+
+.footer{
+position:absolute;
+bottom:0px;
+padding: 0px 20px;
+text-align:center;
+margin:0px;
+background-color:rgb(240,240,240);
+}
+#foot{
+font-size:.9em;
+}
+#disclaimer{
+font-size:1em;
+text-align:justified;
+}
+#disclaimer b{
+font-size:1.1em;
+color:rgb(50,50,50);
+}
+#rollnumlabel{
+font-size:1.2em;
+padding:0px;
+padding-top:5px;
+text-align:left;
+}
+#rollnumcontainer{
+padding:0px;
+}
+#year,#rollnumcontainer,#rollnumlabel{
+margin-top:15px;
+margin-bottom:15px;
+}
+.jumbotron{
+padding:0px;
+padding-bottom:25px;
+padding-left:15px;
+padding-right:15px;
+margin:0px;
+}
+#submitbtn{
+background-color:rgb(51,122,183);
+border-color:rgb(41,101,150);
+color:white;
+outline:none;
+}
+#submitbtn:hover{
+background-color:rgb(63,139,201);
+}
+#submitbtn:active{
+background-color:rgb(51,122,183);
+margin-top:1px;
+}
+#mainhead{
+margin-top:25px;
+margin-bottom:25px;
+}
+</style>
+<script>
+    function validation(){
+        flag=true;
+        var rn=/^[1-9][0-9][B,C,D,I,V,M,T,E,b,c,d,i,v,m,t,e][1-8][0-1][0-9][0-9]$/;
+        roll=document.getElementById("rollno").value;
+        if(roll.match(rn)){
+            return flag;
+        }
+        else{
+             flag=false;
+            document.getElementById("sp1").innerHTML="Enter correct Roll number.";
+            return flag;
+        }
+    }
+    </script>
+  </head>
+
+  <body>
+	<form action="DisplayStudentResult" method="get" enctype="multipart/form-data">
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="http://www.ietdavv.edu.in/">IET</a></li>
+            <li role="presentation"><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">IET-DAVV RESULT</h3>
+      </div>
+
+      <div class="jumbotron">
+        <div id="mainhead" class="col-xs-12"><h3>B.E. - RESULTS</h3></div>
+  
+  <div class="form-group">
+  <label for="rollnumber" class="control-label col-xs-5 col-md-3" id="rollnumlabel" >Roll Number</label>
+  <div class="col-xs-7 col-md-9 " id="rollnumcontainer"><input type="text" id="rollno" name="rollno" class="form-control " placeholder="e.g. 15C5130"></div>
+</div>
+<br>
+<div class="form-group">
+  <label for="stype" class="control-label col-xs-5 col-md-3" id="stypelabel" ><h4><b>Student Type</b></h4></label>
+  <div class="col-xs-7 col-md-9 " id="stypecontainer">
+<select name="typeOfStudent" class ="form-control" id="typeOfStudent"  size="1">
+  <option value="Regular">Regular</option>
+  <option value="Ex">Ex</option>
+  <option value="Elective1">Elective1</option>
+  <option value="Elective2">Elective2</option>
+  <option value="Elective3">Elective3</option>
+  <option value="Elective4">Elective4</option>
+  <option value="Elective5">Elective5</option>
+  <option value="Elective6">Elective6</option>
+  <option value="Internship"> Internship </option>
+</select>
+</div>
+</div>
+<br><br> <br><br>
+<div class="col-xs-4 col-xs-offset-4">
+    <input type="submit" onclick="return validation()" value="View Result" class="btn btn-lg "/></div>
+                    <span id="sp1"></span>
+
+		<br><br>
+      </div>
+    </div> <!-- /container -->
+    <H3 style="color:red;"><u><center>Note: Students studying an Elective Subject, should select "Elective" option from the drop-down for Student Type</center></u></H3>
+     <br><br>
+        <div align="center">
+            <h2>
+                <b>
+     <a href="https://docs.google.com/a/ietdavv.edu.in/forms/d/e/1FAIpQLSfqjaJHXWDmB0QBwhCyVRPFqAm3zfd6DvTOmHtWSUywO0qbUQ/viewform" target="_blank">In Case of any discrepancy or error found in results/grades please Click Here</a>      
+                </b>
+            </h2>
+        </div>
+     
+<div class="footer col-xs-12">
+	  <span id="disclaimer"><b>Disclaimer:</b> The results published on the net are for immediate information to the examinees. These cannot be treated as original mark sheets. Original mark sheets are being issued by the Institute separately.</span>
+        <p><span id="foot">&copy; 2019 Registrar, Devi Ahilya Vishwavidyalaya, Indore (MP) India 452001 | Developed by Mridula Bhutda and Umang Katiyar </span> </p>
+      </div> 
+
+        <!-- jQuery  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  
+      <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+        </form>  
+  </body>
+</html>

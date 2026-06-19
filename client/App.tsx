@@ -29,6 +29,7 @@ const Gallery = lazy(() => import("./pages/Gallery"));
 const Syllabus = lazy(() => import("./pages/Syllabus"));
 const AboutDepartment = lazy(() => import("./pages/AboutDepartment"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Results = lazy(() => import("./pages/Results"));
 
 // Lazy load management portal components (heaviest code)
 const ManagementLogin = lazy(() => import("./pages/management-portal/ManagementLogin"));
@@ -83,6 +84,7 @@ const App = () => (
                     <Route path="/gallery" element={<Gallery />} />
                     <Route path="/syllabus" element={<Syllabus />} />
                     <Route path="/about" element={<AboutDepartment />} />
+                    <Route path="/results" element={<Results />} />
 
                     {/* Management Portal Routes */}
                     <Route path="/management-portal/login" element={<ManagementLogin />} />

@@ -74,10 +74,10 @@ function HeroPortalSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-            className="font-syne text-[10vw] leading-[0.85] tracking-tighter uppercase font-bold text-white flex flex-col items-center"
+            className="font-syne text-[15vw] md:text-[10vw] leading-[0.85] tracking-tighter uppercase font-bold text-white flex flex-col items-center"
           >
             <span>Computer Science</span>
-            <span className="flex items-center gap-4 md:gap-8 italic font-light text-transparent" style={{ WebkitTextStroke: '2px rgba(255,255,255,0.8)' }}>
+            <span className="flex items-center gap-2 md:gap-8 italic font-light text-transparent" style={{ WebkitTextStroke: '1.5px rgba(255,255,255,0.8)' }}>
               & Business
             </span>
             <span>Systems</span>
@@ -197,28 +197,28 @@ function HorizontalScrollSection() {
 
 function StatsSection() {
   return (
-    <section className="py-48 px-8 md:px-16 bg-[#FAFAFA] text-[#050505]">
+    <section className="py-24 md:py-48 px-8 md:px-16 bg-[#FAFAFA] text-[#050505]">
       <div className="max-w-[1600px] mx-auto relative">
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-20%" }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-24"
+          className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24"
         >
           <div className="flex flex-col border-b md:border-b-0 md:border-r border-black/10 pb-12 md:pb-0 md:pr-12">
-            <span className="font-syne text-[15vw] md:text-[12rem] font-bold leading-none tracking-tighter text-[#050505]">
+            <span className="font-syne text-7xl sm:text-8xl md:text-[12rem] font-bold leading-none tracking-tighter text-[#050505]">
               150<span className="text-[#FF3C00]">.</span>
             </span>
-            <span className="text-xl font-medium mt-6 uppercase tracking-[0.2em] text-black/50">
+            <span className="text-lg md:text-xl font-medium mt-4 md:mt-6 uppercase tracking-[0.2em] text-black/50">
               Total Seats Capacity
             </span>
           </div>
-          <div className="flex flex-col pl-0 md:pl-12">
-            <span className="font-syne text-[15vw] md:text-[12rem] font-bold leading-none tracking-tighter text-[#050505]">
+          <div className="flex flex-col pt-4 md:pt-0 pl-0 md:pl-12">
+            <span className="font-syne text-7xl sm:text-8xl md:text-[12rem] font-bold leading-none tracking-tighter text-[#050505]">
               04<span className="text-[#00F0FF]">.</span>
             </span>
-            <span className="text-xl font-medium mt-6 uppercase tracking-[0.2em] text-black/50">
+            <span className="text-lg md:text-xl font-medium mt-4 md:mt-6 uppercase tracking-[0.2em] text-black/50">
               Years Duration
             </span>
           </div>
@@ -237,25 +237,25 @@ function ResourceSection() {
   ];
 
   return (
-    <section className="py-48 px-8 md:px-16 bg-[#050505] flex flex-col justify-center">
+    <section className="py-24 md:py-48 px-4 sm:px-8 md:px-16 bg-[#050505] flex flex-col justify-center">
       <div className="max-w-[1600px] mx-auto w-full">
-        <h2 className="font-syne text-sm uppercase tracking-[0.3em] text-[#00F0FF] mb-24 border border-[#00F0FF]/30 px-6 py-2 rounded-full inline-block">
+        <h2 className="font-syne text-xs md:text-sm uppercase tracking-[0.3em] text-[#00F0FF] mb-12 md:mb-24 border border-[#00F0FF]/30 px-6 py-2 rounded-full inline-block">
           Academic Resources
         </h2>
         <div className="flex flex-col border-t border-white/10">
           {resources.map((item, i) => (
-            <Link key={i} to={item.to} className="group relative border-b border-white/10 py-12 hover-trigger overflow-hidden block">
+            <Link key={i} to={item.to} className="group relative border-b border-white/10 py-8 md:py-12 hover-trigger overflow-hidden block">
               <div className="absolute inset-0 bg-[#FAFAFA] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
-              <div className="relative z-10 flex justify-between items-center mix-blend-difference text-white px-4">
-                <div className="flex items-start gap-12">
-                  <span className="font-syne text-xl mt-2 opacity-50">{item.num}</span>
-                  <h3 className="font-syne text-5xl md:text-8xl font-bold uppercase tracking-tighter group-hover:pl-8 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <div className="relative z-10 flex justify-between items-center mix-blend-difference text-white px-2 md:px-4">
+                <div className="flex items-start gap-4 md:gap-12">
+                  <span className="font-syne text-base md:text-xl mt-1 md:mt-2 opacity-50 hidden sm:block">{item.num}</span>
+                  <h3 className="font-syne text-3xl sm:text-5xl md:text-8xl font-bold uppercase tracking-tighter group-hover:pl-2 md:group-hover:pl-8 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
                     {item.title}
                   </h3>
                 </div>
                 <MagneticButton>
-                  <div className="w-20 h-20 rounded-full border border-white/30 flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform duration-700">
-                    <MoveRight className="w-8 h-8" />
+                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full border border-white/30 flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform duration-700">
+                    <MoveRight className="w-5 h-5 md:w-8 md:h-8" />
                   </div>
                 </MagneticButton>
               </div>
