@@ -1,137 +1,160 @@
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  GraduationCap,
-  BookOpen,
-  FileText,
-  Users,
-  Bell,
-  Camera,
-  ExternalLink,
-  Menu,
-  X,
-} from "lucide-react";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
+import { MagneticButton } from './MotionWrappers';
 
 export default function Navigation() {
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navigation = [
-    { name: "Notes", href: "/notes", icon: BookOpen },
-    { name: "Papers", href: "/papers", icon: FileText },
-    { name: "Syllabus", href: "/syllabus", icon: GraduationCap },
-    { name: "Notices", href: "/notices", icon: Bell },
-    { name: "Gallery", href: "/gallery", icon: Camera },
-    { name: "About", href: "/about", icon: GraduationCap },
-    { name: "Contributors", href: "/contributors", icon: Users },
+  // Close menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
+
+  const navLinks = [
+    { title: 'Home', href: '/' },
+    { title: 'Notes', href: '/notes' },
+    { title: 'Papers', href: '/papers' },
+    { title: 'Syllabus', href: '/syllabus' },
+    { title: 'Notices', href: '/notices' },
+    { title: 'Gallery', href: '/gallery' },
+    { title: 'About', href: '/about' },
+    { title: 'Contributors', href: '/contributors' },
   ];
 
+  const easeCurve = [0.76, 0, 0.24, 1] as const;
+
+  const menuVariants: any = {
+    closed: {
+      x: '100%',
+      transition: {
+        duration: 0.8,
+        ease: easeCurve,
+      },
+    },
+    open: {
+      x: '0%',
+      transition: {
+        duration: 0.8,
+        ease: easeCurve,
+      },
+    },
+  };
+
+  const linkVariants: any = {
+    closed: { y: 100, opacity: 0 },
+    open: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: easeCurve,
+        delay: 0.2 + i * 0.05,
+      },
+    }),
+  };
+
   return (
-    <nav className="bg-background/80 backdrop-blur-xl border-b border-border/50 sticky top-0 z-50 shadow-lg shadow-primary/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center group">
-              {/* Full IET Logo */}
-              <img
-                src="https://html-starter-beige-beta.vercel.app/ietlogom.png"
-                alt="IET DAVV Logo"
-                className="h-14 object-contain group-hover:scale-105 transition-transform duration-300"
+    <>
+      {/* Magnetic Menu Toggle */}
+      <div className="fixed top-8 right-8 z-[1000]">
+        <MagneticButton className="magnetic">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="group flex items-center justify-center w-16 h-16 rounded-full bg-background border border-border/50 text-foreground mix-blend-difference hover:bg-primary hover:text-black transition-colors duration-300"
+          >
+            <span className="sr-only">Toggle Menu</span>
+            <div className="flex flex-col gap-1.5 w-6">
+              <motion.span
+                animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                className="block h-0.5 w-full bg-current transition-transform duration-300"
               />
-            </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.href;
-              return (
-                <Link key={item.name} to={item.href}>
-                  <Button
-                    variant={isActive ? "default" : "ghost"}
-                    size="sm"
-                    className={cn(
-                      "flex items-center gap-1 relative overflow-hidden group transition-all duration-300 text-xs px-2 py-2 xl:px-3 xl:gap-2",
-                      isActive
-                        ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25"
-                        : "hover:bg-primary/10 hover:text-primary",
-                    )}
-                  >
-                    <Icon className="w-3 h-3 xl:w-4 xl:h-4 z-10" />
-                    <span className="z-10 hidden lg:inline xl:text-sm">
-                      {item.name}
-                    </span>
-                    {!isActive && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    )}
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="hover:bg-primary/10 transition-colors duration-300"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-            </Button>
-          </div>
-        </div>
+              <motion.span
+                animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+                className="block h-0.5 w-full bg-current transition-opacity duration-300"
+              />
+              <motion.span
+                animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                className="block h-0.5 w-full bg-current transition-transform duration-300"
+              />
+            </div>
+          </button>
+        </MagneticButton>
       </div>
 
-      {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-border/50 bg-background/90 backdrop-blur-xl">
-          <div className="px-2 pt-2 pb-3 space-y-1 max-h-96 overflow-y-auto">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+      {/* Logo - Fixed Top Left */}
+      <div className="fixed top-8 left-8 z-[900] mix-blend-difference">
+        <Link to="/" className="text-xl font-bold font-syne hover:text-primary transition-colors tracking-tight">
+          CSBS<span className="text-primary">.</span>
+        </Link>
+      </div>
+
+      {/* Full Screen Menu Overlay */}
+      <AnimatePresence mode="wait">
+        {isOpen && (
+          <motion.div
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="fixed inset-0 z-[900] bg-background flex flex-col justify-center px-12 md:px-32"
+          >
+            {/* Background Noise/Grid */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
+
+            <div className="relative z-10 flex flex-col md:flex-row justify-between w-full max-w-7xl mx-auto mt-16 md:mt-0">
+
+              {/* Links */}
+              <nav className="flex flex-col gap-4 md:gap-6">
+                {navLinks.map((link, i) => (
+                  <div key={i} className="overflow-hidden">
+                    <motion.div custom={i} variants={linkVariants} initial="closed" animate="open" exit="closed">
+                      <Link
+                        to={link.href}
+                        className="group relative inline-block text-5xl md:text-8xl font-bold font-syne hover-trigger"
+                      >
+                        <span className="relative z-10 text-foreground group-hover:text-primary transition-colors duration-500">
+                          {link.title}
+                        </span>
+                        <span className="absolute -left-8 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </Link>
+                    </motion.div>
+                  </div>
+                ))}
+              </nav>
+
+              {/* Info Block */}
+              <div className="mt-16 md:mt-auto md:w-1/3 flex flex-col justify-end text-muted-foreground pb-12">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.6 }}
+                  className="space-y-8"
                 >
-                  <Button
-                    variant={isActive ? "default" : "ghost"}
-                    className={cn(
-                      "w-full justify-start gap-3 relative overflow-hidden group",
-                      isActive
-                        ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg"
-                        : "hover:bg-primary/10 hover:text-primary",
-                    )}
-                  >
-                    <Icon className="w-4 h-4 z-10" />
-                    <span className="z-10">{item.name}</span>
-                    {!isActive && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    )}
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      )}
-    </nav>
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-widest text-foreground mb-4">Location</h3>
+                    <p>Institute of Engineering & Technology<br />DAVV, Khandwa Road<br />Indore, MP 452017</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-widest text-foreground mb-4">Contact</h3>
+                    <a href="mailto:admissions@ietdavv.edu.in" className="hover:text-primary transition-colors hover-trigger">admissions@ietdavv.edu.in</a>
+                    <p className="mt-1">+91-731-2570179</p>
+                  </div>
+                  <div className="flex gap-4">
+                    {['LinkedIn', 'Twitter', 'GitHub'].map((social) => (
+                      <a key={social} href="#" className="text-sm uppercase tracking-wider hover:text-primary transition-colors hover-trigger">
+                        {social}
+                      </a>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

@@ -1,95 +1,64 @@
-/* Use system fonts for better performance - Inter is very similar to system UI fonts */
-/* If you want to self-host Inter, download from https://fonts.google.com/specimen/Inter */
-/* and place woff2 files in public/fonts/ */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  /**
-   * Tailwind CSS theme
-   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
-   * A different format will require also updating the theme in tailwind.config.ts.
-  */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 2%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 214 100% 35%;
-    --primary-foreground: 0 0% 98%;
+    /* Electric Cyan */
+    --primary: 180 100% 50%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 161 94% 20%;
-    --secondary-foreground: 0 0% 98%;
+    /* Tech Orange/Red */
+    --secondary: 15 100% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 25 95% 48%;
+    --accent: 0 0% 10%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 214 100% 35%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 180 100% 50%;
 
-    --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5% 26%;
-    --sidebar-primary: 214 100% 35%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 5% 96%;
-    --sidebar-accent-foreground: 240 6% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 214 100% 35%;
+    --radius: 0rem;
+    /* Brutalist/Technical look */
   }
 
   .dark {
-    --background: 224 33% 7%;
-    --foreground: 213 31% 94%;
-
-    --card: 224 33% 10%;
-    --card-foreground: 213 31% 94%;
-
-    --popover: 224 33% 10%;
-    --popover-foreground: 213 31% 94%;
-
-    --primary: 262 90% 68%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 180 85% 50%;
-    --secondary-foreground: 224 33% 7%;
-
-    --muted: 223 33% 15%;
-    --muted-foreground: 215 20% 70%;
-
-    --accent: 327 87% 68%;
-    --accent-foreground: 224 33% 7%;
-
-    --destructive: 0 63% 60%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 216 25% 20%;
-    --input: 216 25% 20%;
-    --ring: 262 90% 68%;
-
-    --sidebar-background: 224 33% 7%;
-    --sidebar-foreground: 213 31% 94%;
-    --sidebar-primary: 262 90% 68%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 223 33% 15%;
-    --sidebar-accent-foreground: 213 31% 94%;
-    --sidebar-border: 216 25% 20%;
-    --sidebar-ring: 262 90% 68%;
+    /* Same as root because we force dark mode styling for this handcrafted feel */
+    --background: 0 0% 2%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 180 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 15 100% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 180 100% 50%;
   }
 }
 
@@ -98,106 +67,55 @@
     @apply border-border;
   }
 
+  html,
   body {
     @apply bg-background text-foreground;
-    font-family:
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      "Roboto",
-      "Oxygen",
-      "Ubuntu",
-      "Cantarell",
-      "Fira Sans",
-      "Droid Sans",
-      "Helvetica Neue",
-      sans-serif;
-    font-feature-settings: normal;
-    letter-spacing: normal;
+    font-family: 'Inter', sans-serif;
+    overscroll-behavior: none;
+    /* Crucial for smooth scrolling via Lenis */
   }
 
-  .animate-gradient {
-    background-size: 400% 400%;
-    animation: gradient 4s ease-in-out infinite;
-  }
-
-  @keyframes gradient {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-
-  /* Typography Improvements */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-  }
-
-  h1 {
+    font-family: 'Syne', sans-serif;
     font-weight: 700;
-    letter-spacing: -0.035em;
-  }
-
-  h2 {
-    font-weight: 600;
-    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
   }
 
   p {
-    line-height: 1.65;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
   }
 
-  .text-muted-foreground {
-    color: hsl(var(--muted-foreground) / 0.8);
+  ::selection {
+    background-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--primary));
   }
 }
 
-/**
- * Management Portal — force light mode for Radix portal elements
- * (dialogs, dropdowns, selects) when the portal is in management context.
- * These render as portals into <body> and don't inherit inline CSS var overrides.
- */
-body[data-portal="management"] [role="dialog"],
-body[data-portal="management"] [role="alertdialog"],
-body[data-portal="management"] [role="listbox"],
-body[data-portal="management"] [role="menu"],
-body[data-portal="management"] [role="tooltip"],
-body[data-portal="management"] [data-radix-popper-content-wrapper] {
-  --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 214 100% 35%;
-  background-color: white;
-  color: hsl(222, 47%, 11%);
+/* Lenis Recommended CSS */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }

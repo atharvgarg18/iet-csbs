@@ -29,14 +29,14 @@ export const queryKeys = {
 const ITEMS_PER_PAGE = 20;
 
 // Gallery hooks
-export function useGalleryImages(page = 0) {
+export function useGalleryImages(page = 0, fetchAll = false) {
   return useQuery({
-    queryKey: queryKeys.gallery.images(page),
+    queryKey: queryKeys.gallery.images(fetchAll ? -1 : page),
     queryFn: async () => {
       const from = page * ITEMS_PER_PAGE;
       const to = from + ITEMS_PER_PAGE - 1;
 
-      const { data, error, count } = await supabase
+      let query = supabase
         .from('gallery_images')
         .select(`
           id,
@@ -59,15 +59,20 @@ export function useGalleryImages(page = 0) {
         `, { count: 'exact' })
         .eq('is_active', true)
         .order('is_featured', { ascending: false })
-        .order('event_date', { ascending: false })
-        .range(from, to);
+        .order('event_date', { ascending: false });
+
+      if (!fetchAll) {
+        query = query.range(from, to);
+      }
+
+      const { data, error, count } = await query;
 
       if (error) throw error;
 
       return {
         images: (data || []) as unknown as GalleryImage[],
         total: count || 0,
-        hasMore: count ? (from + ITEMS_PER_PAGE) < count : false,
+        hasMore: fetchAll ? false : (count ? (from + ITEMS_PER_PAGE) < count : false),
       };
     },
     staleTime: 5 * 60 * 1000, // 5 minutes

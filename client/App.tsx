@@ -14,6 +14,10 @@ import { lazy, Suspense } from "react";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import { PageLoading } from "@/components/Loading";
 
+import SmoothScroll from "@/components/SmoothScroll";
+import Preloader from "@/components/Preloader";
+import CustomCursor from "@/components/CustomCursor";
+
 // Lazy load all page components for code splitting
 const Index = lazy(() => import("./pages/Index"));
 const Notes = lazy(() => import("./pages/Notes"));
@@ -62,45 +66,49 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <Preloader />
+          <CustomCursor />
           <ErrorBoundary>
-          <BrowserRouter>
-            <ScrollToTop />
-            <Suspense fallback={<PageLoading />}>
-            <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/notes" element={<Notes />} />
-            <Route path="/papers" element={<Papers />} />
-            <Route path="/contributors" element={<Contributors />} />
-            <Route path="/notices" element={<Notices />} />
-            <Route path="/at-a-glance" element={<AtAGlance />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/syllabus" element={<Syllabus />} />
-            <Route path="/about" element={<AboutDepartment />} />
-            
-            {/* Management Portal Routes */}
-            <Route path="/management-portal/login" element={<ManagementLogin />} />
-            <Route path="/management-portal/reset-password" element={<ResetPassword />} />
-            <Route path="/management-portal" element={<ManagementLayout />}>
-              <Route index element={<ManagementDashboard />} />
-              <Route path="batches" element={<BatchesManagement />} />
-              <Route path="sections" element={<SectionsManagement />} />
-              <Route path="notes" element={<NotesManagement />} />
-              <Route path="papers" element={<PapersManagement />} />
-              <Route path="users" element={<UsersManagement />} />
-              <Route path="gallery-categories" element={<GalleryCategoriesManagement />} />
-              <Route path="gallery-images" element={<GalleryImagesManagement />} />
-              <Route path="notice-categories" element={<NoticeCategoriesManagement />} />
-              <Route path="notices" element={<NoticesManagement />} />
-            </Route>
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          </Suspense>
-        </BrowserRouter>
-        </ErrorBoundary>
-      </TooltipProvider>
-    </ThemeProvider>
+            <SmoothScroll>
+              <BrowserRouter>
+                <ScrollToTop />
+                <Suspense fallback={<PageLoading />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/notes" element={<Notes />} />
+                    <Route path="/papers" element={<Papers />} />
+                    <Route path="/contributors" element={<Contributors />} />
+                    <Route path="/notices" element={<Notices />} />
+                    <Route path="/at-a-glance" element={<AtAGlance />} />
+                    <Route path="/gallery" element={<Gallery />} />
+                    <Route path="/syllabus" element={<Syllabus />} />
+                    <Route path="/about" element={<AboutDepartment />} />
+
+                    {/* Management Portal Routes */}
+                    <Route path="/management-portal/login" element={<ManagementLogin />} />
+                    <Route path="/management-portal/reset-password" element={<ResetPassword />} />
+                    <Route path="/management-portal" element={<ManagementLayout />}>
+                      <Route index element={<ManagementDashboard />} />
+                      <Route path="batches" element={<BatchesManagement />} />
+                      <Route path="sections" element={<SectionsManagement />} />
+                      <Route path="notes" element={<NotesManagement />} />
+                      <Route path="papers" element={<PapersManagement />} />
+                      <Route path="users" element={<UsersManagement />} />
+                      <Route path="gallery-categories" element={<GalleryCategoriesManagement />} />
+                      <Route path="gallery-images" element={<GalleryImagesManagement />} />
+                      <Route path="notice-categories" element={<NoticeCategoriesManagement />} />
+                      <Route path="notices" element={<NoticesManagement />} />
+                    </Route>
+
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </BrowserRouter>
+            </SmoothScroll>
+          </ErrorBoundary>
+        </TooltipProvider>
+      </ThemeProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

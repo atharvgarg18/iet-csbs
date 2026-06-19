@@ -1,15 +1,14 @@
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import SEO from "@/components/SEO";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
-  GraduationCap, 
-  Mail,
-  Phone
-} from "lucide-react";
+import { useEffect } from 'react';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import { Reveal, StaggerContainer, StaggerItem } from "@/components/MotionWrappers";
+import { OptimizedImage } from '@/components/OptimizedImage';
 
 export default function AboutDepartment() {
+  useEffect(() => {
+    document.title = "About CSBS - IET DAVV";
+  }, []);
+
   const hodDetails = {
     name: "Dr. Chandra Prakash Patidar",
     designation: "Head of Department",
@@ -33,191 +32,140 @@ export default function AboutDepartment() {
     ]
   };
 
+  const sections = [
+    {
+      title: "Vision",
+      content: "To build a strong foundation in Computer Science while equipping students with an understanding of management and humanities, ensuring they are well-prepared for the evolving demands of the global IT industry."
+    },
+    {
+      title: "Mission",
+      content: "To foster an environment of continuous learning and innovation, collaborating with industry leaders like TCS to deliver a curriculum that bridges the gap between theoretical knowledge and practical business applications."
+    },
+    {
+      title: "The TCS Partnership",
+      content: "The CSBS program was architected in direct collaboration with Tata Consultancy Services (TCS). This unique partnership ensures the syllabus is always aligned with the latest industry paradigms, including AI, Machine Learning, and Design Thinking."
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      <SEO 
-        title="About Department - CSBS IET DAVV"
-        description="Learn about the Computer Science and Business Systems department at IET DAVV Indore"
-      />
+    <div className="min-h-screen bg-[#050505] text-[#FAFAFA] relative">
       <Navigation />
 
-      <main className="relative">
-        {/* Hero Section */}
-        <section className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+      <main className="relative z-10 px-8 md:px-16 pt-48 pb-32 max-w-[1600px] mx-auto">
+        <Reveal>
+          <div className="mb-32">
+            <p className="font-syne text-sm uppercase tracking-widest text-[#00F0FF] mb-4">Department / 05</p>
+            <h1 className="font-syne text-[12vw] md:text-[8vw] font-bold uppercase tracking-tighter leading-[0.85]">
+              About <br /> <span className="text-transparent" style={{ WebkitTextStroke: '2px #FAFAFA' }}>The Program</span>
+            </h1>
+          </div>
+        </Reveal>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 mb-48">
+          <div className="lg:col-span-5 h-[50vh] lg:h-[80vh] relative overflow-hidden bg-[#111111] border border-white/10 flex items-center justify-center">
+            <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
+            <h2 className="font-syne text-[25vw] lg:text-[18vw] font-bold text-white/5 leading-none tracking-tighter rotate-90">
+              CSBS
+            </h2>
           </div>
 
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 text-xs">About Us</Badge>
-              <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
-                Computer Science & Business Systems
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Institute of Engineering & Technology, DAVV Indore
-              </p>
-            </div>
-          </div>
-        </section>
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            <StaggerContainer className="space-y-16">
+              <StaggerItem>
+                <p className="font-syne text-3xl md:text-5xl leading-tight font-bold tracking-tighter mb-16">
+                  Computer Science and Business Systems (CSBS) is a pioneering engineering discipline designed to meet the demands of the modern industrial landscape.
+                </p>
+              </StaggerItem>
 
-        {/* Department Overview */}
-        <section className="py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <Card className="border-border/40">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <GraduationCap className="w-6 h-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-2xl">About the Department</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  {/* TODO: Add actual department description */}
-                  The Computer Science and Business Systems (CSBS) department at IET DAVV represents 
-                  a pioneering approach to engineering education, seamlessly integrating core computer 
-                  science principles with essential business management concepts.
-                </p>
-                <p>
-                  This unique program is designed to create professionals who can bridge the gap between 
-                  technology and business, preparing students for leadership roles in the digital economy.
-                </p>
-                <p>
-                  {/* TODO: Add more department-specific content */}
-                  With state-of-the-art facilities and experienced faculty, the department focuses on 
-                  practical learning, industry collaboration, and holistic development of students.
-                </p>
-              </CardContent>
-            </Card>
+              {sections.map((section, idx) => (
+                <StaggerItem key={idx} className="border-t border-white/10 pt-8">
+                  <h3 className="font-syne text-xl md:text-2xl font-bold uppercase text-[#00F0FF] mb-4 tracking-tighter">
+                    {section.title}
+                  </h3>
+                  <p className="text-lg md:text-xl text-white/60 leading-relaxed font-light">
+                    {section.content}
+                  </p>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
           </div>
-        </section>
+        </div>
 
         {/* HOD Section */}
-        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
+        <Reveal>
+          <div className="border-t border-white/10 pt-32">
+            <h2 className="font-syne text-sm uppercase tracking-[0.3em] text-[#FF3C00] mb-16 border border-[#FF3C00]/30 px-6 py-2 rounded-full inline-block">
               Head of Department
             </h2>
-            
-            <Card className="border-border/40 overflow-hidden">
-              <CardContent className="p-0">
-                {/* Top Section - Photo and Basic Info */}
-                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-8">
-                  <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-                    {/* Photo */}
-                    <div className="flex-shrink-0">
-                      <div className="w-48 h-48 rounded-2xl overflow-hidden border-4 border-background shadow-xl">
-                        <img 
-                          src={hodDetails.image} 
-                          alt={hodDetails.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
 
-                    {/* Basic Info */}
-                    <div className="flex-1 text-center md:text-left">
-                      <h3 className="text-3xl font-bold text-foreground mb-2">
-                        {hodDetails.name}
-                      </h3>
-                      <p className="text-lg text-muted-foreground mb-1">
-                        {hodDetails.designation}
-                      </p>
-                      <p className="text-base text-muted-foreground mb-4">
-                        {hodDetails.department}, IET DAVV Indore
-                      </p>
-                      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                        <Badge className="text-sm px-3 py-1">
-                          {hodDetails.qualifications}
-                        </Badge>
-                        <Badge variant="secondary" className="text-sm px-3 py-1">
-                          {hodDetails.experience} Teaching Experience
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+              <div className="lg:col-span-4">
+                <div className="aspect-square w-full md:w-3/4 mx-auto overflow-hidden border border-white/10 bg-[#111111] rounded-full">
+                  <OptimizedImage
+                    src={hodDetails.image}
+                    alt={hodDetails.name}
+                    className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"
+                  />
                 </div>
+              </div>
 
-                {/* Bottom Section - Details Grid */}
-                <div className="p-8">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Left Column */}
-                    <div className="space-y-6">
-                      {/* PhD Supervision */}
-                      <div>
-                        <h4 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                          <div className="w-1 h-6 bg-primary rounded-full"></div>
-                          PhD Supervision
-                        </h4>
-                        <div className="space-y-2 pl-4">
-                          <div className="flex items-start gap-2">
-                            <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
-                            <p className="text-sm text-muted-foreground">{hodDetails.phdSupervision.submitted}</p>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
-                            <p className="text-sm text-muted-foreground">{hodDetails.phdSupervision.registered}</p>
-                          </div>
-                        </div>
-                      </div>
+              <div className="lg:col-span-8 flex flex-col justify-center">
+                <h3 className="font-syne text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-4">
+                  {hodDetails.name}
+                </h3>
+                <p className="font-syne text-xl md:text-2xl text-[#00F0FF] tracking-tighter mb-12 uppercase">
+                  {hodDetails.designation}
+                </p>
 
-                      {/* Contact Information */}
-                      <div>
-                        <h4 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                          <div className="w-1 h-6 bg-primary rounded-full"></div>
-                          Contact Information
-                        </h4>
-                        <div className="space-y-3 pl-4">
-                          <a 
-                            href={`mailto:${hodDetails.email}`} 
-                            className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                              <Mail className="w-4 h-4 text-primary" />
-                            </div>
-                            <span>{hodDetails.email}</span>
-                          </a>
-                          <a 
-                            href={`tel:${hodDetails.phone}`} 
-                            className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                              <Phone className="w-4 h-4 text-primary" />
-                            </div>
-                            <span>{hodDetails.phone}</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Right Column - Teaching Subjects */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                  <div className="space-y-12">
                     <div>
-                      <h4 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                        <div className="w-1 h-6 bg-primary rounded-full"></div>
-                        Teaching Subjects
-                      </h4>
-                      <div className="grid grid-cols-1 gap-2 pl-4">
-                        {hodDetails.subjects.map((subject, index) => (
-                          <div 
-                            key={index} 
-                            className="flex items-center gap-2 text-sm text-muted-foreground"
-                          >
-                            <div className="w-2 h-2 rounded-full bg-secondary"></div>
-                            <span>{subject}</span>
-                          </div>
+                      <h4 className="font-syne text-lg uppercase tracking-widest text-white/40 mb-4">Credentials</h4>
+                      <ul className="space-y-2 text-lg text-white/80">
+                        <li>{hodDetails.qualifications}</li>
+                        <li>{hodDetails.experience} Experience</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-syne text-lg uppercase tracking-widest text-white/40 mb-4">Contact</h4>
+                      <ul className="space-y-2 text-lg text-white/80">
+                        <li><a href={`mailto:${hodDetails.email}`} className="hover:text-[#00F0FF] transition-colors hover-trigger">{hodDetails.email}</a></li>
+                        <li><a href={`tel:${hodDetails.phone}`} className="hover:text-[#00F0FF] transition-colors hover-trigger">{hodDetails.phone}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="space-y-12">
+                    <div>
+                      <h4 className="font-syne text-lg uppercase tracking-widest text-white/40 mb-4">PhD Supervision</h4>
+                      <ul className="space-y-2 text-lg text-white/80">
+                        <li className="flex gap-4">
+                          <span className="text-[#FF3C00] font-syne">01</span>
+                          {hodDetails.phdSupervision.submitted}
+                        </li>
+                        <li className="flex gap-4">
+                          <span className="text-[#FF3C00] font-syne">02</span>
+                          {hodDetails.phdSupervision.registered}
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-syne text-lg uppercase tracking-widest text-white/40 mb-4">Teaching Subjects</h4>
+                      <ul className="space-y-2 text-lg text-white/80">
+                        {hodDetails.subjects.map((subject, idx) => (
+                          <li key={idx} className="flex gap-4">
+                            <span className="text-[#00F0FF]/50 font-syne">-</span>
+                            {subject}
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
-        </section>
+        </Reveal>
       </main>
 
       <Footer />
