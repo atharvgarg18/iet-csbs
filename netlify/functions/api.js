@@ -275,7 +275,7 @@ exports.handler = async (event, context) => {
     }
 
     // Results Proxy route
-    if (httpMethod === 'GET' && apiRoute.includes('/results')) {
+    if (httpMethod === 'GET' && apiRoute.includes('/get-student-marks')) {
       const { queryStringParameters } = event;
       const { rollno, typeOfStudent } = queryStringParameters || {};
 

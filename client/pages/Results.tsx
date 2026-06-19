@@ -47,7 +47,7 @@ export default function Results() {
         setResult(null);
 
         try {
-            const response = await fetch(`/api/results?rollno=${encodeURIComponent(rollNo)}&typeOfStudent=${encodeURIComponent(studentType)}`);
+            const response = await fetch(`/.netlify/functions/api/get-student-marks?rollno=${encodeURIComponent(rollNo)}&typeOfStudent=${encodeURIComponent(studentType)}`);
 
             if (!response.ok) {
                 throw new Error("Failed to fetch results. The server might be down or busy.");
